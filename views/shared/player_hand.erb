@@ -1,0 +1,13 @@
+<h2>
+  Player's hand
+</h2>
+
+<ul>
+  <% session[:player_hand].each do |card| %>
+    <li><%= card %></li>
+  <% end %>
+</ul>
+
+<p>
+  Player's hand is worth <%= value session[:player_hand] %>.
+</p>

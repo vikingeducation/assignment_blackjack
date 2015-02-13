@@ -34,4 +34,8 @@ module BlackjackHelper
     end
     base_value
   end
+
+  def busted?
+    value(session[:player_hand]) > 21
+  end
 end
