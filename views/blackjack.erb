@@ -1,3 +1,33 @@
 <h3>
   The Blackjack Game
 </h3>
+
+<h2>
+  Dealer's hand
+</h2>
+
+<ul>
+  <li>hole card</li>
+  <% session[:dealer_upcards].each do |card| %>
+    <li><%= card %></li>
+  <% end %>
+</ul>
+
+<h2>
+  Player's hand
+</h2>
+
+<ul>
+  <% session[:player_hand].each do |card| %>
+    <li><%= card %></li>
+  <% end %>
+</ul>
+
+<h2>
+  Your choices:
+</h2>
+
+<ul>
+  <li><a href="#">Hit</a></li>
+  <li><a href="#">Stay</a></li>
+</ul>
