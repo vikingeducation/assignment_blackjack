@@ -1,7 +1,9 @@
 require 'sinatra'
 require 'pry-byebug'
 require 'erb'
+require './helpers/blackjack_helper.rb'
 
+helpers BlackjackHelper
 enable :sessions
 
 get '/' do
@@ -16,4 +18,16 @@ get '/blackjack' do
   session[:dealer_upcards] = [session[:deck].pop]
   session[:player_hand] << session[:deck].pop
   erb :blackjack
+end
+
+get '/blackjack/hit' do
+  session[:player_hand] << session[:deck].pop
+  if value(session[:player_hand]) > 21
+    redirect to 'blackjack/stay'
+  end
+  erb :blackjack
+end
+
+get '/blackjack/stay' do
+  "BUSTED!"
 end
