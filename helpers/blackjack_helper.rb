@@ -46,4 +46,19 @@ module BlackjackHelper
   def dealer_hand
     [session[:hole_card]] + session[:dealer_upcards]
   end
+
+  def player_wins?
+    !player_busted? &&
+    (dealer_busted? || value(session[:player_hand]) > value(dealer_hand))
+  end
+
+  def dealer_wins?
+    !dealer_busted? &&
+    (player_busted? || value(dealer_hand) > value(session[:player_hand]))
+  end
+
+  def push?
+    value(dealer_hand) == value(session[:player_hand])
+  end
+
 end
