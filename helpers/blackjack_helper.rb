@@ -35,7 +35,15 @@ module BlackjackHelper
     base_value
   end
 
-  def busted?
+  def player_busted?
     value(session[:player_hand]) > 21
+  end
+
+  def dealer_busted?
+    value(dealer_hand) > 21
+  end
+
+  def dealer_hand
+    [session[:hole_card]] + session[:dealer_upcards]
   end
 end

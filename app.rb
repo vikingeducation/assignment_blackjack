@@ -29,10 +29,8 @@ get '/blackjack/hit' do
 end
 
 get '/blackjack/stay' do
-  dealer_hand = [session[:hole_card]] + session[:dealer_upcards]
   while value(dealer_hand) < 17
     session[:dealer_upcards] << session[:deck].pop
-    dealer_hand = [session[:hole_card]] + session[:dealer_upcards]
   end
-  erb :blackjack
+  erb :stay
 end
