@@ -1,0 +1,18 @@
+<h2>
+  Dealer's hand
+</h2>
+
+<ul>
+  <li>hole card</li>
+  <% session[:dealer_upcards].each do |card| %>
+    <li><%= card %></li>
+  <% end %>
+</ul>
+
+<%= erb :"shared/player_hand" %>
+
+<% if player_busted? %>
+  <p><%= "Sorry, you BUSTED!" %></p>
+<% else %>
+  <%= erb :"shared/options" %>
+<% end %>

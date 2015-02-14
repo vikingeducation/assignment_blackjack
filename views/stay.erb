@@ -1,0 +1,40 @@
+<h2>
+  Dealer's hand
+</h2>
+
+<ul>
+  <li><%= session[:hole_card] %></li>
+  <% session[:dealer_upcards].each do |card| %>
+    <li><%= card %></li>
+  <% end %>
+</ul>
+
+<p>
+  Dealer's hand is worth <%= value dealer_hand %>.
+</p>
+
+<% if dealer_busted? %>
+  <p>The dealer is BUST!</p>
+<% end %>
+
+<%= erb :"shared/player_hand" %>
+
+<% if player_busted? %>
+  <p>Sorry, you BUSTED!</p>
+<% end %>
+
+<h2>
+  Result
+</h2>
+
+<p>
+<% if player_wins? %>
+  CONGRATULATIONS, YOU WON!
+<% elsif dealer_wins? %>
+  You lost.
+<% elsif push? %>
+  Push.
+<% end %>
+</p>
+
+<a href="/blackjack">New Game</a>
