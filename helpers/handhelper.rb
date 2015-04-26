@@ -33,4 +33,18 @@ module HandHelper
     value_of_hand(session[:dealer_hand]) > 21
   end
 
+  def result_conditions
+    if player_bust?
+      "<p>You bust, you lost!</p>"
+    elsif dealer_bust?
+      "<p>The dealer bust! You won!</p>"
+    elsif value_of_hand(session[:player_hand]) > value_of_hand(session[:dealer_hand])
+      "<p>You beat the dealer's hand! You won!</p>"
+    elsif value_of_hand(session[:player_hand]) == value_of_hand(session[:dealer_hand])
+      "<p>It's a draw!</p>"
+    else
+      "<p>You lost!</p>"
+    end
+  end
+
 end
