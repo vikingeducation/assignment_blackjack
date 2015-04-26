@@ -1,8 +1,7 @@
-<h2>Dealer's hand:</h2>
+<h2>Dealer's card:</h2>
 <ul>
-<% session[:dealer_hand].each do |card| %>
-  <li><%= card %></li>
-<% end %>
+  <li><%= session[:dealer_hand][0] %></li>
+  <li>...?</li>
 </ul>
 
 <h2>Your hand:</h2>
@@ -11,10 +10,7 @@
   <li><%= card %></li>
 <% end %>
 </ul>
-
-<% if lost? %>
-  <p>You lost!</p>
-<% end %>
+<strong>Total: </strong><%= value_of_hand(session[:player_hand]) %>
 
 <form action="/blackjack/hit">
   <input type="submit" value="HIT">
