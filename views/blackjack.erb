@@ -1,0 +1,25 @@
+<h2>Dealer's hand:</h2>
+<ul>
+<% session[:dealer_hand].each do |card| %>
+  <li><%= card %></li>
+<% end %>
+</ul>
+
+<h2>Your hand:</h2>
+<ul>
+<% session[:player_hand].each do |card| %>
+  <li><%= card %></li>
+<% end %>
+</ul>
+
+<% if lost? %>
+  <p>You lost!</p>
+<% end %>
+
+<form action="/blackjack/hit">
+  <input type="submit" value="HIT">
+</form>
+
+<form action="/blackjack/stay">
+  <input type="submit" value="STAY">
+</form>
