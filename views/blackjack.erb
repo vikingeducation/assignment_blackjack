@@ -1,0 +1,24 @@
+<h2>Dealer's cards:</h2>
+<ul>
+  <li><%= session[:dealer_hand][0] %></li>
+  <li>...?</li>
+</ul>
+
+<h2>Your hand:</h2>
+<ul>
+<% session[:player_hand].each do |card| %>
+  <li><%= card %></li>
+<% end %>
+</ul>
+<strong>Total: </strong><%= value_of_hand(session[:player_hand]) %>
+
+<br/>
+<br/>
+
+<form action="/blackjack/hit">
+  <input type="submit" value="HIT">
+</form>
+
+<form action="/blackjack/stay">
+  <input type="submit" value="STAY">
+</form>
