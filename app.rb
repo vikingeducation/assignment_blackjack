@@ -31,6 +31,5 @@ get '/blackjack/stay' do
   until value_of_hand(session[:dealer_hand]) >= 17
     session[:dealer_hand] << session[:deck].pop
   end
-  erb :blackjack
   erb :result
 end
