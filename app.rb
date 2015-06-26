@@ -8,16 +8,28 @@ end
 
 get '/blackjack' do
   # shuffle cards
-  deck = ( (2..10).to_a.map {|n| n.to_s} + ["J","Q","K","A"] )*4
+  deck = ( (2..10).to_a + ["J","Q","K","A"] )*4
   deck.shuffle!
 
   # deal hands
-  @player_hand, @dealer_hand = [], [
-  ]
+  @player_hand, @dealer_hand = [], []
   2.times do
     @player_hand << deck.pop
     @dealer_hand << deck.pop
   end
+
+  # calc hands
+  total = @player_hand.inject do |sum, card|
+    sum += if %w[J Q K].include?(card)
+      10
+    elsif card == "A"
+      11
+    else
+      card
+    end
+  end
+
+  @player_hand.unshift(total)
 
   #save state
   session[:deck] = deck
