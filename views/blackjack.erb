@@ -1,7 +1,14 @@
 <h3>Player's Hand</h3>
+
 <p>
   <%= @player_hand[1..-1].join(" ") %> ~> total: <%= @player_hand[0] %>
+
+  <% if @player_hand[0] > 21 %>
+    <strong>BUSTED</strong>
+  <% end %>
+
 </p>
+
 
 <h3>Dealer's Hand</h3>
 <p>

@@ -10,12 +10,12 @@ end
 
 
 get '/blackjack' do
-  # shuffle cards
-  if session[:deck].nil?
+  # new deck & shuffle if necessary
+  #if session[:deck].nil?
     deck = build_new_deck
-  else
-    deck = session[:deck]
-  end
+  #else
+  #  deck = session[:deck]
+  #end
 
   # deal hands
   @player_hand, @dealer_hand = [0], [0]
@@ -30,10 +30,7 @@ get '/blackjack' do
   @dealer_hand[0] = calculate(@dealer_hand)
 
 
-  #save state
-  session[:deck] = deck
-  session[:player_hand] = @player_hand
-  session[:dealer_hand] = @dealer_hand
+  save_game_state(deck, @player_hand, @dealer_hand)
 
 
   # render
@@ -50,12 +47,18 @@ post '/blackjack/hit' do
   # add card to hand
   @player_hand << deck.pop
 
-  # save state
-  session[:deck] = deck
-  session[:player_hand] = @player_hand
+  # calc hands
+  @player_hand[0] = calculate(@player_hand)
+  @dealer_hand[0] = calculate(@dealer_hand)
+
+  save_game_state(deck, @player_hand, @dealer_hand)
+
+  # if bust, go to /stay
+  redirect '/blackjack/stay', 307 if @player_hand[0] > 21
 
   # render
   erb :blackjack
+
 end
 
 
@@ -68,9 +71,11 @@ post '/blackjack/stay' do
   # run dealer hand
   @dealer_hand << deck.pop
 
-  # save state
-  session[:deck] = deck
-  session[:dealer_hand] = @dealer_hand
+  # calc hands
+  @player_hand[0] = calculate(@player_hand)
+  @dealer_hand[0] = calculate(@dealer_hand)
+
+  save_game_state(deck, @player_hand, @dealer_hand)
 
   # render
   erb :blackjack

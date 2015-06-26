@@ -1,5 +1,12 @@
 module GameHelper
 
+  def save_game_state(deck, player_hand, dealer_hand)
+    session[:deck] = deck
+    session[:player_hand] = player_hand
+    session[:dealer_hand] = dealer_hand
+  end
+
+
   def build_new_deck
     deck = ( (2..10).to_a + ["J","Q","K","A"] )*4
     deck.shuffle!
