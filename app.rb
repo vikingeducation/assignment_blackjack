@@ -1,5 +1,7 @@
 require 'sinatra'
+require 'erb'
 require './helpers/game_helper'
+require './player.rb'
 
 helpers GameHelper
 enable :sessions
@@ -12,7 +14,7 @@ end
 get '/blackjack' do
   # new deck & shuffle if necessary
   #if session[:deck].nil?
-    deck = build_new_deck
+  deck = build_new_deck
   #else
   #  deck = session[:deck]
   #end
@@ -24,14 +26,14 @@ get '/blackjack' do
     @dealer_hand << deck.pop
   end
 
-
   # calc hands
   @player_hand[0] = calculate(@player_hand)
   @dealer_hand[0] = calculate(@dealer_hand)
 
-
   save_game_state(deck, @player_hand, @dealer_hand)
 
+  # check blackjacks
+  redirect '/blackjack/stay', 307 if @player_hand == 21 || @dealer_hand[0] == 21
 
   # render
   erb :blackjack
@@ -54,29 +56,33 @@ post '/blackjack/hit' do
   save_game_state(deck, @player_hand, @dealer_hand)
 
   # if bust, go to /stay
-  redirect '/blackjack/stay', 307 if @player_hand[0] > 21
+  redirect '/blackjack/stay', 307 if @player_hand[0] >= 21
 
   # render
   erb :blackjack
-
 end
 
 
 post '/blackjack/stay' do
+  # buttons need to disappear
+
   # load state
   deck = session[:deck]
   @player_hand = session[:player_hand]
   @dealer_hand = session[:dealer_hand]
 
-  # run dealer hand
-  @dealer_hand << deck.pop
 
-  # calc hands
-  @player_hand[0] = calculate(@player_hand)
-  @dealer_hand[0] = calculate(@dealer_hand)
+  # reveal dealer card
 
-  save_game_state(deck, @player_hand, @dealer_hand)
+  # decide hit/stay
+  if @dealer_hand[0] < 17 && @player_hand[0] <= 21
+    @dealer_hand << deck.pop
+    @dealer_hand[0] = calculate(@dealer_hand)
+    save_game_state(deck, @player_hand, @dealer_hand)
+    redirect '/blackjack/stay', 307
+  end
 
-  # render
+
+  # render with win/loss
   erb :blackjack
 end
