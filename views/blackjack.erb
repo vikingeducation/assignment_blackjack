@@ -3,8 +3,16 @@
   <%= @player_hand.join(" ") %>
 </p>
 
-
 <h3>Dealer's Hand</h3>
 <p>
   <%= @dealer_hand.join(" ") %>
 </p>
+
+
+<form action='/blackjack/hit' method='post'>
+  <input type='submit' value='Hit'>
+</form>
+
+<form action='/blackjack/stay' method='post'>
+  <input type='submit' value='Stay'>
+</form>
