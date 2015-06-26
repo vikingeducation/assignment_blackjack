@@ -1,4 +1,7 @@
 require 'sinatra'
+require './helpers/game_helper'
+
+helpers GameHelper
 enable :sessions
 
 get '/' do
@@ -8,28 +11,24 @@ end
 
 get '/blackjack' do
   # shuffle cards
-  deck = ( (2..10).to_a + ["J","Q","K","A"] )*4
-  deck.shuffle!
+  if session[:deck].nil?
+    deck = build_new_deck
+  else
+    deck = session[:deck]
+  end
 
   # deal hands
-  @player_hand, @dealer_hand = [], []
+  @player_hand, @dealer_hand = [0], [0]
   2.times do
     @player_hand << deck.pop
     @dealer_hand << deck.pop
   end
 
-  # calc hands
-  total = @player_hand.inject do |sum, card|
-    sum += if %w[J Q K].include?(card)
-      10
-    elsif card == "A"
-      11
-    else
-      card
-    end
-  end
 
-  @player_hand.unshift(total)
+  # calc hands
+  @player_hand[0] = calculate(@player_hand)
+  @dealer_hand[0] = calculate(@dealer_hand)
+
 
   #save state
   session[:deck] = deck
