@@ -1,9 +1,10 @@
 require 'sinatra'
 require 'erb'
 require './helpers/game_helper'
+require './helpers/session_helper'
 require './player.rb'
 
-helpers GameHelper
+helpers GameHelper, SessionHelper
 enable :sessions
 
 get '/' do
@@ -12,6 +13,10 @@ end
 
 
 get '/blackjack' do
+
+  # start a new session
+
+  # start a new hand
 
   @win_message = ""
   deck = build_new_deck
@@ -61,7 +66,6 @@ end
 
 
 post '/blackjack/stay' do
-  # buttons need to disappear
 
   # load state
   deck = session[:deck]
