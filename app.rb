@@ -34,7 +34,7 @@ get '/blackjack' do
 
   save_game_state(deck, @player_hand, @dealer_hand, @win_message)
 
-  # check blackjacks
+  # check blackjacks -- BROKEN!!!
   redirect '/blackjack/stay', 307 if @player_hand == 21 || @dealer_hand[0] == 21
 
   # render
@@ -73,8 +73,6 @@ post '/blackjack/stay' do
   @dealer_hand = session[:dealer_hand]
 
 
-  # reveal dealer card
-
   # decide hit/stay
   if @player_hand[0] <= 21
     while @dealer_hand[0] < 17
@@ -87,6 +85,5 @@ post '/blackjack/stay' do
 
   @win_message = declare_winner(@player_hand[0], @dealer_hand[0])
 
-  # render with win/loss
   erb :blackjack, :locals => { :player_turn => false }
 end

@@ -10,11 +10,8 @@
 </p>
 
 
+
 <h3>Dealer's Hand</h3>
-
-
-
-
 
 <% if player_turn == true %>
 
@@ -23,6 +20,8 @@
     <%= "#{@dealer_hand[1]} ?" %> ~> total: ???
   </p>
 
+
+  <%# available player actions %>
   <form action='/blackjack/hit' method='post'>
     <input type='submit' value='Hit'>
   </form>
@@ -30,6 +29,7 @@
   <form action='/blackjack/stay' method='post'>
     <input type='submit' value='Stay'>
   </form>
+
 
 <% else %>
 
@@ -45,6 +45,7 @@
 
 
   <p><strong><%= @win_message if !@win_message.nil? %></p></strong>
+
 
   <form action='/blackjack' method='get'>
     <input type='submit' value='Play again?'>
