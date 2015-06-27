@@ -13,6 +13,7 @@ end
 
 get '/blackjack' do
 
+  @win_message = ""
   deck = build_new_deck
 
   # deal hands
@@ -26,13 +27,13 @@ get '/blackjack' do
   @player_hand[0] = calculate(@player_hand)
   @dealer_hand[0] = calculate(@dealer_hand)
 
-  save_game_state(deck, @player_hand, @dealer_hand)
+  save_game_state(deck, @player_hand, @dealer_hand, @win_message)
 
   # check blackjacks
   redirect '/blackjack/stay', 307 if @player_hand == 21 || @dealer_hand[0] == 21
 
   # render
-  erb :blackjack
+  erb :blackjack, :locals => { :player_turn => true }
 end
 
 
@@ -49,13 +50,13 @@ post '/blackjack/hit' do
   @player_hand[0] = calculate(@player_hand)
   @dealer_hand[0] = calculate(@dealer_hand)
 
-  save_game_state(deck, @player_hand, @dealer_hand)
+  save_game_state(deck, @player_hand, @dealer_hand, @win_message)
 
   # if bust, go to /stay
   redirect '/blackjack/stay', 307 if @player_hand[0] >= 21
 
   # render
-  erb :blackjack
+  erb :blackjack, :locals => { :player_turn => true }
 end
 
 
@@ -78,8 +79,10 @@ post '/blackjack/stay' do
     end
   end
 
-  save_game_state(deck, @player_hand, @dealer_hand)
+  save_game_state(deck, @player_hand, @dealer_hand, @win_message)
+
+  @win_message = declare_winner(@player_hand[0], @dealer_hand[0])
 
   # render with win/loss
-  erb :blackjack
+  erb :blackjack, :locals => { :player_turn => false }
 end
