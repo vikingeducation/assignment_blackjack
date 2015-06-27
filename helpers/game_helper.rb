@@ -1,10 +1,12 @@
 module GameHelper
 
-  def save_game_state(deck, player_hand, dealer_hand, win_message)
-    session[:deck] = deck
-    session[:player_hand] = player_hand
-    session[:dealer_hand] = dealer_hand
-    session[:win_message] = win_message
+  def save_game_state(player, hand)
+    #session[:deck] = deck
+    #session[:player_hand] = player_hand
+    #session[:dealer_hand] = dealer_hand
+    #session[:win_message] = win_message
+    session[:player] = player
+    session[:hand] = hand
   end
 
 

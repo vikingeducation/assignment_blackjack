@@ -1,9 +1,9 @@
 <h3>Player's Hand</h3>
 
 <p>
-  <%= @player_hand[1..-1].join(" ") %> ~> total: <%= @player_hand[0] %>
+  <%= @hand.hands[:player][1..-1].join(" ") %> ~> total: <%= @hand.hands[:player][0] %>
 
-  <% if @player_hand[0] > 21 %>
+  <% if @hand.hands[:player][0] > 21 %>
     <strong>BUSTED</strong>
   <% end %>
 
@@ -17,7 +17,7 @@
 
   <%# dealer hand, hiding 2nd card %>
   <p>
-    <%= "#{@dealer_hand[1]} ?" %> ~> total: ???
+    <%= "#{@hand.hands[:dealer][1]} ?" %> ~> total: ???
   </p>
 
 
@@ -35,16 +35,16 @@
 
   <%# dealer hand, revealing all cards %>
   <p>
-    <%= @dealer_hand[1..-1].join(" ") %> ~> total: <%= @dealer_hand[0] %>
+    <%= @hand.hands[:dealer][1..-1].join(" ") %> ~> total: <%= @hand.hands[:dealer][0] %>
 
-    <% if @dealer_hand[0] > 21 %>
+    <% if @hand.hands[:dealer][0] > 21 %>
       <strong>BUSTED</strong>
     <% end %>
 
   </p>
 
 
-  <p><strong><%= @win_message if !@win_message.nil? %></p></strong>
+  <p><strong><%= @hand.win_message if !@hand.win_message.nil? %></p></strong>
 
 
   <form action='/blackjack' method='get'>
