@@ -12,12 +12,8 @@ end
 
 
 get '/blackjack' do
-  # new deck & shuffle if necessary
-  #if session[:deck].nil?
+
   deck = build_new_deck
-  #else
-  #  deck = session[:deck]
-  #end
 
   # deal hands
   @player_hand, @dealer_hand = [0], [0]
@@ -75,13 +71,14 @@ post '/blackjack/stay' do
   # reveal dealer card
 
   # decide hit/stay
-  if @dealer_hand[0] < 17 && @player_hand[0] <= 21
-    @dealer_hand << deck.pop
-    @dealer_hand[0] = calculate(@dealer_hand)
-    save_game_state(deck, @player_hand, @dealer_hand)
-    redirect '/blackjack/stay', 307
+  if @player_hand[0] <= 21
+    while @dealer_hand[0] < 17
+      @dealer_hand << deck.pop
+      @dealer_hand[0] = calculate(@dealer_hand)
+    end
   end
 
+  save_game_state(deck, @player_hand, @dealer_hand)
 
   # render with win/loss
   erb :blackjack
