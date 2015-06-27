@@ -3,6 +3,7 @@ require 'erb'
 require './helpers/game_helper'
 require './helpers/session_helper'
 require './player.rb'
+require './hand.rb'
 
 helpers GameHelper, SessionHelper
 enable :sessions
@@ -15,8 +16,17 @@ end
 get '/blackjack' do
 
   # start a new session
+  # if session[:player].nil?
+  #   @player = Player.new
+  # else
+  #   @player = session[:player]
+  # end
+
+  # get player bet
+
 
   # start a new hand
+  # @hand = Hand.new(bet)
 
   @win_message = ""
   deck = build_new_deck
@@ -35,7 +45,7 @@ get '/blackjack' do
   save_game_state(deck, @player_hand, @dealer_hand, @win_message)
 
   # check blackjacks -- BROKEN!!!
-  redirect '/blackjack/stay', 307 if @player_hand == 21 || @dealer_hand[0] == 21
+  # redirect '/blackjack/stay', 307 if @player_hand == 21 || @dealer_hand[0] == 21
 
   # render
   erb :blackjack, :locals => { :player_turn => true }
@@ -84,6 +94,8 @@ post '/blackjack/stay' do
   save_game_state(deck, @player_hand, @dealer_hand, @win_message)
 
   @win_message = declare_winner(@player_hand[0], @dealer_hand[0])
+
+  # update bankroll
 
   erb :blackjack, :locals => { :player_turn => false }
 end
