@@ -9,7 +9,7 @@ module GameHelper
     session[:hand] = hand
   end
 
-
+=begin
   def build_new_deck
     deck = ( (2..10).to_a + ["J","Q","K","A"] )*4
     deck.shuffle!
@@ -43,13 +43,13 @@ module GameHelper
 
     values
   end
-
+=end
 
   def busted?(total)
     total > 21
   end
 
-
+=begin
   def reduce_aces(total, ace_count)
     aces_at_11 = ace_count
 
@@ -60,7 +60,7 @@ module GameHelper
 
     total
   end
-
+=end
 
   def declare_winner(player_total, dealer_total)
     winner = ""
