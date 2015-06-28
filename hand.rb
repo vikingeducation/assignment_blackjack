@@ -1,7 +1,6 @@
 class Hand
   attr_accessor :bet, :deck, :hands, :win_message
 
-  # track bet, deck, hands, and winner
 
   def initialize(bet)
     @bet = bet
@@ -19,6 +18,14 @@ class Hand
 
   def calc_hand_values!
     @hands.each { |player, cards| cards[0] = calculate(cards) }
+  end
+
+
+  def dealer_plays!
+    while @hands[:dealer][0] < 17
+      @hands[:dealer] << @deck.pop
+      calc_hand_values!
+    end
   end
 
 
