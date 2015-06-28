@@ -1,0 +1,31 @@
+<% if player_turn == true %>
+
+  <%# dealer hand, hiding 2nd card %>
+  <p>
+    <%= "#{dealer_hand[1]} ?" %> ~> total: ???
+  </p>
+
+
+  <%# available player actions %>
+  <form action='/blackjack/hit' method='post'>
+    <input type='submit' value='Hit'>
+  </form>
+
+  <form action='/blackjack/stay' method='post'>
+    <input type='submit' value='Stay'>
+  </form>
+
+
+<% else %>
+
+  <%# dealer hand, revealing all cards %>
+  <p>
+    <%= dealer_hand[1..-1].join(" ") %> ~> total: <%= dealer_hand[0] %>
+
+    <% if dealer_hand[0] > 21 %>
+      <strong>BUSTED</strong>
+    <% end %>
+
+  </p>
+
+<% end %>

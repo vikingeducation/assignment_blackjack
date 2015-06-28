@@ -98,11 +98,12 @@ post '/blackjack/stay' do
     @hand.dealer_plays!
   end
 
-  save_game_state(@player, @hand)
 
   @hand.win_message = declare_winner(@hand.hands[:player][0], @hand.hands[:dealer][0])
 
-  @player.payoff!(@hand.bet, @hand.win_message)# update bankroll
+  @player.payoff!(@hand.bet, @hand.win_message)
+
+  save_game_state(@player, @hand)
 
   erb :blackjack, :locals => { :player_turn => false }
 end

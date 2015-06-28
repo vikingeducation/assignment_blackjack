@@ -1,5 +1,7 @@
 <h2>Bet: $<%= @hand.bet %></h2>
 
+
+
 <h3>Player's Hand</h3>
 
 <p>
@@ -15,42 +17,12 @@
 
 <h3>Dealer's Hand</h3>
 
-<% if player_turn == true %>
 
-  <%# dealer hand, hiding 2nd card %>
-  <p>
-    <%= "#{@hand.hands[:dealer][1]} ?" %> ~> total: ???
-  </p>
+<%= erb :dealer_hand, :locals => { player_turn: player_turn, dealer_hand: @hand.hands[:dealer] } %>
 
 
-  <%# available player actions %>
-  <form action='/blackjack/hit' method='post'>
-    <input type='submit' value='Hit'>
-  </form>
+<% unless @hand.win_message.empty? %>
 
-  <form action='/blackjack/stay' method='post'>
-    <input type='submit' value='Stay'>
-  </form>
-
-
-<% else %>
-
-  <%# dealer hand, revealing all cards %>
-  <p>
-    <%= @hand.hands[:dealer][1..-1].join(" ") %> ~> total: <%= @hand.hands[:dealer][0] %>
-
-    <% if @hand.hands[:dealer][0] > 21 %>
-      <strong>BUSTED</strong>
-    <% end %>
-
-  </p>
-
-
-  <%= erb :win_message, :locals => { message: @hand.win_message, bankroll: @player.bankroll } unless @hand.win_message.nil? %>
-
-
-  <form action='/bet' method='get'>
-    <input type='submit' value='Play again?'>
-  </form>
+  <%= erb :win_message, :locals => { message: @hand.win_message, bankroll: @player.bankroll }  %>
 
 <% end %>
