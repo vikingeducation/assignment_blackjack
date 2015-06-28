@@ -45,9 +45,8 @@
 
   </p>
 
-  <% unless @hand.win_message.nil? %>
-    <p><strong><%= @hand.win_message %></strong> Bankroll: $<%= @player.bankroll %></p>
-  <% end %>
+
+  <%= erb :win_message, :locals => { message: @hand.win_message, bankroll: @player.bankroll } unless @hand.win_message.nil? %>
 
 
   <form action='/bet' method='get'>

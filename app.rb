@@ -1,11 +1,10 @@
 require 'sinatra'
 require 'erb'
 require './helpers/game_helper'
-require './helpers/session_helper'
 require './player.rb'
 require './hand.rb'
 
-helpers GameHelper, SessionHelper
+helpers GameHelper
 enable :sessions
 
 get '/' do
