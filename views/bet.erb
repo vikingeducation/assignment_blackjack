@@ -1,5 +1,9 @@
 <h1>Current Bankroll: $<%= @player.bankroll %></h1>
 
+<% if invalid %>
+  <p>Insufficient funds.  Please try again.</p>
+<% end %>
+
 <h3>Enter bet amount:</h3>
 
 <form action='/bet' method='post'>

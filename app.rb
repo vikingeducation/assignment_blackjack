@@ -22,10 +22,13 @@ get '/bet' do
     @player = session[:player]
   end
 
+
+  invalid_bet = params[:invalid]
+
   # message if redirected here
   save_game_state(@player)
 
-  erb :bet
+  erb :bet, :locals => { :invalid => invalid_bet }
 end
 
 post '/bet' do
@@ -40,7 +43,7 @@ post '/bet' do
     save_game_state(@player, @hand)
     redirect to('/blackjack')
   else
-    redirect to('/bet')
+    redirect '/bet?invalid=true'
   end
 
 end
