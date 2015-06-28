@@ -1,3 +1,5 @@
+<h2>Bet: $<%= @hand.bet %></h2>
+
 <h3>Player's Hand</h3>
 
 <p>
@@ -43,11 +45,12 @@
 
   </p>
 
+  <% unless @hand.win_message.nil? %>
+    <p><strong><%= @hand.win_message %></strong> Bankroll: $<%= @player.bankroll %></p>
+  <% end %>
 
-  <p><strong><%= @hand.win_message if !@hand.win_message.nil? %></p></strong>
 
-
-  <form action='/blackjack' method='get'>
+  <form action='/bet' method='get'>
     <input type='submit' value='Play again?'>
   </form>
 

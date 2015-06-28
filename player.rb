@@ -13,6 +13,15 @@ class Player
   end
 
 
+  def payoff!(bet, win_message)
+    if win_message.include?('Player')
+      @bankroll += 2 * bet
+    elsif win_message.include?('Push')
+      @bankroll += bet
+    end
+  end
+
+
   # draw card
 
   # hand

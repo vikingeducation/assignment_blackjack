@@ -1,0 +1,8 @@
+<h1>Current Bankroll: $<%= @player.bankroll %></h1>
+
+<h3>Enter bet amount:</h3>
+
+<form action='/bet' method='post'>
+  <input type='number' name='bet_amount' min='1' max='1000' value='50'>
+  <input type='submit' value='Place bet'>
+</form>

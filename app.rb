@@ -9,12 +9,12 @@ helpers GameHelper, SessionHelper
 enable :sessions
 
 get '/' do
+  session.clear
   erb :home
 end
 
 
-get '/blackjack' do
-
+get '/bet' do
   # start a new session
   if session[:player].nil?
     @player = Player.new
@@ -22,13 +22,38 @@ get '/blackjack' do
     @player = session[:player]
   end
 
+  # message if redirected here
+  save_game_state(@player)
+
+  erb :bet
+end
+
+post '/bet' do
+  @player = session[:player]
+
+  bet = params[:bet_amount].to_i
+
+  if @player.valid_bet?(bet)
+    # start a new hand
+    @hand = Hand.new(bet)
+    @player.bankroll -= bet
+    save_game_state(@player, @hand)
+    redirect to('/blackjack')
+  else
+    redirect to('/bet')
+  end
+
+end
+
+
+get '/blackjack' do
+  # load state
+  @player = session[:player]
+  @hand = session[:hand]
+
+
   # get player bet
-  bet = 50
-
-
-  # start a new hand
-  @hand = Hand.new(bet)
-
+  #bet = @hand.bet
 
   @hand.calc_hand_values!
 
@@ -78,7 +103,7 @@ post '/blackjack/stay' do
 
   @hand.win_message = declare_winner(@hand.hands[:player][0], @hand.hands[:dealer][0])
 
-  # update bankroll
+  @player.payoff!(@hand.bet, @hand.win_message)# update bankroll
 
   erb :blackjack, :locals => { :player_turn => false }
 end
