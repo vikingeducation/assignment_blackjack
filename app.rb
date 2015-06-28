@@ -60,6 +60,7 @@ get '/blackjack' do
   save_game_state(@player, @hand)
 
   # check blackjacks -- BROKEN!!!
+  # can I force a POST?  Or do I need to make a GET?
   # redirect '/blackjack/stay', 307 if @player_hand == 21 || @dealer_hand[0] == 21
 
   erb :blackjack, :locals => { :player_turn => true }
