@@ -5,13 +5,10 @@ class Hand
   def initialize(bet)
     @bet = bet
 
-    # create new deck
     @deck = build_new_deck
 
-    # deal cards
     @hands = deal_cards
 
-    # reset winner
     @win_message = ""
   end
 
@@ -88,6 +85,5 @@ class Hand
 
     total
   end
-
 
 end

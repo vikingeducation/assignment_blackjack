@@ -55,9 +55,6 @@ get '/blackjack' do
   @hand = session[:hand]
 
 
-  # get player bet
-  #bet = @hand.bet
-
   @hand.calc_hand_values!
 
 
