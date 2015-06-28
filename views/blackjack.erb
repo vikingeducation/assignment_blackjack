@@ -1,0 +1,28 @@
+<h2>Bet: $<%= @hand.bet %></h2>
+
+
+
+<h3>Player's Hand</h3>
+
+<p>
+  <%= @hand.hands[:player][1..-1].join(" ") %> ~> total: <%= @hand.hands[:player][0] %>
+
+  <% if @hand.hands[:player][0] > 21 %>
+    <strong>BUSTED</strong>
+  <% end %>
+
+</p>
+
+
+
+<h3>Dealer's Hand</h3>
+
+
+<%= erb :dealer_hand, :locals => { player_turn: player_turn, dealer_hand: @hand.hands[:dealer] } %>
+
+
+<% unless @hand.win_message.empty? %>
+
+  <%= erb :win_message, :locals => { message: @hand.win_message, bankroll: @player.bankroll }  %>
+
+<% end %>
