@@ -1,5 +1,11 @@
-<html>
-	<p> Player hand: <%= @deck.player_hand %></p>
 
-	<p> Dealer hand: <%= @deck.dealer_hand %></p>
-</html>
+<p> Player hand: <%= @deck.count_hand_value(@deck.player_hand) %></p>
+
+<p> Dealer hand: <%= @deck.count_hand_value(@deck.dealer_hand) %></p>
+
+<form method = 'post'>
+
+  <button formaction = '/blackjack/hit'>Hit</button>
+  <button formaction = '/blackjack/stay'>Stay</button>
+
+</form>

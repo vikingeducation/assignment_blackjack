@@ -4,26 +4,29 @@ class DealHands
 
   CARDS = [2, 3, 4, 5, 6, 7, 8, 9, 10, 10, 10, 1]
 
-  attr_reader :player_hand, :dealer_hand, :deck
+  attr_reader :player_hand, :dealer_hand, :game_deck
 
-  def initialize(player_hand = [], dealer_hand = [])
+  def initialize(player_hand = [], dealer_hand = [], game_deck = [])
 
     @player_hand = player_hand
     @dealer_hand = dealer_hand
-    build_deck
-    first_deal if @player_hand.empty? && @dealer_hand.empty?
+    @game_deck = game_deck
+    if @player_hand.empty? && @dealer_hand.empty?
+      build_deck
+      first_deal
+    end
   end
 
   def build_deck
 
-    @deck = CARDS * 4
-    @deck.shuffle!
+    @game_deck = CARDS * 4
+    @game_deck.shuffle!
 
   end
 
   def deal_to_player
 
-    @player_hand << @deck.pop
+    @player_hand << @game_deck.pop
 
   end
 
@@ -38,7 +41,7 @@ class DealHands
 
   def deal_to_dealer
 
-    @dealer_hand << @deck.pop
+    @dealer_hand << @game_deck.pop
 
   end
 
