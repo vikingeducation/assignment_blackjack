@@ -1,5 +1,6 @@
 
 require 'sinatra'
+require 'sinatra/flash'
 require 'erb'
 require './blackjack.rb'
 require 'pry'
@@ -22,30 +23,43 @@ helpers do
 
   end
 
-  # game_over/win/lose/blackjack all set the 'ingame' flag to false to
-  # denote that the player is finished with their current game.
+
+  # Ends the current hand, adds to the player's money based on the result.
+  # Starts up a game with the second hand if the player has split.
+  def end_game(result, multiplier)
+    if session['split_hands'] && session['split_hands'].any?
+      session['money'] += session['bet'] * multiplier
+      new_hand = session['split_hands'].pop
+      session['p_hand'] = new_hand
+      new_d_hand = []
+      deal(new_hand, new_d_hand)
+      deal(new_hand, new_d_hand)
+      session['d_hand'] = new_d_hand
+
+      flash[:notice] = result
+      redirect '/blackjack'
+    else
+      session['ingame'] = false
+      session['money'] += session['bet'] * multiplier
+      flash[:notice] = result
+      redirect "/blackjack/result/#{result}"
+    end
+  end
 
   def game_over
-    session['ingame'] = false
-    redirect "/blackjack/result/You Lose..."
+    end_game("You lose...", 0)
   end
 
   def win
-    session['ingame'] = false
-    session['money'] += session['bet'] * 2
-    redirect "/blackjack/result/You Win!"
+    end_game("You Win!", 2)
   end
 
   def blackjack
-    session['ingame'] = false
-    session['money'] += session['bet'] * 2.5
-    redirect "/blackjack/result/Blackjack!"
+    end_game("Blackjack!", 2.5)
   end
 
   def tie
-    session['ingame'] = false
-    session['money'] += session['bet']
-    redirect "/blackjack/result/You Pushed!"
+    end_game("You Pushed!", 1)
   end
 end
 
@@ -94,7 +108,7 @@ get '/blackjack' do
   end
 
   check_winner(d_hand,p_hand)
-  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand}
+  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], message: nil}
 end
 
 # When the player hits, deal them a card.
@@ -106,7 +120,7 @@ post '/blackjack/hit' do
   session['d_hand'], session['p_hand'] = d_hand, p_hand
 
   game_over if bust?(p_hand)
-  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand}
+  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], message: nil}
 end
 
 # When the player decides to stay, have the dealer hit until 17.
@@ -121,6 +135,39 @@ post '/blackjack/stay' do
   tie if value_hand(p_hand) == value_hand(d_hand)
   game_over
 end
+
+# The player shouldn't be able to double unless it's their first turn
+# If they try, we punish them by making them stay.
+post '/blackjack/double' do
+  d_hand, p_hand = session['d_hand'], session['p_hand']
+  if p_hand.length == 2
+    deal(d_hand + p_hand, p_hand)
+    session['money'] -= session['bet']
+    session['bet'] *= 2
+  end
+  dealer_plays(d_hand + p_hand, d_hand)
+  win if bust?(d_hand)
+  win if value_hand(p_hand) > value_hand(d_hand)
+  tie if value_hand(p_hand) == value_hand(d_hand)
+  game_over
+end
+
+post '/blackjack/split' do
+  d_hand, p_hand = session['d_hand'], session['p_hand']
+  session['money'] -= session['bet']
+  split_hand = [p_hand[1]]
+  deal(d_hand + [p_hand[0]] + split_hand, split_hand)
+  if session['split_hands']
+    session['split_hands'] << split_hand
+  else
+    session['split_hands'] = [split_hand]
+  end
+  p_hand = [p_hand[0]]
+  session['p_hand'] = p_hand
+  deal(d_hand + p_hand, p_hand)
+  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], message: nil}
+end
+
 
 # Generic results screen that can display win/lose/push message.
 get '/blackjack/result/:message' do

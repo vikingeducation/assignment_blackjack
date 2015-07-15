@@ -1,10 +1,18 @@
 <h1>Welcome to Blackjack</h1>
 
+<%= flash[:notice] %>
+
+<p> You currently have <%= money %> dollars. </p>
+
 <p>You currently have cards:
 	<% p_hand.each do |card| %>
 	<li> <%=card_to_hand(card)%> </li>
 	<% end %>
 </p>
+
+<% if split && split.any? %>
+<p> You currently have split hands. </p>
+<% end %>
 
 <p>Dealer's first card:
   <li> <%=card_to_hand(d_hand[0])%> </li>
@@ -18,3 +26,14 @@
 	<button>STAY</button>
 </form>
 
+<% if p_hand.length == 2%>
+<form action="/blackjack/double" method="post">
+	<button>DOUBLE</button>
+</form>
+
+<% if (p_hand[0] % 13) == (p_hand[1] % 13) %>
+<form action="/blackjack/split" method="post">
+	<button>SPLIT</button>
+</form>
+<% end %>
+<% end %>
