@@ -10,15 +10,18 @@ get "/blackjack" do
   </form>"
   response.set_cookie("cards",
             :playercards => [],
-            :dealercards => [])
+            :dealercards => [], 
+            :gamestate => true)
 
 end
 
 
 get "/game" do
+gamestate = #claculate gamestate
 response.set_cookie("cards",
             :playercards => playercards,
-            :dealercards => dealercards)
+            :dealercards => dealercards, 
+            :gamestate => gamestate)
 
 playercards, dealercards, winner = Game(playercards,dealercards)
 
