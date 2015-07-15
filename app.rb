@@ -8,71 +8,66 @@ helpers BlackJackHelper
 enable :sessions
 
 get "/" do
-  # save_game([], [], true)
+
   session[:playercards] = []
   session[:dealercards] = []
+  session[:bankroll] = 1000
   session[:gamestate] = true
   erb :home
+end
+
+get "/bet" do
+  session[:bankroll]-=params[:bet]
+  erb :bet
 end
 
 
 get "/blackjack" do
   
-  erb :game, :locals => {:dealercards => session[:dealercards], 
+  
+  erb :game , :locals => {:dealercards => session[:dealercards], 
                          :playercards => session[:playercards], 
-                         :gamestate => session[:gamestate]}
+                         :gamestate => session[:gamestate],
+                         :bankroll => session[:bankroll]
+                       }
 
 end
 
 post "/blackjack" do
-  game=Game.new(session[:dealercards], session[:playercards])
+  
+  if session[:gamestate] == true
+  session[:dealercards] = []
+  session[:playercards] = []
+  session[:bankroll] = 1000
+  end
 
-  # playercards=request.cookies["cards"["playercards"]]
-  # dealercards=request.cookies["cards"["dealercards"]]
+game=Game.new(session[:dealercards], session[:playercards])
   choice = params[:choice]
   if choice == "Deal"
     game.deal
-    if game.game_over?
+    if game.game_over(choice)
       session[:gamestate] = true
-     
-      # erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate]}
-       "<p>You win!</p>"
     else
       session[:gamestate] = false
-      # erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate]}
     end
 
   elsif choice == "Hit"
     game.hit
-
-    # response.set_cookie("cards",
-    #           :playercards => game.playercards,
-    #           :dealercards => game.dealercards, 
-    #           :gamestate => gamestate)
-
-    # redirect '/blackjack/hit'
   elsif choice == "Stand"
     game.stand
-    # response.set_cookie("cards",
-    #           :playercards => game.playercards,
-    #           :dealercards => game.dealercards, 
-    #           :gamestate => gamestate)
-    # redirect '/blackjack/stay'
-    
   end
+
   #Check for winner
-  if game.game_over?
-    gamestate = true
+  if game.game_over(choice)
+    session[:gamestate] = true
 
+    session[:message] = game.game_over(choice)
+    redirect '/blackjack/stay'
   else
-    save_game(game.dealercards, game.playercards, gamestate)
-    # response.set_cookie("cards",
-    #           :playercards => game.playercards,
-    #           :dealercards => game.dealercards, 
-    #           :gamestate => gamestate)
+    save_game(game.dealercards, game.playercards, session[:gamestate])  
   end
 
-  erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate]}
+  erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate], :bankroll => session[:bankroll]}
 
 #playercards, dealercards, winner = Game(playercards,dealercards)
 
@@ -87,8 +82,8 @@ end
 # end
 
 get '/blackjack/stay' do
-  playercards=request.cookies["cards"["playercards"]]
-  dealercards=request.cookies["cards"["dealercards"]]
 
-  erb :stay, :locals => {:dealercards => dealercards, :playercards => playercards} 
+
+  erb :stay, :locals => {:dealercards => session[:dealercards], :playercards => session[:playercards], :message => session[:message]} 
+
 end

@@ -1,6 +1,6 @@
 #Game will validate winner, give new cards, heandle calculate cards face val
 
-Card = Struct.new(:value, :suit, :name)
+#Card = Struct.new(:value, :suit, :name)
 
 class Game
   attr_accessor :dealercards, :playercards
@@ -35,7 +35,7 @@ class Game
   def value(cards)
     num_aces = cards.count {|item| item == 1} 
     # p num_aces
-    total = cards.inject(0){|sum,item| sum+item}
+    total = cards.inject(0){|sum,item| sum+item }
     # puts total
     # aces.inject(total) {|sum, item| sum+10 if sum+10<21}
     num_aces.times do
@@ -57,19 +57,31 @@ class Game
   end
 
 
-  def winner
-
-  end
-
   def busted?(cards)
     value(cards) > 21
   end
 
-  def game_over?
-    # value(@dealercards) > 21 || value(@playercards) > 21 
-    false
-  end
+  def game_over(choise)
+    return "Winner!" if value(@playercards) == 21
+    return "Looser!" if value(@dealercards) == 21
 
+    if choise == "Stand"
+      return "Tie!" if value(@dealercards)==value(@playercards)
+      if value(@dealercards)<value(@playercards) || busted?(@dealercards)
+        return "Winner!" 
+      else
+        return "Looser!"
+      end
+    elsif choise == "Hit"
+      return "Winner!" if busted?(@dealercards)
+      return "Looser!" if busted?(@playercards)  
+    end
+
+  return false
+  end
 end
+
+g=Game.new([],[])
+puts g.value([1,2,3])
 
 

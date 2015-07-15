@@ -3,15 +3,15 @@
 
 <body>
 
-  
+    <p>Money <%=bankroll%></p>
     <% if gamestate %>
       <form action="/blackjack" method="post">
         <input type="submit" name="choice" value="Deal">
       </form>
     <% else %>
-
-        <p>Dealer hands <%=dealercards%></p>
-        <p>Player hands <%=playercards%></p>
+       <p>Player hand <%=playercards%></p>
+        <p>Dealer hand <%=dealercards[0]%></p>
+       
       <form action="/blackjack" method="post">
         <input type="submit" name="choice" value="Hit">
       </form>
