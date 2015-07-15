@@ -5,7 +5,7 @@
   <p><%=message%></p>
   <p>Your hand <%=playercards%> with total <%=playercards.inject(0){|sum,item| sum+=item} %></p>
   <p>Opponent's hand <%=dealercards%> with total <%=dealercards.inject(0){|sum,item| sum+=item} %></p>
-  <form action="/blackjack" method="post">
+  <form action="/bet" method="post">
     <input type="submit" name="choice" value="Play again">
   </form>
 
