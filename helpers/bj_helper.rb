@@ -1,4 +1,4 @@
-# ./helpers/bj_helper.rb
+./helpers/bj_helper.rb
 
 module BlackJackHelper
 
