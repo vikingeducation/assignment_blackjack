@@ -1,0 +1,13 @@
+<h1>Welcome to Blackjack</h1>
+
+<% if msg %>
+<p>
+	<%=msg%>
+</p>
+<% end %>
+
+<p> Input a bet to begin! </p>
+<p>You have <%= money %> dollars.</p>
+<form action="/bet" method="post">
+	<input type=text name="amt"></input>
+</form>
