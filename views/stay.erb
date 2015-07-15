@@ -1,0 +1,9 @@
+<h1>Welcome to Blackjack</h1>
+
+<p>You currently have cards:
+	<% p_hand.each do |card| %>
+	<li> <%=card_to_hand(card)%> </li>
+	<% end %>
+</p>
+
+<p> You've busted. </p>

@@ -1,3 +1,16 @@
 <h1>Welcome to Blackjack</h1>
 
-<p>You currently have: </p>
+<p>You currently have cards:
+	<% p_hand.each do |card| %>
+	<li> <%=card_to_hand(card)%> </li>
+	<% end %>
+</p>
+
+<form action="/blackjack/hit" method="post">
+	<button>HIT</button>
+</form>
+
+<form action="/blackjack/stay" method="post">
+	<button>STAY</button>
+</form>
+
