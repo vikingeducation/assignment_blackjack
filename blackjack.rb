@@ -7,8 +7,18 @@ module Blackjack
   # in the deck.
   # Dealt cards should be any player and dealer hands.
   def deal(dealt_cards, target_hand)
-    cards = (DECK - dealt_cards).shuffle
-    target_hand.push(cards.sample)
+    next_card = remaining_cards(dealt_cards).sample
+    target_hand.push(next_card)
+  end
+
+  def remaining_cards(dealt_cards)
+    remaining = (DECK - dealt_cards)
+    if session['split_hands']
+      session['split_hands'].each do |hand|
+        remaining -= hand
+      end
+    end
+    remaining
   end
 
   # Returns two hands with two cards each.

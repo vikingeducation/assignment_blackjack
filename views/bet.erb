@@ -1,10 +1,6 @@
 <h1>Welcome to Blackjack</h1>
 
-<% if msg %>
-<p>
-	<%=msg%>
-</p>
-<% end %>
+<%= flash[:notice] %>
 
 <p> Input a bet to begin! </p>
 <p>You have <%= money %> dollars.</p>

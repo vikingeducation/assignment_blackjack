@@ -2,67 +2,12 @@
 require 'sinatra'
 require 'sinatra/flash'
 require 'erb'
-require './blackjack.rb'
+require './helpers.rb'
 require 'pry'
 
 enable :sessions
 
-helpers do
-  include Blackjack
-
-  # When the initial cards are dealt, check for blackjacks.
-  def check_winner(d_hand,p_hand)
-
-    if blackjack?(d_hand) && blackjack?(p_hand)
-      tie
-    elsif blackjack?(d_hand) && !blackjack?(p_hand)
-      game_over
-    elsif blackjack?(p_hand)
-      blackjack
-    end
-
-  end
-
-
-  # Ends the current hand, adds to the player's money based on the result.
-  # Starts up a game with the second hand if the player has split.
-  def end_game(result, multiplier)
-    if session['split_hands'] && session['split_hands'].any?
-      session['money'] += session['bet'] * multiplier
-      new_hand = session['split_hands'].pop
-      session['p_hand'] = new_hand
-      new_d_hand = []
-      deal(new_hand, new_d_hand)
-      deal(new_hand, new_d_hand)
-      session['d_hand'] = new_d_hand
-
-      flash[:notice] = result
-      redirect '/blackjack'
-    else
-      session['ingame'] = false
-      session['money'] += session['bet'] * multiplier
-      flash[:notice] = result
-      redirect "/blackjack/result/#{result}"
-    end
-  end
-
-  def game_over
-    end_game("You lose...", 0)
-  end
-
-  def win
-    end_game("You Win!", 2)
-  end
-
-  def blackjack
-    end_game("Blackjack!", 2.5)
-  end
-
-  def tie
-    end_game("You Pushed!", 1)
-  end
-end
-
+helpers BlackjackHelpers
 
 get '/' do
   'hello world'
@@ -71,13 +16,9 @@ end
 # Give the player money if they've just opened the page.
 get '/bet' do
   session['money'] = 1000 unless session['money']
-  erb :bet, locals: {msg: nil, money: session['money']}
+  erb :bet, locals: {money: session['money']}
 end
 
-get '/bet/error' do
-  session['money'] = 1000 unless session['money']
-  erb :bet, locals: {msg: "Not enough money.", money: session['money']}
-end
 
 # Redirect to blackjack if a game is in progress.
 # If the player tries to bet more money than they have,
@@ -89,7 +30,8 @@ post '/bet' do
     session['money'] -= params[:amt].to_i
     redirect '/blackjack'
   else
-    redirect '/bet/error'
+    flash[:notice] = "Insufficient Funds."
+    redirect '/bet'
   end
 end
 
@@ -130,10 +72,7 @@ end
 post '/blackjack/stay' do
   d_hand, p_hand = session['d_hand'], session['p_hand']
   dealer_plays(d_hand + p_hand, d_hand)
-  win if bust?(d_hand)
-  win if value_hand(p_hand) > value_hand(d_hand)
-  tie if value_hand(p_hand) == value_hand(d_hand)
-  game_over
+  calculate_result(d_hand, p_hand)
 end
 
 # The player shouldn't be able to double unless it's their first turn
@@ -143,13 +82,10 @@ post '/blackjack/double' do
   if p_hand.length == 2
     deal(d_hand + p_hand, p_hand)
     session['money'] -= session['bet']
-    session['bet'] *= 2
+    session['doubled'] = true
   end
   dealer_plays(d_hand + p_hand, d_hand)
-  win if bust?(d_hand)
-  win if value_hand(p_hand) > value_hand(d_hand)
-  tie if value_hand(p_hand) == value_hand(d_hand)
-  game_over
+  calculate_result(d_hand, p_hand)
 end
 
 post '/blackjack/split' do
@@ -170,6 +106,6 @@ end
 
 
 # Generic results screen that can display win/lose/push message.
-get '/blackjack/result/:message' do
-  erb :result, locals: {p_hand: session['p_hand'], d_hand: session['d_hand'], message: params[:message], money: session['money']}
+get '/blackjack/result/' do
+  erb :result, locals: {p_hand: session['p_hand'], d_hand: session['d_hand'], money: session['money']}
 end
