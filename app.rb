@@ -1,43 +1,44 @@
 require 'sinatra'
 require "sinatra/reloader" if development?
 require "./gamecore.rb"
+require './helpers/bj_helper.rb'
+
+helpers BlackJackHelper
+
+enable :sessions
 
 get "/" do
-
-
-  response.set_cookie("cards",
-            :playercards => [],
-            :dealercards => [], 
-            )
+  # save_game([], [], true)
+  session[:playercards] = []
+  session[:dealercards] = []
+  session[:gamestate] = true
   erb :home
 end
 
 
 get "/blackjack" do
-  playercards=request.cookies["cards"["playercards"]]
-  dealercards=request.cookies["cards"["dealercards"]]
-  gamestate=true #request.cookies["cards"["gamestate"]]
   
-  erb :game, :locals => {:dealercards => dealercards, :playercards => playercards, :gamestate => gamestate}
+  erb :game, :locals => {:dealercards => session[:dealercards], 
+                         :playercards => session[:playercards], 
+                         :gamestate => session[:gamestate]}
 
-  
 end
 
 post "/blackjack" do
-  game=Game.new(playercards,dealercards)
+  game=Game.new(session[:playercards],session[:dealercards])
 
-  playercards=request.cookies["cards"["playercards"]]
-  dealercards=request.cookies["cards"["dealercards"]]
+  # playercards=request.cookies["cards"["playercards"]]
+  # dealercards=request.cookies["cards"["dealercards"]]
   choice = params[:choice]
   if choice == "Deal"
-    
     if game.game_over?
-      gamestate = true
+      session[:gamestate] = true
      
-      erb :game, :locals => {:dealercards => dealercards, :playercards => playercards}
+      # erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate]}
        "<p>You win!</p>"
     else
-      gamestate = false
+      session[:gamestate] = false
+      # erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate]}
     end
 
   elsif choice == "Hit"
@@ -68,6 +69,8 @@ post "/blackjack" do
               :dealercards => game.dealercards, 
               :gamestate => gamestate)
   end
+
+  erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate]}
 
 #playercards, dealercards, winner = Game(playercards,dealercards)
 

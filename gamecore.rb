@@ -66,7 +66,8 @@ class Game
   end
 
   def game_over?
-    face_value(@dealercards) > 21 || face_value(@playercards) > 21 
+    # face_value(@dealercards) > 21 || face_value(@playercards) > 21 
+    false
   end
 
 end

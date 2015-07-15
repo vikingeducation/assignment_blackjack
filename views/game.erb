@@ -3,15 +3,22 @@
 
 <body>
 
-  <form action="/game" method="post">
-      <% if gamestate %>
+  
+    <% if gamestate %>
+      <form action="/blackjack" method="post">
         <input type="submit" name="choice" value="Deal">
-      <% else %>
+      </form>
+    <% else %>
+
         <p>Dealer hands <%=dealercards%></p>
         <p>Player hands <%=playercards%></p>
+      <form action="/blackjack/hit" method="post">
         <input type="submit" name="choice" value="Hit">
+      </form>
+      <form action="/blackjack/stand" method="post">
         <input type="submit" name="choice" value="Stand">
-      <% end %>
+      </form>
+    <% end %>
 
 
   </form>
