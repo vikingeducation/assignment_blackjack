@@ -13,7 +13,6 @@ enable :sessions
 helpers Deck
 
 helpers do
-
 	def new_game
 		@deck = Deck::DealHands.new
     session[:dealer_hand] = @deck.dealer_hand.to_json
@@ -37,7 +36,6 @@ helpers do
   def load_bank
     Player.new(session[:bank])
   end
-
 end
 
 
@@ -46,25 +44,20 @@ get '/' do
   erb :index
 end
 
+post '/' do
+  session.clear if session[:bank] <= 0 || params[:restart] == "yes"
+  erb :index
+end
+
 get '/bet' do
-
-  if session[:bank]
-    @bank = load_bank
-  else
-    @bank = new_bank
-  end
-
+  session[:bank] ? @bank = load_bank : @bank = new_bank
   warning = session[:warning]
-
   erb :bet, locals: {warning: warning}
-
 end
 
 post '/bet' do
-
   bank = load_bank
   bet = params[:user_bet].to_i
-  binding.pry
 
   if bet > bank.bankroll
     session[:warning] = true
@@ -76,7 +69,6 @@ post '/bet' do
     session[:bank] = bank.bankroll
     redirect '/blackjack'
   end
-
 end
 
 #load initial hands and render them
@@ -109,6 +101,13 @@ get '/blackjack/stay' do
 		@deck.deal_to_dealer until @deck.count_hand_value(@deck.dealer_hand) >= 17
 	end
 	results = @deck.check_who_won
-	session.clear
+  if results == "Draw"
+    session[:bank] += session[:bet]
+  elsif results == "You won" || results == "Dealer Busted. You Win!"
+    session[:bank] += (2*session[:bet])
+  end
+  session[:player_hand] = nil
+  session[:dealer_hand] = nil
+  session[:game_deck] = nil
 	erb :stay, :locals => {results: results}
 end
