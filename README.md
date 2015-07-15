@@ -19,3 +19,11 @@ Alok Pradhan
 # Player hand and dealer hand need to be stored in a session
   # Hand is an array with current cards in hand
 # Player class: player or dealer - Methods: hit, stay, double, split, bust?, win?, count_points
+# Initialize player with 1,000 credits
+# Before every hand create a play hand link on the index page
+  # => goes to get bet page
+    # submitting the form places the best and money is subtracted -> goes to Post bet method
+  # If there's not enough money re-render bet with helpful message
+  # If there is -> record and redirect to blackjack page
+  # Modify the post '/blackjack/stay' block to handle paying out bets
+  # Create a "New Game" link which resets the game state so the player starts with a new bankroll.
