@@ -44,9 +44,7 @@ post "/blackjack" do
     session[:not_enough_money] = "You don't have enough money"
     redirect "/bet"
   else
-  #   session[:bet] = params[:bet].to_i
-  #   session[:bankroll]-=params[:bet].to_i
-    
+ 
   
     if session[:gamestate] == true
     session[:dealercards] = []
@@ -89,10 +87,6 @@ post "/blackjack" do
   end
 
   erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate], :bankroll => session[:bankroll], :bet => session[:bet]}
-
-
-
-end
 
 
 get '/blackjack/stay' do
