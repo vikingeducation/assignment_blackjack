@@ -1,7 +1,7 @@
 #Game will validate winner, give new cards, heandle calculate cards face val
 
 class Game
-
+  attr_accessor :dealercards, :playercards
   def initialize(dealercards, playercards)
     @dealercards = dealercards
     @playercards = playercards
@@ -16,10 +16,11 @@ class Game
 
   def hit
     add_card(@playercards)
+
   end
 
   def stand
-    until game_over?
+    until face_value(@dealercards)>16
        add_card(@dealercards)
     end
   end

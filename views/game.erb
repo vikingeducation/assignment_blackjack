@@ -2,15 +2,18 @@
 <header> Game started</header>
 
 <body>
-  <p>Dealer hands <%=dealercards%></p>
-  <p>Player hands <%=playercards%></p>
+
   <form action="/game" method="post">
       <% if gamestate %>
         <input type="submit" name="choice" value="Deal">
       <% else %>
+        <p>Dealer hands <%=dealercards%></p>
+        <p>Player hands <%=playercards%></p>
         <input type="submit" name="choice" value="Hit">
         <input type="submit" name="choice" value="Stand">
       <% end %>
+
+
   </form>
 
 </body>
