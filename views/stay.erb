@@ -1,16 +1,6 @@
 <h1>Welcome to Blackjack</h1>
 
-<p>You currently have cards:
-	<% p_hand.each do |card| %>
-	<li> <%=card_to_hand(card)%> </li>
-	<% end %>
-</p>
-
-<p>Dealer's cards:
-	<% d_hand.each do |card| %>
-	<li> <%=card_to_hand(card)%> </li>
-	<% end %>
-</p>
+<%= erb :final_cards, locals: {p_hand: p_hand, d_hand: d_hand } %>
 
 <% if win %>
 	<p> You've the better hand! You win!</p>
@@ -18,4 +8,4 @@
 	<p> The dealer had a better hand. You lose. </p>
 <% end %>
 
-<a href="/blackjack">Play again!</a>
+<%= erb :new_game %>

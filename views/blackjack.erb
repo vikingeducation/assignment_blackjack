@@ -6,6 +6,10 @@
 	<% end %>
 </p>
 
+<p>Dealer's first card:
+  <li> <%=card_to_hand(d_hand[0])%> </li>
+</p>
+
 <form action="/blackjack/hit" method="post">
 	<button>HIT</button>
 </form>

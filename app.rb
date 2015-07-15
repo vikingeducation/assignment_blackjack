@@ -8,6 +8,18 @@ enable :sessions
 
 helpers do
  include Blackjack
+
+  def check_winner(d_hand,p_hand)
+    
+    if blackjack?(d_hand) && blackjack?(p_hand)
+      redirect '/blackjack/tie', locals: {d_hand: session['d_hand'], p_hand: session['p_hand']}
+    elsif blackjack?(d_hand) && !blackjack?(p_hand)
+    redirect '/blackjack/gameover', locals: {d_hand: session['d_hand'], p_hand: session['p_hand']}
+    elsif blackjack?(p_hand)
+      redirect '/blackjack/win', locals: {d_hand: session['d_hand'], p_hand: session['p_hand']}
+    end
+
+  end
 end
 
 
@@ -19,6 +31,10 @@ get '/blackjack' do
   d_hand, p_hand = initial_hands
   session['d_hand'] = d_hand
   session['p_hand'] = p_hand
+
+  check_winner(d_hand,p_hand)
+
+
   erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand}
 end
 

@@ -1,10 +1,6 @@
-<h1>THANKS FOR YOUR MONEY, YOU BUSTED!!</h1>
+<h1>THANKS FOR YOUR MONEY,YOU LOSE!!</h1>
 
-<p>You currently have cards:
-  <% p_hand.each do |card| %>
-  <li> <%=card_to_hand(card)%> </li>
-  <% end %>
-</p>
+<%= erb :final_cards, locals: {p_hand: p_hand, d_hand: d_hand } %>
 
-<p> You've busted. </p>
-<a href="/blackjack">Play again!</a>
+<p> You've lost. </p>
+<%= erb :new_game %>
