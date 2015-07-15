@@ -45,7 +45,7 @@ get '/' do
 end
 
 post '/' do
-  session.clear if session[:bank] <= 0 || params[:restart] == "yes"
+  session.clear
   erb :index
 end
 
