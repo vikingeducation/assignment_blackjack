@@ -25,12 +25,13 @@ get "/blackjack" do
 end
 
 post "/blackjack" do
-  game=Game.new(session[:playercards],session[:dealercards])
+  game=Game.new(session[:dealercards], session[:playercards])
 
   # playercards=request.cookies["cards"["playercards"]]
   # dealercards=request.cookies["cards"["dealercards"]]
   choice = params[:choice]
   if choice == "Deal"
+    game.deal
     if game.game_over?
       session[:gamestate] = true
      
@@ -44,19 +45,19 @@ post "/blackjack" do
   elsif choice == "Hit"
     game.hit
 
-    response.set_cookie("cards",
-              :playercards => game.playercards,
-              :dealercards => game.dealercards, 
-              :gamestate => gamestate)
+    # response.set_cookie("cards",
+    #           :playercards => game.playercards,
+    #           :dealercards => game.dealercards, 
+    #           :gamestate => gamestate)
 
-    redirect '/blackjack/hit'
+    # redirect '/blackjack/hit'
   elsif choice == "Stand"
     game.stand
-    response.set_cookie("cards",
-              :playercards => game.playercards,
-              :dealercards => game.dealercards, 
-              :gamestate => gamestate)
-    redirect '/blackjack/stay'
+    # response.set_cookie("cards",
+    #           :playercards => game.playercards,
+    #           :dealercards => game.dealercards, 
+    #           :gamestate => gamestate)
+    # redirect '/blackjack/stay'
     
   end
   #Check for winner
@@ -64,10 +65,11 @@ post "/blackjack" do
     gamestate = true
 
   else
-    response.set_cookie("cards",
-              :playercards => game.playercards,
-              :dealercards => game.dealercards, 
-              :gamestate => gamestate)
+    save_game(game.dealercards, game.playercards, gamestate)
+    # response.set_cookie("cards",
+    #           :playercards => game.playercards,
+    #           :dealercards => game.dealercards, 
+    #           :gamestate => gamestate)
   end
 
   erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate]}
@@ -76,12 +78,13 @@ post "/blackjack" do
 
 end
 
-get '/blackjack/hit' do
-  playercards=request.cookies["cards"["playercards"]]
-  dealercards=request.cookies["cards"["dealercards"]]
+# post '/blackjack/hit' do
 
-  erb :hit, :locals => {:dealercards => dealercards, :playercards => playercards} 
-end
+#   erb :game, :locals => {:dealercards => session[:dealercards], 
+#                          :playercards => session[:playercards], 
+#                          :gamestate => session[:gamestate]}
+
+# end
 
 get '/blackjack/stay' do
   playercards=request.cookies["cards"["playercards"]]

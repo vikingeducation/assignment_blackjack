@@ -1,12 +1,13 @@
 #Game will validate winner, give new cards, heandle calculate cards face val
 
+Card = Struct.new(:value, :suit, :name)
+
 class Game
   attr_accessor :dealercards, :playercards
   def initialize(dealercards, playercards)
     @dealercards = dealercards
     @playercards = playercards
     @cards=[1,2,3,4,5,6,7,8,9,10,10,10,10]
-    # @set=[@cards[rand(0..@cards.length-1)],@cards[rand(0..@cards.length-1)]]
   end
 
 
@@ -16,11 +17,10 @@ class Game
 
   def hit
     add_card(@playercards)
-
   end
 
   def stand
-    until face_value(@dealercards)>16
+    until value(@dealercards)>16
        add_card(@dealercards)
     end
   end
@@ -32,7 +32,7 @@ class Game
     end
   end
 
-  def face_value(cards)
+  def value(cards)
     num_aces = cards.count {|item| item == 1} 
     # p num_aces
     total = cards.inject(0){|sum,item| sum+item}
@@ -57,16 +57,16 @@ class Game
   end
 
 
-  def winner(player, computer)
-    if player.result > computer.result
-      puts "You won! You got #{player.result}."
-    else
-      puts "Computer won! Computer  got #{computer.result}"
-    end
+  def winner
+
+  end
+
+  def busted?(cards)
+    value(cards) > 21
   end
 
   def game_over?
-    # face_value(@dealercards) > 21 || face_value(@playercards) > 21 
+    # value(@dealercards) > 21 || value(@playercards) > 21 
     false
   end
 
