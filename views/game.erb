@@ -4,6 +4,7 @@
 <body>
 
     <p>Money <%=bankroll%></p>
+        <p>Bet <%=bet%></p>
     <% if gamestate %>
       <form action="/blackjack" method="post">
         <input type="submit" name="choice" value="Deal">
