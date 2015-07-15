@@ -90,7 +90,6 @@ post "/blackjack" do
 
   erb :game, :locals => {:dealercards => game.dealercards, :playercards => game.playercards, :gamestate => session[:gamestate], :bankroll => session[:bankroll], :bet => session[:bet]}
 
-#playercards, dealercards, winner = Game(playercards,dealercards)
 
 end
 
