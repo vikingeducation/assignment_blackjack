@@ -1,0 +1,10 @@
+<p> Your card value :
+<%= @deck.count_hand_value(@deck.player_hand)  %>
+<p>
+
+<p> Dealer card value :
+<%= @deck.count_hand_value(@deck.dealer_hand)  %>
+<p>
+
+<h3><%= results %></h3>
+<%= erb :continue %>
