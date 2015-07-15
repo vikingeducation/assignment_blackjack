@@ -3,7 +3,6 @@ require 'sinatra'
 require 'sinatra/flash'
 require 'erb'
 require './helpers.rb'
-require 'pry'
 
 enable :sessions
 
@@ -50,7 +49,7 @@ get '/blackjack' do
   end
 
   check_winner(d_hand,p_hand)
-  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], message: nil}
+  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], bet: session['bet']}
 end
 
 # When the player hits, deal them a card.
@@ -62,7 +61,7 @@ post '/blackjack/hit' do
   session['d_hand'], session['p_hand'] = d_hand, p_hand
 
   game_over if bust?(p_hand)
-  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], message: nil}
+  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], bet: session['bet']}
 end
 
 # When the player decides to stay, have the dealer hit until 17.
@@ -101,7 +100,7 @@ post '/blackjack/split' do
   p_hand = [p_hand[0]]
   session['p_hand'] = p_hand
   deal(d_hand + p_hand, p_hand)
-  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], message: nil}
+  erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], bet: session['bet']}
 end
 
 
