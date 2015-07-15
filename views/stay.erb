@@ -6,4 +6,16 @@
 	<% end %>
 </p>
 
-<p> You've busted. </p>
+<p>Dealer's cards:
+	<% d_hand.each do |card| %>
+	<li> <%=card_to_hand(card)%> </li>
+	<% end %>
+</p>
+
+<% if win %>
+	<p> You've the better hand! You win!</p>
+<% else %>
+	<p> The dealer had a better hand. You lose. </p>
+<% end %>
+
+<a href="/blackjack">Play again!</a>
