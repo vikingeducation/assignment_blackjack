@@ -2,7 +2,7 @@
 
 <%= flash[:notice] %>
 
-<p> You currently have <%= money %> dollars. (Betting <%= bet %> dollars.) </p>
+<p> You currently have <%= money + bet %> dollars. (Betting <%= bet %> dollars.) </p>
 
 <p>You currently have cards:
 	<% p_hand.each do |card| %>
@@ -19,21 +19,21 @@
 </p>
 
 <form action="/blackjack/hit" method="post">
-	<button>HIT</button>
+	<button class="btn btn-primary">HIT</button>
 </form>
 
 <form action="/blackjack/stay" method="post">
-	<button>STAY</button>
+	<button class="btn btn-warning">STAY</button>
 </form>
 
 <% if p_hand.length == 2 && money >= bet %>
 <form action="/blackjack/double" method="post">
-	<button>DOUBLE</button>
+	<button class="btn btn-danger">DOUBLE</button>
 </form>
 
 <% if (p_hand[0] % 13) == (p_hand[1] % 13) %>
 <form action="/blackjack/split" method="post">
-	<button>SPLIT</button>
+	<button class="btn btn-info">SPLIT</button>
 </form>
 <% end %>
 <% end %>
