@@ -38,7 +38,6 @@ helpers do
   end
 end
 
-
 #kick off with user pushing button to play
 get '/' do
   erb :index
@@ -88,7 +87,7 @@ post '/blackjack/hit' do
   session[:game_deck] = @deck.game_deck.to_json
 	#conditional logic to calculate card_value
   if @deck.count_hand_value(@deck.player_hand) > 21
-    redirect '/blackjack/stay'
+    redirect '/blackjack/stay'     #note: A redirect is always a get request otherwise it will fail. This is as redirect goes to the browser and back without needing to hit the database.
 	else
     redirect '/blackjack'
   end
