@@ -15,7 +15,10 @@ end
 # Give the player money if they've just opened the page.
 get '/bet' do
   redirect '/blackjack' if session['ingame']
-  session['money'] = 1000 unless session['money']
+  if session['money'] && session['money'] == 0
+    flash.now[:danger] = "You've run out of money. Try to be more carful!"
+  end
+  session['money'] = 1000 unless (session['money'] && session['money'] > 0)
   erb :bet, locals: {money: session['money']}
 end
 
@@ -93,17 +96,21 @@ end
 
 post '/blackjack/split' do
   d_hand, p_hand = session['d_hand'], session['p_hand']
-  session['money'] -= session['bet']
-  split_hand = [p_hand[1]]
-  deal(d_hand + [p_hand[0]] + split_hand, split_hand)
-  if session['split_hands']
-    session['split_hands'] << split_hand
+  if session['money'] >= session['bet']
+    session['money'] -= session['bet']
+    split_hand = [p_hand[1]]
+    deal(d_hand + [p_hand[0]] + split_hand, split_hand)
+    if session['split_hands']
+      session['split_hands'] << split_hand
+    else
+      session['split_hands'] = [split_hand]
+    end
+    p_hand = [p_hand[0]]
+    session['p_hand'] = p_hand
+    deal(d_hand + p_hand, p_hand)
   else
-    session['split_hands'] = [split_hand]
+    flash[:notice] = "You don't have the money to split!"
   end
-  p_hand = [p_hand[0]]
-  session['p_hand'] = p_hand
-  deal(d_hand + p_hand, p_hand)
   erb :blackjack, locals: {d_hand: d_hand, p_hand: p_hand, split: session["split_hands"], money: session['money'], bet: session['bet']}
 end
 
