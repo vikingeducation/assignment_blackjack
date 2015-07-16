@@ -1,0 +1,7 @@
+<h1><%= flash[:notice] %></h1>
+
+<p> You now have <%=money%> dollars. </p>
+
+<%= erb :final_cards, locals: {p_hand: p_hand, d_hand: d_hand } %>
+
+<%= erb :new_game %>
