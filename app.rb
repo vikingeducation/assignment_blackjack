@@ -14,6 +14,7 @@ end
 
 # Give the player money if they've just opened the page.
 get '/bet' do
+  redirect '/blackjack' if session['ingame']
   session['money'] = 1000 unless session['money']
   erb :bet, locals: {money: session['money']}
 end
@@ -41,6 +42,9 @@ get '/blackjack' do
   if session['ingame']
     d_hand = session['d_hand']
     p_hand = session['p_hand']
+  elsif session['bet'].nil?
+    flash[:notice] = "You must make a bet before you get cards!"
+    redirect '/bet'
   else
     d_hand, p_hand = initial_hands
     session['d_hand'] = d_hand

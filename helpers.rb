@@ -4,7 +4,6 @@ include Blackjack
 
   # When the initial cards are dealt, check for blackjacks.
   def check_winner(d_hand,p_hand)
-
     if blackjack?(d_hand) && blackjack?(p_hand)
       tie
     elsif blackjack?(d_hand) && !blackjack?(p_hand)
@@ -44,6 +43,7 @@ include Blackjack
       redirect '/blackjack'
     else
       session['ingame'] = false
+      session['bet'] = nil
 
       flash[:notice] = result
       redirect "/blackjack/result/"
