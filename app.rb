@@ -12,6 +12,13 @@ get '/' do
   'hello world'
 end
 
+# in game - are we in a game?
+# money - player's money
+# bet - current bet value
+# d_hand - dealer
+# p_hand - player hand
+# split_hands - array of hands
+
 # Give the player money if they've just opened the page.
 get '/bet' do
   redirect '/blackjack' if session['ingame']
@@ -29,8 +36,8 @@ end
 post '/bet' do
   redirect '/blackjack' if session['ingame']
   if session['money'] && session['money'] >= params[:amt].to_i
-    session['bet'] = params[:amt].to_i
-    session['money'] -= (params[:amt].to_i).abs
+    session['bet'] = (params[:amt].to_i).abs
+    session['money'] -= session['bet']
     redirect '/blackjack'
   else
     flash[:notice] = "Insufficient Funds."
