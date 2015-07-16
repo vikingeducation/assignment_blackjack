@@ -1,0 +1,18 @@
+<form method = "post" action = "/bet">
+  <h2> You have <%= @bank.bankroll %> credits left </h2>
+
+  <h3>How much would you like to bet?</h3>
+
+  <% if warning %>
+    <%= erb :unsuccessful_bet %>
+  <% end %>
+
+  <input type = "radio" name = "user_bet" value = "50">50<br>
+  <input type = "radio" name = "user_bet" value = "100">100<br>
+  <input type = "radio" name = "user_bet" value = "250">250<br>
+  <input type = "radio" name = "user_bet" value = "500">500<br>
+
+  <button type = "submit">Bet!</button>
+
+
+</form>
