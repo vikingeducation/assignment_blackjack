@@ -30,7 +30,7 @@ post '/bet' do
   redirect '/blackjack' if session['ingame']
   if session['money'] && session['money'] >= params[:amt].to_i
     session['bet'] = params[:amt].to_i
-    session['money'] -= params[:amt].to_i
+    session['money'] -= (params[:amt].to_i).abs
     redirect '/blackjack'
   else
     flash[:notice] = "Insufficient Funds."
