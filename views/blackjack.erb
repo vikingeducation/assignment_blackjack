@@ -26,7 +26,7 @@
 	<button>STAY</button>
 </form>
 
-<% if p_hand.length == 2%>
+<% if p_hand.length == 2 && money >= bet %>
 <form action="/blackjack/double" method="post">
 	<button>DOUBLE</button>
 </form>

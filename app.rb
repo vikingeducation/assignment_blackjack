@@ -85,10 +85,12 @@ end
 # If they try, we punish them by making them stay.
 post '/blackjack/double' do
   d_hand, p_hand = session['d_hand'], session['p_hand']
-  if p_hand.length == 2
+  if p_hand.length == 2 && session['money'] >= session['bet']
     deal(d_hand + p_hand, p_hand)
     session['money'] -= session['bet']
     session['doubled'] = true
+  else
+    flash[:notice] = "Nice try, you shouldn't actually be able to double here."
   end
   dealer_plays(d_hand + p_hand, d_hand)
   calculate_result(d_hand, p_hand)
