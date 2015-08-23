@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<%if result == ""%>
+  <h1>Computers: <%=ai[0..(ai.length-2)]%>  X</h1>
+  <h1>You: <%=player%></h1>
+  <h1>you have <%= chip%> chips on the table</h1>
+  <form action="/blackjack" method = "get">
+    <input type="radio" name="action" value="stand">stand<br>
+    <input type="radio" name="action" value="hit">hit<br>
+    <input type="submit" value="bet">
+  </form>
+  <%elsif result == "loss" || result == "bust"%>
+  <h1>Computers: <%=ai%> </h1>
+  <h1>You: <%=player%></h1>
+  <h1>you have <%=chip%> chips on the table</h1>
+  <form action="/bet" method = "get">
+    <input type="submit" value="you loss/bust, press to rebet">
+  </form>
+   <%elsif result == "win"%>
+   <h1>Computers: <%=ai%> </h1>
+  <h1>You: <%=player%></h1>
+  <h1>you have <%=chip%> chips on the table</h1>
+  <form action="/bet" method = "get">
+    <input type="submit" value="you win, press to rebet">
+  </form>
+  <%elsif result == "draw"%>
+  <h1>Computers: <%=ai%>  </h1>
+  <h1>You: <%=player%></h1>
+  <h1>you have <%=chip%> chips on the table</h1>
+  <form action="/bet" method = "get">
+    <input type="submit" value="That's a draw, press to rebet">
+  </form>
+  <%elsif result == "poor"%>
+  <h1>Computers: <%=ai%>  </h1>
+  <h1>You: <%=player%></h1>
+  <h1>you have <%=chip%> chips on the table</h1>
+  <form action="/" method = "get">
+    <input type="submit" value="You're running of money, get restarted">
+  </form>
+  <%else%>
+  <h1>There must be something wrong</h1>
+  <%end%>
+</html>
