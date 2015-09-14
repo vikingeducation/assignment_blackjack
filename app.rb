@@ -106,7 +106,7 @@ get '/blackjack/new' do
 	session[:player] = player
 	session[:dealer] = dealer
 	session[:pot] = 0
-	message = 'Play Blackjack!'
+	message = URI::encode('Play Blackjack!')
 	redirect "/blackjack?notice=#{message}"
 end
 
@@ -115,10 +115,10 @@ get '/blackjack/deal' do
 		dealer = get_dealer
 		player = get_player
 		dealer.deal(player)
-		message = 'Dealt! Hit or stay?'
+		message = URI::encode('Dealt! Hit or stay?')
 		redirect "/blackjack?notice=#{message}"
 	else
-		message = 'Cannot deal what has already been dealt!'
+		message = URI::encode('Cannot deal what has already been dealt!')
 		redirect "/blackjack?error=#{message}"
 	end
 end
@@ -129,14 +129,14 @@ get '/blackjack/hit' do
 		dealer = get_dealer
 		unless player.bust?
 			dealer.hit(player)
-			message = 'Player takes a hit!'
+			message = URI::encode('Player takes a hit!')
 			redirect "/blackjack?notice=#{message}"
 		else
-			message = 'You do realize you are already over 21 right?'
+			message = URI::encode('You do realize you are already over 21 right?')
 			redirect = "/blackjack?error?=#{message}"
 		end
 	else
-		message = 'Start a game to take a hit!'
+		message = URI::encode('Start a game to take a hit!')
 		redirect "/blackjack?error=#{message}"
 	end
 end
@@ -145,10 +145,10 @@ get '/blackjack/stay' do
 	player = get_player
 	if dealt?
 		if player.staying?
-			message = "You already stayed, you can't stay any further!"
+			message = URI::encode("You already stayed, you can't stay any further!")
 			redirect "/blackjack?error=#{message}"
 		elsif player.bust?
-			message = "Bet you wish you stayed before you busted huh?"
+			message = URI::encode("Bet you wish you stayed before you busted huh?")
 			redirect "/blackjack?error=#{message}"
 		else
 			player.stay
@@ -157,7 +157,7 @@ get '/blackjack/stay' do
 			redirect "/blackjack"
 		end
 	else
-		message = 'You cannot stay if you have no cards...'
+		message = URI::encode('You cannot stay if you have no cards...')
 		redirect "/blackjack?error=#{message}"
 	end
 end
@@ -171,11 +171,11 @@ post '/blackjack/bet' do
 			session[:pot] += amount.to_i
 			redirect '/blackjack/deal' unless dealt?
 		else
-			message = "You can't bet '#{amount}' dollars... nice try though!"
+			message = URI::encode("You can't bet '#{amount}' dollars... nice try though!")
 			redirect "/blackjack?error=#{message}"
 		end
 	else
-		message = 'Cannot bet after cards have been dealt!'
+		message = URI::encode('Cannot bet after cards have been dealt!')
 		redirect "/blackjack?error=#{message}"
 	end
 end
