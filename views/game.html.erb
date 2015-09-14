@@ -1,0 +1,28 @@
+<div class="bank">
+	<p>Bank: $1000</p>
+</div>
+<div class="game">
+	<div id="dealer" class="hand">
+		<p>Dealer</p>
+		<img class="card" src="/assets/images/cards/back.png" alt="Card"/>
+		<img class="card" src="/assets/images/cards/s01.png" alt="Card"/>
+	</div>
+	<div class="pot">
+		<p>Pot: $200</p>
+	</div>
+	<div id="player" class="hand">
+		<p>Player</p>
+		<img class="card" src="/assets/images/cards/s13.png" alt="Card"/>
+		<img class="card" src="/assets/images/cards/s01.png" alt="Card"/>
+	</div>
+	<form action="/blackjack/bet" method="post">
+		<input type="text" name="bet" placeholder="Place your bet!"/>
+		<button type="submit">Bet</button>
+	</form>
+	<form action="/blackjack/hit">
+		<button type="submit">Hit</button>
+	</form>
+	<form action="/blackjack/stay">
+		<button type="submit">Stay</button>
+	</form>
+</div>
