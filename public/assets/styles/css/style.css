@@ -21,3 +21,9 @@ h1,
 .card {
 	max-width: 128px;
 }
+.notice {
+	color: green;
+}
+.error {
+	color: red;
+}
