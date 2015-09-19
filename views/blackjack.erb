@@ -1,0 +1,38 @@
+<p>
+  Current Bank: <%= @bankroll %><br>
+  Your Bet: <%= @bet %> 
+</p>
+
+<p>
+  Dealer Hand:<br>
+  <% if @hand_over %>
+    [<%= @dealer_hand[0][0] %><%= @dealer_hand[0][1] %>]
+  <% else %>
+    [##]
+  <% end %>
+  <% @dealer_hand.drop(1).each do |card| %>
+    [<%= card[0] %><%= card[1] %>]
+  <% end %>
+</p>
+
+<p>
+  Player Hand:<br>
+  <% @player_hand.each do |card| %>
+    [<%= card[0] %><%= card[1] %>]
+  <% end %>
+</p>
+
+<p>
+  <% if @hand_over %>
+    <a href="/bet">Play again?</a>
+  <% else %>
+    <form action="/blackjack/hit" method="get">
+      <input type="submit" value="HIT">
+    </form>
+    <form action="/blackjack/stay" method="get">
+      <input type="submit" value="STAY">
+    </form>
+  <% end %>
+</p>
+
+<p><%= @message %></p>

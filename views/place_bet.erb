@@ -1,0 +1,9 @@
+<p><%= @message %></p>
+
+<p>You currently have $<%= @bankroll %> Sinatra bucks, how much would 
+you like to bet on this hand?</p>
+
+<form action="/bet" method="post">
+  <input type="text" name="amount">
+  <input type="submit" value="Place Bet!">
+</form>
