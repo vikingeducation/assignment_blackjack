@@ -17,7 +17,7 @@ class Deck
 
 
   def deal_card
-    @card.pop
+    @cards.pop
   end
   
 end
