@@ -1,5 +1,4 @@
-module HandCalculator
-
+module HandHelper
 
   def total_hand(hand)
     aces_in_hand?(hand) ? total_hand_with_aces(hand) : total_hand_without_aces(hand)
@@ -44,7 +43,7 @@ module HandCalculator
   end
 
 
-  def blackjack_in_hand?(hand)
+  def blackjack?(hand)
     total_hand(hand) == 21
   end
 
@@ -64,6 +63,5 @@ module HandCalculator
   def draw?(player_hand, dealer_hand)
     total_hand(player_hand) == total_hand(dealer_hand)
   end
-
 
 end
