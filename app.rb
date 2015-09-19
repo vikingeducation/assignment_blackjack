@@ -11,6 +11,7 @@ helpers HandHelper
 
 
 get '/' do
+  session[:bankroll] = nil
   erb :home
 end
 
@@ -62,7 +63,7 @@ get '/blackjack' do
   end
 
   @bankroll = session[:bankroll]
-  
+
   erb :blackjack
 end
 
