@@ -39,7 +39,7 @@ get '/blackjack/hit' do
   session[:deck] = @deck.cards.to_json
   session[:player_hand] = @player_hand.to_json
 
-  if hand_busted?(@player_hand)
+  if busted?(@player_hand)
     redirect to('/blackjack/stay')
   else
     @message = "Player Hits!"
@@ -54,7 +54,6 @@ get '/blackjack/stay' do
   @dealer_hand = JSON.parse( session[:dealer_hand] )
   @reveal = true
 
-
   loop do 
     if total_hand(@dealer_hand) == 17 && aces_in_hand?(@dealer_hand)
       break
@@ -63,6 +62,15 @@ get '/blackjack/stay' do
     else
       @dealer_hand << @deck.deal_card
     end
+  end
+
+  if draw?(@player_hand, @dealer_hand)
+    @message = "Its a Draw!"
+  elsif busted?(@player_hand) && busted?(@dealer_hand)
+    @message = "Dealer and Player both busted!"
+  else
+    winner = winner?(@player_hand, @dealer_hand)
+    @message = "#{winner[0]} wins with #{winner[1]}!"
   end
 
   erb :blackjack

@@ -39,7 +39,7 @@ module HandCalculator
   end
 
 
-  def hand_busted?(hand)
+  def busted?(hand)
     total_hand(hand) > 21
   end
 
@@ -49,27 +49,20 @@ module HandCalculator
   end
 
 
-  def winner?(player_hand_value, dealer_hand_value)
-    unless draw?(player_hand_value, dealer_hand_value)
-      determine_best_hand(player_hand_value, dealer_hand_value)
-    end
-  end
-
-
-  def determine_best_hand(player_hand_value, dealer_hand_value)
-    hands = { :Player => player_hand_value, 
-              :Dealer => dealer_hand_value }
+  def winner?(player_hand, dealer_hand)
+    hands = { :Player => total_hand(player_hand), 
+              :Dealer => total_hand(dealer_hand) }
 
     hands.keep_if do |key,val| 
       val <= 21
     end
     
-    return hands.max_by { |key,val| val }[0]
+    hands.max_by { |key,val| val }
   end
 
 
-  def draw?(player_hand_value, dealer_hand_value)
-    player_hand_value == dealer_hand_value
+  def draw?(player_hand, dealer_hand)
+    total_hand(player_hand) == total_hand(dealer_hand)
   end
 
 
