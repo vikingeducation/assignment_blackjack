@@ -1,0 +1,28 @@
+<div>
+  <h1>Dealer</h1>
+  <div>
+    <%= @dealer_hand %>
+  </div>
+</div>
+<div>
+  <h1>Player</h1>
+  <div>
+    <%= @player_hand %>
+  </div>
+  Bankroll: <%= @bankroll %>
+  <br>
+  Bet Amount: <%= @bet %>
+</div>
+
+<% if !session["game_end"].nil? %>
+  <%= session["game_end"] %>
+  <br>
+  <a href="/blackjack/play_again">Play Again?</a>
+<% else %>
+  <form action="/blackjack/stay" method="post">
+    <input type="submit" value="STAY">
+  </form>
+  <form action="/blackjack/hit" method="post">
+    <input type="submit" value="HIT">
+  </form>
+<% end %>
