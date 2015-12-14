@@ -29,7 +29,14 @@ get '/blackjack' do
 end
 
 post '/blackjack/hit' do
-  erb :index
+  @deck = load_deck
+  player_hand = load_hand(session[:player_hand])
+
+  @deck.hit(player_hand)
+  session[:deck_arr] = @deck.deck_arr.to_json
+  session[:player_hand] = player_hand.to_json
+
+  redirect to('/blackjack')
 end
 
 get '/blackjack/new' do

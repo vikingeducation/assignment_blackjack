@@ -5,7 +5,10 @@
 <%= player_hand %>
 
 <p>
-  <button><a href='/blackjack/hit' method='post'>Hit!</a></button>
+  <form action='blackjack/hit' method='post'>
+    <input type='submit' value='Hit!'>
+  </form>
+
   <button><a href='/blackjack/stay'>Stay!</a></button>
 </p>
 

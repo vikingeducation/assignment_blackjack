@@ -15,6 +15,11 @@ class CardDeck
     @deck_arr = deck_arr
   end
 
+  def hit(hand)
+    hand << deck_arr.pop
+    hand
+  end
+
   private
 
   def build_deck
