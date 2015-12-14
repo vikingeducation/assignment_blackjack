@@ -3,3 +3,20 @@
 
 <h2>Player Hand</h2>
 <%= player_hand %>
+
+<p>
+  <button><a href='/blackjack/hit' method='post'>Hit!</a></button>
+  <button><a href='/blackjack/stay'>Stay!</a></button>
+</p>
+
+<p>
+  <a href="/blackjack/new">Start a New Game</a>
+</p>
+
+<!-- TODO: Delete this when done -->
+<p>Remaining cards: <%= deck.size %></p>
+<ul>
+  <% deck.each do |card| %>
+    <li><%= card %></li>
+  <% end %>
+</ul>
