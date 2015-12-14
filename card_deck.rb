@@ -1,33 +1,25 @@
 class CardDeck
-  attr_reader :deck, :player_hand, :dealer_hand
+  attr_reader :deck_arr, :player_hand, :dealer_hand
 
-  def initialize(deck = nil)
-    if deck
-      @deck = deck
+  def initialize(deck_arr = nil)
+    if deck_arr
+      @deck_arr = deck_arr
     else
-      @deck = build_deck.shuffle
+      @deck_arr = build_deck.shuffle
     end
   end
 
-  def deal(deck)
-    @player_hand = [deck.pop, deck.pop]
-    @dealer_hand = [deck.pop, deck.pop]
-    @deck = deck
+  def deal(deck_arr)
+    @player_hand = [deck_arr.pop, deck_arr.pop]
+    @dealer_hand = [deck_arr.pop, deck_arr.pop]
+    @deck_arr = deck_arr
   end
 
   private
 
   def build_deck
     suits = ['hearts', 'diamonds', 'spades', 'clubs']
-    values = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A']
-    deck = []
-
-    suits.each do |suit|
-      values.each do |value|
-        deck << "#{value} #{suit}"
-      end
-    end
-
-    deck
+    values = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K', 'A']
+    values.product(suits)
   end
 end

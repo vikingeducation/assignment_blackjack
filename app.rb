@@ -12,14 +12,14 @@ get '/' do
 end
 
 get '/blackjack' do
-  if session[:deck_arr]
-    @deck = CardDeck.new(JSON.parse( session[:deck_arr] ))
-  else
+  # if session[:deck_arr]
+  #   @deck = CardDeck.new(JSON.parse( session[:deck_arr] ))
+  # else
     @deck = CardDeck.new
-  end
+  # end
 
-  @deck.deal(@deck.deck)
-  session[:deck_arr] = @deck.deck.to_json
+  @deck.deal(@deck.deck_arr)
+  session[:deck_arr] = @deck.deck_arr.to_json
   session[:player_hand] = @deck.player_hand.to_json
   session[:dealer_hand] = @deck.dealer_hand.to_json
 
