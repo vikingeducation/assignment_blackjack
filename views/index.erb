@@ -1,5 +1,15 @@
 <h2>Welcome to Blackjack with Sinatra!</h2>
-<p>To start a new game, click here:</p>
-<p>
-  <a href="/blackjack/new">Play now!</a>
-</p>
+
+<% if session[:bankroll] %>
+  <p>
+    <a href="/blackjack/bet">Continue playing next round</a>
+  </p>
+  <p>
+    <a href="/blackjack/player/new">Cancel and start with a fresh bankroll</a>
+  </p>
+<% else %>
+  <p>To start a new game, click here:</p>
+  <p>
+    <a href="/blackjack/player/new">Play now!</a>
+  </p>
+<% end %>

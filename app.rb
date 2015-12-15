@@ -4,6 +4,7 @@ require 'pry'
 require 'json'
 require 'sinatra/partial'
 require_relative 'card_deck'
+require_relative 'player'
 require_relative 'helpers/blackjack_helper'
 
 helpers BlackjackHelper
@@ -28,14 +29,29 @@ get '/blackjack' do
 
   player_hand = load_hand(session[:player_hand])
   dealer_hand = load_hand(session[:dealer_hand])
+  bet = session[:bet]
+  bankroll = session[:bankroll]
 
   if session[:winner]
     winner = session[:winner]
     scores = JSON.parse(session[:scores])
+    if winner == 'you'
+      if session[:blackjack]
+        bankroll += bet * 3
+      else
+        bankroll += bet * 2
+      end
+    elsif winner == 'draw'
+      bankroll += bet
+    end
 
-    erb :final, locals: {player_hand: player_hand, dealer_hand: dealer_hand, winner: winner, scores: scores}
+    session[:bankroll] = bankroll
+    session[:bet] = nil
+    session[:blackjack] = nil
+
+    erb :final, locals: {player_hand: player_hand, dealer_hand: dealer_hand, winner: winner, scores: scores, bet: bet, bankroll: bankroll}
   else
-    erb :blackjack, locals: {player_hand: player_hand, dealer_hand: dealer_hand}
+    erb :blackjack, locals: {player_hand: player_hand, dealer_hand: dealer_hand, bet: bet, bankroll: bankroll}
   end
 end
 
@@ -55,6 +71,28 @@ post '/blackjack/hit' do
   end
 end
 
+get '/blackjack/player/new' do
+  player = Player.new
+  bankroll = player.bankroll
+  session[:bankroll] = bankroll
+
+  redirect to('/blackjack/bet')
+end
+
+get '/blackjack/bet' do
+  bankroll = session[:bankroll]
+  erb :bet_form, locals: {bankroll: bankroll}
+end
+
+post '/blackjack/bet' do
+  # TODO:  add error checking
+  bet = params[:bet].to_i
+  session[:bankroll] -= bet
+  session[:bet] = bet
+
+  redirect to('/blackjack/new')
+end
+
 get '/blackjack/new' do
   @deck = CardDeck.new
 
@@ -66,6 +104,7 @@ get '/blackjack/new' do
 
   if @deck.blackjack?
     set_winner_and_scores(player_hand, dealer_hand)
+    session[:blackjack] = true
     redirect to('/blackjack')
   else
     session[:deck_arr] = @deck.deck_arr.to_json

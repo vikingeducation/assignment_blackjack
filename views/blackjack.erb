@@ -6,6 +6,8 @@
 </ul>
 
 <h2>Player Hand</h2>
+<p>Bankroll: $<%= bankroll %></p>
+<p>Bet: $<%= bet %></p>
 <ul>
   <%= partial :cards, locals: {cards: player_hand } %>
 </ul>
@@ -21,5 +23,5 @@
 </p>
 
 <p>
-  <a href="/blackjack/new">Start a New Game</a>
+  <a href="/blackjack/player/new">Cancel and start with a fresh bankroll</a>
 </p>
