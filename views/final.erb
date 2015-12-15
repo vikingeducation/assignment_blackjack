@@ -1,13 +1,22 @@
 <h1><%= winner.capitalize %> Wins!</h1>
 
 <h2>Dealer Hand</h2>
-<%= dealer_hand %>
+<ul>
+  <% dealer_hand.each do |card| %>
+    <li><%= card.join(' ') %></li>
+  <% end %>
+</ul>
 <p>
   Score: <%= scores.last %>
 </p>
 
 <h2>Player Hand</h2>
-<%= player_hand %>
+<ul>
+  <% player_hand.each do |card| %>
+    <li><%= card.join(' ') %></li>
+  <% end %>
+</ul>
+
 <p>
   Score: <%= scores.first %>
 </p>

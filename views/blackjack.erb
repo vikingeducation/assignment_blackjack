@@ -1,8 +1,17 @@
 <h2>Dealer Hand</h2>
-<%= dealer_hand[1..-1] %>
+<ul>
+  <li>* face down *</li>
+  <% dealer_hand[1..-1].each do |card| %>
+    <li><%= card.join(' ') %></li>
+  <% end %>
+</ul>
 
 <h2>Player Hand</h2>
-<%= player_hand %>
+<ul>
+  <% player_hand.each do |card| %>
+    <li><%= card.join(' ') %></li>
+  <% end %>
+</ul>
 
 <p>
   <form action='blackjack/hit' method='post'>
@@ -17,11 +26,3 @@
 <p>
   <a href="/blackjack/new">Start a New Game</a>
 </p>
-
-<!-- TODO: Delete this when done -->
-<p>Remaining cards: <%= deck.size %></p>
-<ul>
-  <% deck.each do |card| %>
-    <li><%= card %></li>
-  <% end %>
-</ul>

@@ -30,8 +30,7 @@ get '/blackjack' do
 
     erb :final, locals: {player_hand: player_hand, dealer_hand: dealer_hand, winner: winner, scores: scores}
   else
-    # TODO: delete deck when done
-    erb :blackjack, locals: {player_hand: player_hand, dealer_hand: dealer_hand, deck: @deck.deck_arr}
+    erb :blackjack, locals: {player_hand: player_hand, dealer_hand: dealer_hand}
   end
 end
 
