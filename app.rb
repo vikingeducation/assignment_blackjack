@@ -1,8 +1,10 @@
 require 'sinatra'
 require 'erb'
-require 'pry'
+require 'pry' if development?
 require 'json'
 require 'sinatra/partial'
+require 'sinatra/reloader' if development?
+
 require_relative 'card_deck'
 require_relative 'player'
 require_relative 'helpers/blackjack_helper'
