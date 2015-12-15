@@ -2,12 +2,19 @@
 <html>
 <head>
   <title>Hit Me Baby One More Time</title>
+
+  <!-- Bootstrap -->
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+  <!-- Custom style -->
+  <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-  <h1>Hit Me Baby One More Time!</h1>
-  <a href="/">Home</a>
-  <br>
+  <%= partial :navbar %>
 
-  <%= yield %>
+  <div class="container">
+    <%= yield %>
+  </div>
+
 </body>
 </html>

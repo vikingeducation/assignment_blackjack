@@ -1,26 +1,29 @@
-<h2>Dealer Hand</h2>
-<ul>
-  <li>* face down *</li>
-  <%= partial :cards, locals: {cards: dealer_hand[1..-1] }
- %>
-</ul>
+<div class="row">
+  <div class="col-sm-6">
+    <h2>Dealer Hand</h2>
+      <div class="well">* face down *</div>
+      <%= partial :cards, locals: {cards: dealer_hand[1..-1] }
+     %>
+    </ul>
+  </div>
 
-<h2>Player Hand</h2>
-<p>Bankroll: $<%= bankroll %></p>
-<p>Bet: $<%= bet %></p>
-<ul>
-  <%= partial :cards, locals: {cards: player_hand } %>
-</ul>
+  <div class="col-sm-6">
+    <h2>Player Hand</h2>
+    <%= partial :cards, locals: {cards: player_hand } %>
 
-<p>
-  <form action='blackjack/hit' method='post'>
-    <input type='submit' value='Hit!'>
-  </form>
+    <p><strong>Bankroll:</strong> $<%= bankroll %></p>
+    <p><strong>Bet:</strong> $<%= bet %></p>
+    <p>
+      <form action='blackjack/hit' method='post' class='form-inline pull-left action-button'>
+        <input type='submit' value='Hit!' class='btn btn-primary'>
+      </form>
 
-  <form action='blackjack/stay' method='get'>
-    <input type='submit' value='Stay!'>
-  </form>
-</p>
+      <form action='blackjack/stay' method='get' class='form-inline action-button'>
+        <input type='submit' value='Stay!' class='btn btn-primary'>
+      </form>
+    </p>
+  </div>
+</div>
 
 <p>
   <a href="/blackjack/player/new">Cancel and start with a fresh bankroll</a>

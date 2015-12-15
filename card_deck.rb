@@ -65,18 +65,18 @@ class CardDeck
   def winner(scores_arr)
     if scores_arr.all?{ |score| score <= 21 }
       if scores_arr.first > scores_arr.last
-        'you'
+        'You Win!'
       elsif scores_arr.first == scores_arr.last
-        'draw'
+        'Draw!'
       else
-        'dealer'
+        'Dealer Wins!'
       end
     elsif scores_arr.first > 21 && scores_arr.last <= 21
-      'dealer'
+      'Dealer Wins!'
     elsif scores_arr.first <= 21 && scores_arr.last > 21
-      'you'
+      'You Win!'
     elsif scores_arr.all?{ |score| score > 21 }
-      'draw'
+      'Draw!'
     else
       'error'
     end

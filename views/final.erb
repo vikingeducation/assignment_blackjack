@@ -1,26 +1,21 @@
-<h1><%= winner.capitalize %> Wins!</h1>
+<h1><%= winner %></h1>
 
-<h2>Dealer Hand</h2>
-<ul>
-  <%= partial :cards, locals: {cards: dealer_hand } %>
-</ul>
-<p>
-  Score: <%= scores.last %>
-</p>
+<div class="row">
+  <div class="col-sm-6">
+    <h2>Dealer Hand <small>(<%= scores.last %> points)</small></h2>
+    <%= partial :cards, locals: {cards: dealer_hand } %>
+  </div>
 
-<h2>Player Hand</h2>
-<p>New Bankroll: $<%= bankroll %> (bet was $<%= bet %>)</p>
-<ul>
-  <%= partial :cards, locals: {cards: player_hand } %>
-</ul>
+  <div class="col-sm-6">
+    <h2>Player Hand <small>(<%= scores.first %> points)</small></h2>
+    <%= partial :cards, locals: {cards: player_hand } %>
+    <p><strong>New Bankroll:</strong> $<%= bankroll %> (bet was $<%= bet %>)</p>
 
-<p>
-  Score: <%= scores.first %>
-</p>
+    <p>
+      <a href="/blackjack/bet" class='btn btn-primary'>Next round</a>
+      <a href="/blackjack/player/new" class='btn btn-default'>Restart with a fresh bankroll</a>
+    </p>
+  </div>
+</div>
 
-<p>
-  <a href="/blackjack/bet">Next round</a>
-</p>
-<p>
-  <a href="/blackjack/player/new">Cancel and start with a fresh bankroll</a>
-</p>
+

@@ -35,13 +35,13 @@ get '/blackjack' do
   if session[:winner]
     winner = session[:winner]
     scores = JSON.parse(session[:scores])
-    if winner == 'you'
+    if winner == 'You Win!'
       if session[:blackjack]
         bankroll += bet * 3
       else
         bankroll += bet * 2
       end
-    elsif winner == 'draw'
+    elsif winner == 'Draw!'
       bankroll += bet
     end
 
