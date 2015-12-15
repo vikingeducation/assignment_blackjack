@@ -1,3 +1,34 @@
+body{
+  background-image: url('/card_table.jpeg');
+  background-repeat: no-repeat;
+  background-position: center, center;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: 'Droid Serif', serif;
+}
+
 .action-button {
   margin-right: 20px;
+}
+
+.well {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+}
+
+.title {
+  font-size: 4em;
+}
+
+hr {
+  border-top: 2px solid #eee;
+}
+
+a {
+  color: white;
+}
+
+a:hover {
+  color: #777;
+  text-decoration: none;
 }

@@ -3,17 +3,28 @@
 <head>
   <title>Hit Me Baby One More Time</title>
 
-  <!-- Bootstrap -->
+  <!-- Bootstrap, Google Fonts, Font Awesome -->
   <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
   <!-- Custom style -->
   <link rel="stylesheet" type="text/css" href="/style.css">
 </head>
 <body>
-  <%= partial :navbar %>
 
   <div class="container">
-    <%= yield %>
+    <h3><a href="/"><i class="fa fa-home"></i></a></h3>
+    <div class="well">
+
+      <h1 class="text-center title text-success">
+        <i class="fa fa-bullseye"></i> Hit Me Baby One More Time! <i class="fa fa-bullseye"></i>
+      </h1>
+      <p class='text-muted text-center'><em>An online Blackjack game player</em></p>
+      <hr>
+
+      <%= yield %>
+    </div>
   </div>
 
 </body>
