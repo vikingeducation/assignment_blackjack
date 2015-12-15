@@ -1,5 +1,5 @@
 <h2>Dealer Hand</h2>
-<%= dealer_hand[1] %>
+<%= dealer_hand[1..-1] %>
 
 <h2>Player Hand</h2>
 <%= player_hand %>
@@ -9,7 +9,9 @@
     <input type='submit' value='Hit!'>
   </form>
 
-  <button><a href='/blackjack/stay'>Stay!</a></button>
+  <form action='blackjack/stay' method='get'>
+    <input type='submit' value='Stay!'>
+  </form>
 </p>
 
 <p>

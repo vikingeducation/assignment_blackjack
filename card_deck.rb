@@ -45,6 +45,41 @@ class CardDeck
     values.all?{|val| val > 21}
   end
 
+  def stop?(dealer_hand)
+    if dealer_hand.any?{|val| val >= 17}
+      true
+    else
+      false
+    end
+  end
+
+  def best_score(values)
+    if values.all?{|val| val > 21}
+      values.min
+    else
+      values.select!{|val| val <= 21}
+      values.max
+    end
+  end
+
+  def winner(scores_arr)
+    if scores_arr.all?{ |score| score <= 21 }
+      if scores_arr.first > scores_arr.last
+        'player'
+      elsif scores_arr.first == scores_arr.last
+        'draw'
+      else
+        'dealer'
+      end
+    elsif scores_arr.first > 21 && scores_arr.last <= 21
+      'dealer'
+    elsif scores_arr.first <= 21 && scores_arr.last > 21
+      'player'
+    else
+      'error'
+    end
+  end
+
   private
 
   def build_deck

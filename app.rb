@@ -24,15 +24,23 @@ get '/blackjack' do
   player_hand = load_hand(session[:player_hand])
   dealer_hand = load_hand(session[:dealer_hand])
 
-  # TODO: delete deck when done
-  erb :blackjack, locals: {player_hand: player_hand, dealer_hand: dealer_hand, deck: @deck.deck_arr}
+  if session[:winner]
+    winner = session[:winner]
+    scores = JSON.parse(session[:scores])
+
+    erb :final, locals: {player_hand: player_hand, dealer_hand: dealer_hand, winner: winner, scores: scores}
+  else
+    # TODO: delete deck when done
+    erb :blackjack, locals: {player_hand: player_hand, dealer_hand: dealer_hand, deck: @deck.deck_arr}
+  end
 end
 
 post '/blackjack/hit' do
   @deck = load_deck
   player_hand = load_hand(session[:player_hand])
 
-  if @deck.bust? @deck.hand_values(player_hand)
+  values = @deck.hand_values(player_hand)
+  if @deck.bust?(values)
     redirect to('/blackjack/stay')
   else
     @deck.hit(player_hand)
@@ -50,10 +58,32 @@ get '/blackjack/new' do
   session[:deck_arr] = @deck.deck_arr.to_json
   session[:player_hand] = @deck.player_hand.to_json
   session[:dealer_hand] = @deck.dealer_hand.to_json
+  session[:scores] = nil
+  session[:winner] = nil
 
   redirect to('/blackjack')
 end
 
 get '/blackjack/stay' do
+  @deck = load_deck
+  dealer_hand = load_hand(session[:dealer_hand])
+  player_hand = load_hand(session[:player_hand])
+
+  loop do
+    values = @deck.hand_values(dealer_hand)
+    break if @deck.stop?(values)
+    @deck.hit(dealer_hand)
+  end
+  session[:dealer_hand] = dealer_hand.to_json
+
+  player_score = @deck.best_score(@deck.hand_values(player_hand))
+  dealer_score = @deck.best_score(@deck.hand_values(dealer_hand))
+  scores_arr = [player_score, dealer_score]
+
+  winner = @deck.winner(scores_arr)
+
+  session[:scores] = scores_arr.to_json
+  session[:winner] = winner
+
   redirect to('/blackjack')
 end
