@@ -75,9 +75,15 @@ class CardDeck
       'dealer'
     elsif scores_arr.first <= 21 && scores_arr.last > 21
       'player'
+    elsif scores_arr.all?{ |score| score > 21 }
+      'draw'
     else
       'error'
     end
+  end
+
+  def blackjack?
+    hand_values(@player_hand).any?{|value| value == 21} || hand_values(@dealer_hand).any?{|value| value == 21}
   end
 
   private

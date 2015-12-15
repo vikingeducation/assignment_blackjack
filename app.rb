@@ -55,13 +55,20 @@ get '/blackjack/new' do
   @deck = CardDeck.new
 
   @deck.deal(@deck.deck_arr)
-  session[:deck_arr] = @deck.deck_arr.to_json
-  session[:player_hand] = @deck.player_hand.to_json
-  session[:dealer_hand] = @deck.dealer_hand.to_json
-  session[:scores] = nil
-  session[:winner] = nil
+  player_hand = @deck.player_hand
+  dealer_hand = @deck.dealer_hand
+  session[:player_hand] = player_hand.to_json
+  session[:dealer_hand] = dealer_hand.to_json
 
-  redirect to('/blackjack')
+  if @deck.blackjack?
+    set_winner_and_scores(player_hand, dealer_hand)
+    redirect to('/blackjack')
+  else
+    session[:deck_arr] = @deck.deck_arr.to_json
+    session[:scores] = nil
+    session[:winner] = nil
+    redirect to('/blackjack')
+  end
 end
 
 get '/blackjack/stay' do
@@ -76,14 +83,6 @@ get '/blackjack/stay' do
   end
   session[:dealer_hand] = dealer_hand.to_json
 
-  player_score = @deck.best_score(@deck.hand_values(player_hand))
-  dealer_score = @deck.best_score(@deck.hand_values(dealer_hand))
-  scores_arr = [player_score, dealer_score]
-
-  winner = @deck.winner(scores_arr)
-
-  session[:scores] = scores_arr.to_json
-  session[:winner] = winner
-
+  set_winner_and_scores(player_hand, dealer_hand)
   redirect to('/blackjack')
 end
