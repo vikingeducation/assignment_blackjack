@@ -1,16 +1,13 @@
 <h2>Dealer Hand</h2>
 <ul>
   <li>* face down *</li>
-  <% dealer_hand[1..-1].each do |card| %>
-    <li><%= card.join(' ') %></li>
-  <% end %>
+  <%= partial :cards, locals: {cards: dealer_hand[1..-1] }
+ %>
 </ul>
 
 <h2>Player Hand</h2>
 <ul>
-  <% player_hand.each do |card| %>
-    <li><%= card.join(' ') %></li>
-  <% end %>
+  <%= partial :cards, locals: {cards: player_hand } %>
 </ul>
 
 <p>

@@ -2,6 +2,7 @@ require 'sinatra'
 require 'erb'
 require 'pry'
 require 'json'
+require 'sinatra/partial'
 require_relative 'card_deck'
 require_relative 'helpers/blackjack_helper'
 
@@ -9,6 +10,10 @@ helpers BlackjackHelper
 
 # saves deck and hands
 enable :sessions
+
+# options for partials
+set :partial_template_engine, :erb
+enable :partial_underscores
 
 get '/' do
   erb :index

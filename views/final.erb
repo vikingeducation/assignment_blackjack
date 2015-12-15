@@ -2,9 +2,7 @@
 
 <h2>Dealer Hand</h2>
 <ul>
-  <% dealer_hand.each do |card| %>
-    <li><%= card.join(' ') %></li>
-  <% end %>
+  <%= partial :cards, locals: {cards: dealer_hand } %>
 </ul>
 <p>
   Score: <%= scores.last %>
@@ -12,9 +10,7 @@
 
 <h2>Player Hand</h2>
 <ul>
-  <% player_hand.each do |card| %>
-    <li><%= card.join(' ') %></li>
-  <% end %>
+  <%= partial :cards, locals: {cards: player_hand } %>
 </ul>
 
 <p>
