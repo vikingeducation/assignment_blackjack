@@ -32,11 +32,15 @@ post '/blackjack/hit' do
   @deck = load_deck
   player_hand = load_hand(session[:player_hand])
 
-  @deck.hit(player_hand)
-  session[:deck_arr] = @deck.deck_arr.to_json
-  session[:player_hand] = player_hand.to_json
+  if @deck.bust? @deck.hand_values(player_hand)
+    redirect to('/blackjack/stay')
+  else
+    @deck.hit(player_hand)
+    session[:deck_arr] = @deck.deck_arr.to_json
+    session[:player_hand] = player_hand.to_json
 
-  redirect to('/blackjack')
+    redirect to('/blackjack')
+  end
 end
 
 get '/blackjack/new' do
@@ -47,5 +51,9 @@ get '/blackjack/new' do
   session[:player_hand] = @deck.player_hand.to_json
   session[:dealer_hand] = @deck.dealer_hand.to_json
 
+  redirect to('/blackjack')
+end
+
+get '/blackjack/stay' do
   redirect to('/blackjack')
 end

@@ -20,6 +20,31 @@ class CardDeck
     hand
   end
 
+  def hand_values(hand)
+    values = [0]
+
+    hand.each do |card|
+      if card.first == 'A'
+        lows = values.map{|val| val += 1}
+        highs = values.map{|val| val += 11}
+        values = lows + highs
+      else
+        if ['J', 'Q', 'K'].include?(card.first)
+          amount = 10
+        else
+          amount = card.first
+        end
+        values.map!{|val| val += amount}
+      end
+    end
+
+    values
+  end
+
+  def bust?(values)
+    values.all?{|val| val > 21}
+  end
+
   private
 
   def build_deck
