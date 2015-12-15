@@ -18,4 +18,25 @@ module BlackjackHelper
     session[:scores] = scores_arr.to_json
     session[:winner] = winner
   end
+
+  def card_image(card)
+    extra = '2'
+
+    case card.first
+    when 'A'
+      value = 'ace'
+      extra = ''
+    when 'K'
+      value = 'king'
+    when 'Q'
+      value = 'queen'
+    when 'J'
+      value = 'jack'
+    else
+      value = card.first
+      extra = ''
+    end
+
+    "/card_images/#{value}_of_#{card.last}#{extra}.png"
+  end
 end
