@@ -3,10 +3,11 @@
 
 <p>
   <form action='bet' method='post' class='form-inline'>
-    <div class="input-group">
+    <div class="input-group" width="300">
       <div class="input-group-addon">$</div>
-      <input type="number" name='bet' min='1' class="form-control" placeholder="Amount">
+      <input type="number" name='bet' min='1' max="<%= bankroll %>" class="form-control" placeholder="100">
     </div>
+
     <button type='submit' class='btn btn-danger'>
       <i class="fa fa-money"></i> Place Bet
     </button>

@@ -80,11 +80,15 @@ end
 
 get '/blackjack/bet' do
   bankroll = session[:bankroll]
+
+  if bankroll <= 0
+    redirect to('/blackjack/player/new')
+  end
   erb :bet_form, locals: {bankroll: bankroll}
 end
 
 post '/blackjack/bet' do
-  # TODO:  add error checking
+  # Note that error checking is in form (min and max based on bankroll)
   bet = params[:bet].to_i
   session[:bankroll] -= bet
   session[:bet] = bet
