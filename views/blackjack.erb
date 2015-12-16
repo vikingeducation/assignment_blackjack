@@ -1,8 +1,19 @@
 <div class="row">
   <!-- Sidebar -->
   <div class="col-sm-3">
-    <h2 class="text-danger">Dashboard</h2>
-    <%= winner if winner %>
+    <h2 class="text-muted">Dashboard</h2>
+    <% if winner %>
+      <div class="panel panel-success
+        <% if winner == 'Dealer Wins!' %>
+          <%= 'panel-danger' %>
+        <% elsif winner == 'Draw!' %>
+          <%= 'panel-warning' %>
+        <% end %>">
+        <div class="panel-heading">
+          <h4 class="text-center"><%= winner %></h4>
+        </div>
+      </div>
+    <% end %>
     <dl>
       <dt>Bankroll</dt>
       <dd>$<%= bankroll %></dd>
