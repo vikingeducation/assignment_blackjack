@@ -35,10 +35,23 @@ hr {
 }
 
 #home-link a {
-  color: white;
+  color: #ccc;
 }
 
 #home-link a:hover {
-  color: #ccc;
+  color: #a94442;
   text-decoration: none;
+}
+
+.footer {
+  color: white;
+}
+
+.footer a {
+  color: #ccc;
+}
+
+.footer a:hover {
+  text-decoration: none;
+  color: #a94442;
 }
