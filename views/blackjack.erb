@@ -1,29 +1,29 @@
 <div class="row">
-  <div class="col-sm-6">
-    <h2>Dealer Hand</h2>
-      <%= partial :cards, locals: {cards: dealer_hand, hide_first: true }
-     %>
-    </ul>
+  <!-- Sidebar -->
+  <div class="col-sm-3">
+    <h2 class="text-danger">Dashboard</h2>
+    <%= winner if winner %>
+    <dl>
+      <dt>Bankroll</dt>
+      <dd>$<%= bankroll %></dd>
+
+      <dt>Bet</dt>
+      <dd>$<%= bet %></dd>
+    </dl>
+
+    <%= partial :actions, locals: {winner: winner} %>
   </div>
 
-  <div class="col-sm-6">
-    <h2>Player Hand</h2>
+  <!-- Hands -->
+  <div class="col-sm-9">
+    <h2 class="text-muted">Dealer Hand</h2>
+      <%= partial :cards, locals: {cards: dealer_hand, hide_first: hide_first }
+     %>
+    </ul>
+
+    <h2 class="text-muted">Player Hand</h2>
     <%= partial :cards, locals: {cards: player_hand, hide_first: false } %>
-
-    <p><strong>Bankroll:</strong> $<%= bankroll %></p>
-    <p><strong>Bet:</strong> $<%= bet %></p>
-    <p>
-      <form action='blackjack/hit' method='post' class='form-inline pull-left action-button'>
-        <input type='submit' value='Hit!' class='btn btn-danger'>
-      </form>
-
-      <form action='blackjack/stay' method='get' class='form-inline action-button'>
-        <input type='submit' value='Stay!' class='btn btn-danger'>
-      </form>
-    </p>
   </div>
 </div>
 
-<p>
-  <a href="/blackjack/player/new">Cancel and start with a fresh bankroll</a>
-</p>
+

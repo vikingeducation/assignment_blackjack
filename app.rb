@@ -29,32 +29,29 @@ get '/blackjack' do
     redirect to ('/blackjack/new')
   end
 
+  # Get session variables or initialize
   player_hand = load_hand(session[:player_hand])
   dealer_hand = load_hand(session[:dealer_hand])
   bet = session[:bet]
+  winner = session[:winner]
   bankroll = session[:bankroll]
+  scores = nil
 
-  if session[:winner]
-    winner = session[:winner]
+  if winner
     scores = JSON.parse(session[:scores])
-    if winner == 'You Win!'
-      if session[:blackjack]
-        bankroll += bet * 3
-      else
-        bankroll += bet * 2
-      end
-    elsif winner == 'Draw!'
-      bankroll += bet
-    end
-
-    session[:bankroll] = bankroll
-    session[:bet] = nil
-    session[:blackjack] = nil
-
-    erb :final, locals: {player_hand: player_hand, dealer_hand: dealer_hand, winner: winner, scores: scores, bet: bet, bankroll: bankroll}
-  else
-    erb :blackjack, locals: {player_hand: player_hand, dealer_hand: dealer_hand, bet: bet, bankroll: bankroll}
+    session[:bankroll] = update_bankroll(winner, bankroll, bet)
+    session[:hide_first] = false
   end
+
+  erb :blackjack, locals: {
+    player_hand: player_hand,
+    dealer_hand: dealer_hand,
+    winner: winner,
+    scores: scores,
+    bet: bet,
+    bankroll: session[:bankroll],
+    hide_first: session[:hide_first]
+  }
 end
 
 post '/blackjack/hit' do
@@ -96,6 +93,8 @@ post '/blackjack/bet' do
 end
 
 get '/blackjack/new' do
+  reset_session
+
   @deck = CardDeck.new
 
   @deck.deal(@deck.deck_arr)

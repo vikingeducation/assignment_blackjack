@@ -1,0 +1,22 @@
+<% if winner %>
+  <p>
+    <a href="/blackjack/bet" class='btn btn-danger'>
+      <i class="fa fa-refresh"></i> Next round
+    </a>
+  </p>
+<% else %>
+  <p>
+    <form action='blackjack/hit' method='post'>
+      <input type='submit' value='Hit!' class='btn btn-danger'>
+    </form>
+  </p>
+  <p>
+    <form action='blackjack/stay' method='get' class='form-inline action-button'>
+      <input type='submit' value='Stay!' class='btn btn-danger'>
+    </form>
+  </p>
+<% end %>
+
+<p>
+  <a href="/blackjack/player/new" class='btn btn-default'>Restart with a fresh bankroll</a>
+</p>

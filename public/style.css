@@ -1,14 +1,17 @@
 body{
-  background-image: url('/card_table.jpeg');
+  background-image: url('/card_table.jpg');
   background-repeat: no-repeat;
   background-position: center, center;
   background-attachment: fixed;
   background-size: cover;
+}
+
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Droid Serif', serif;
 }
 
 .action-button {
-  margin-right: 20px;
+  margin-right: 10px;
 }
 
 .well {
@@ -24,11 +27,11 @@ hr {
   border-top: 2px solid #eee;
 }
 
-a {
+#home-link a {
   color: white;
 }
 
-a:hover {
-  color: #777;
+#home-link a:hover {
+  color: #ccc;
   text-decoration: none;
 }

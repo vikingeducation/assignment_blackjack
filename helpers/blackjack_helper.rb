@@ -19,6 +19,26 @@ module BlackjackHelper
     session[:winner] = winner
   end
 
+  def reset_session
+    session[:blackjack] = nil
+    session[:winner] = nil
+    session[:scores] = nil
+    session[:hide_first] = true
+  end
+
+  def update_bankroll(winner, bankroll, bet)
+    if winner == 'You Win!'
+      if session[:blackjack]
+        bankroll += bet * 3
+      else
+        bankroll += bet * 2
+      end
+    elsif winner == 'Draw!'
+      bankroll += bet
+    end
+    bankroll
+  end
+
   def card_image(card)
     extra = '2'
 
