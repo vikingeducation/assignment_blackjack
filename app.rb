@@ -4,14 +4,14 @@ require 'sinatra/reloader' if development?
 require './lib/blackjack.rb'
 require './helpers/saver.rb'
 require 'pry-byebug'
-
+require './helpers/bankroll.rb'
 # dealer and player are each dealt 2 cards
 # player can see their two cards, but only the 2nd card for the dealer
 # session stores: bet amount, how much money they have, their hand, dealer's hand, deck
 
 
 
-helpers Saver
+helpers Saver, Bankroll
 
 
 enable :sessions
@@ -32,11 +32,12 @@ get '/new' do
   save_deck(shoe)
   save_bankroll(bankroll)
 
-  erb :blackjack, :locals => { :dealer => dealer, :player => player, :deck => shoe, :bankroll => session[:bankroll]}
+  erb :blackjack, :locals => { :dealer => dealer, :player => player, :deck => shoe, :bankroll => session[:bankroll], bet: session[:bet], outcome: session[:outcome]}
 end
 
 get '/blackjack' do
-  erb :blackjack, locals: { dealer: session[:dealer], player: session[:player], deck: session[:deck], bankroll: session[:bankroll]}
+  erb :blackjack, locals: { dealer: session[:dealer], player: session[:player], deck: session[:deck], bankroll: session[:bankroll], bet: session[:bet], outcome: session[:outcome]}
+  session[:outcome] = nil
 end
 
 
@@ -70,8 +71,8 @@ post '/blackjack/hit' do
   save_deck(blackjack.get_shoe)
 
   if blackjack.bust?(session[:player])
-    session[:bankroll] = (session[:bankroll].to_i - session[:bet].to_i).to_s
-    redirect('/loss')
+    decrease_bankroll
+    redirect('/blackjack')
   else
     redirect('/blackjack')
   end
@@ -87,13 +88,12 @@ post '/blackjack/stay' do
   save_deck(blackjack.get_shoe)
 
   if blackjack.bust?(session[:dealer])
+    increase_bankroll
     redirect('/win')
   else
     outcome = blackjack.outcome(session[:dealer], session[:player])
-    redirect("/#{outcome}")
+    session[:outcome] = outcome
+    update_bankroll(outcome)
+    redirect("/blackjack")
   end
-end
-
-post '/blackjack/split' do
-
 end
