@@ -2,4 +2,15 @@
 
 <% player_deck.each do |card| %>
   <p>Player Card: <%= card %></p>
-<% end %>  
+<% end %>
+
+<h3> Dealer Cards </h3
+
+<% dealer_deck.each do |card| %>
+  <p>Dealer Card: <%= card %></p>
+<% end %>
+
+<form method='post' action='/blackjack'>
+  <input type='submit' name='player_action' value='Hit'>
+  <input type='submit' name='player_action' value='Stay'>
+</form>

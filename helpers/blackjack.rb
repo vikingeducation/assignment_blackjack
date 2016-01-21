@@ -10,7 +10,7 @@ class Blackjack
     @deck = deck || create_deck
     @player_cards = player_cards || Array.new
     @dealer_cards = dealer_cards || Array.new
-    deal_cards
+    setup_cards if @player_cards == []
   end
 
   def create_deck
@@ -25,7 +25,7 @@ class Blackjack
     @deck.shuffle!
   end
 
-  def deal_cards
+  def setup_cards
     2.times do
       @player_cards << @deck.pop
     end
@@ -33,7 +33,11 @@ class Blackjack
     2.times do
       @dealer_cards << @deck.pop
     end
-  end  
+  end
+
+  def deal_card(cards)
+    cards << @deck.pop
+  end
 
   def sum_cards(cards)
     
@@ -62,7 +66,6 @@ class Blackjack
     end 
     sum
   end
-
 
   def who_won?
     player_totals = sum_cards(@player_cards)
