@@ -4,12 +4,14 @@ class Blackjack
 
   CARD_ARRAY = ['Ace', 'King', 'Queen', 'Jack', ('2'..'10').to_a].flatten
 
-  attr_accessor :deck, :player_cards, :dealer_cards 
+  attr_accessor :deck, :player_cards, :dealer_cards, :hit, :loser
 
-  def initialize(deck=nil, player_cards=nil, dealer_cards=nil)
+  def initialize(deck=nil, player_cards=nil, dealer_cards=nil, hit=true, loser=nil)
     @deck = deck || create_deck
     @player_cards = player_cards || Array.new
     @dealer_cards = dealer_cards || Array.new
+    @hit = hit
+    @loser = loser
     setup_cards if @player_cards == []
   end
 
@@ -67,21 +69,24 @@ class Blackjack
     sum
   end
 
-  def who_won?
-    player_totals = sum_cards(@player_cards)
-    dealer_totals = sum_cards(@pdealer_cards)
-
-    if player_totals == 21
-      "Player Wins!"
-    elsif dealer_totals == 21
-      "Dealer Wins"
+  def who_lost
+    if sum_cards(@dealer_cards) > 21
+      @loser = "dealer"
+    elsif sum_cards(@player_cards) > 21
+      @loser = "player"
+    elsif !hit
+      if sum_cards(@player_cards) > sum_cards(@dealer_cards)
+        @loser = "dealer"
+      elsif sum_cards(@dealer_cards) > sum_cards(@player_cards)
+        @loser = "player"
+      end
     end
+  end
 
-  end  
-
-  def lost?(cards)
-    return true if sum_cards(cards) > 21
-    false
-  end  
+  def dealer_play
+    while sum_cards(@dealer_cards) < 17
+      deal_card(@dealer_cards)
+    end
+  end 
 
 end

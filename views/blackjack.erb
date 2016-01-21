@@ -12,7 +12,7 @@
 
 <% if loser %>
    <p><%= loser.upcase %> lost!</p>
-   <%= erb :"lost" %>
+   <%= erb :"lost", :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => loser, :hit => hit} %>
 <% else %>
-   <%= erb :"continue_playing" %>
+   <%= erb :"continue_playing", :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => loser, :hit => hit} %>
 <% end %>
