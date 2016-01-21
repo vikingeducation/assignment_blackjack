@@ -4,14 +4,16 @@ class Blackjack
 
   CARD_ARRAY = ['Ace', 'King', 'Queen', 'Jack', ('2'..'10').to_a].flatten
 
-  attr_accessor :deck, :player_cards, :dealer_cards, :hit, :loser
+  attr_accessor :deck, :player_cards, :dealer_cards, :hit, :loser, :bet, :totals
 
-  def initialize(deck=nil, player_cards=nil, dealer_cards=nil, hit=true, loser=nil)
+  def initialize(deck=nil, player_cards=nil, dealer_cards=nil, hit=true, loser=nil, bet=100, totals=1000)
     @deck = deck || create_deck
     @player_cards = player_cards || Array.new
     @dealer_cards = dealer_cards || Array.new
     @hit = hit
     @loser = loser
+    @bet = bet
+    @totals = totals
     setup_cards if @player_cards == []
   end
 
@@ -87,6 +89,12 @@ class Blackjack
     while sum_cards(@dealer_cards) < 17
       deal_card(@dealer_cards)
     end
+  end 
+
+  def double
+    @bet *= 2
+    deal_card(@player_cards)
+    @hit = false
   end 
 
 end
