@@ -1,4 +1,4 @@
-require './deck.rb'
+require './cards.rb'
 require './dealer.rb'
 require './player.rb'
 

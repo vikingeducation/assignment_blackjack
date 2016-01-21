@@ -9,4 +9,10 @@ module CardHelper
     hand.map {|card| img_file(card)}
   end
   
+  def load_game
+    game = Blackjack.new
+    game.new_hand
+    player_hand = get_hand(game.player.hand)
+    dealer_hand = get_hand(game.dealer.hand)
+  end
 end
