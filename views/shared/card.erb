@@ -1,4 +1,21 @@
-<div class="card col-sm-2">
-  <h4><%= card.rank %></h4>
-  <h4><%= card.suit %></h4>
+<div class="card col-sm-2 <%= card.color %>">
+  <div class="rank">
+    <%= card.rank %>
+  </div>
+  <div class="suit">
+    <%= card.unicode_suit %>
+  </div>
+
+  <div class="middle">
+    <%= card.unicode_suit %>
+  </div>
+
+  <div class="flip card col-sm-2 <%= card.color %>">
+    <div class="rank">
+      <%= card.rank %>
+    </div>
+    <div class="suit">
+      <%= card.unicode_suit %>
+    </div>
+  </div>
 </div>

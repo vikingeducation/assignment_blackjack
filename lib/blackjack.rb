@@ -15,7 +15,7 @@ class Blackjack
   }
 
   RANKS = {
-    'Ace' => "A",
+    'A' => "A",
     '2' => "2",
     '3' => "3",
     '4' => "4",
@@ -25,13 +25,13 @@ class Blackjack
     '8' => "8",
     '9' => "9",
     '10' => "T",
-    'Jack' => "J",
-    'Queen' => "Q",
-    'King' => "K"
+    'J' => "J",
+    'Q' => "Q",
+    'K' => "K"
   }
 
   VALUES = {
-    'Ace' => 11,
+    'A' => 11,
     '2' => 2,
     '3' => 3,
     '4' => 4,
@@ -41,9 +41,9 @@ class Blackjack
     '8' => 8,
     '9' => 9,
     '10' => 10,
-    'Jack' => 10,
-    'Queen' => 10,
-    'King' => 10
+    'J' => 10,
+    'Q' => 10,
+    'K' => 10
   }
 
 
@@ -121,6 +121,13 @@ end
 class Card
   attr_accessor :rank, :suit
 
+  UNICODE = {
+    "Spades" => "\u2660",
+    "Diamonds" => "\u2666",
+    "Hearts" => "\u2665",
+    "Clubs" => "\u2663",
+  }
+
   def initialize(rank:, suit:)
     @rank = rank
     @suit = suit
@@ -132,6 +139,23 @@ class Card
 
   def ace?
     @rank == "Ace"
+  end
+
+  def unicode_suit
+    UNICODE[@suit]
+  end
+
+  def color
+    case @suit
+    when "Diamonds"
+      "red"
+    when "Hearts"
+      "red"
+    when "Clubs"
+      "black"
+    when "Spades"
+      "black"
+    end
   end
 
   def value

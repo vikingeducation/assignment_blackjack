@@ -13,7 +13,7 @@
     </div>
   </div>
 
-  <h2>Dealer Hand</h2>
+  <h2>Dealer Hand <span class="label label-primary"><%= @blackjack.dealer_hand.best_value %></span></h2>
   <div class="row">
     <div class="dealer-hand">
       <ul>
@@ -23,12 +23,8 @@
       </ul>
     </div>
   </div>
-  <div class="row hand-value">
-    <h3>Dealer's Hand Value</h3>
-    <%= @blackjack.dealer_hand.best_value %>
-  </div>
 
-  <h2>Your Hand</h2>
+  <h2>Your Hand <span class="label label-primary"><%= @blackjack.player_hand.best_value %></span></h2>
   <div class="row">
     <div class="player-hand">
       <ul>
@@ -37,10 +33,6 @@
         <% end %>
       </ul>
     </div>
-  </div>
-  <div class="row hand-value">
-    <h3>Your Hand Value</h3>
-    <%= @blackjack.player_hand.best_value %>
   </div>
 
 

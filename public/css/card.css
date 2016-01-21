@@ -1,0 +1,42 @@
+.card {
+  margin: 10px;
+  border: 1px solid black;
+  border-radius: 10px;
+  height: 250px;
+  font-size: 25px;
+  font-weight: bold;
+  padding-top: 10px;
+}
+
+.middle {
+  position: relative;
+  top: 0;
+  font-size: 55px;
+  text-align: center;
+}
+
+.flip {
+  position: absolute;
+  bottom: -10px;
+  right: 0px;
+  background-color: transparent;
+  border: 0px;
+  transform: scaleX(-1) scaleY(-1);
+}
+
+/* .suit { */
+/*   font-size: 20px; */
+/* } */
+/*  */
+/* .suit { */
+/*   font-size: 20px; */
+/* } */
+
+.red {
+  color: red;
+  border-color: red;
+}
+
+.black {
+  color: black;
+}
