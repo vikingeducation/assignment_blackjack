@@ -13,27 +13,28 @@
     </div>
   </div>
 
+  <h2>Dealer Hand</h2>
   <div class="row">
-    <div class="player-hand">
+    <div class="dealer-hand">
       <ul>
-        <%= erb :"shared/card" %>
-        <%= erb :"shared/card" %>
-        <%= erb :"shared/card" %>
-        <%= erb :"shared/card" %>
+        <% @blackjack.dealer_hand.cards.each do |card| %>
+          <%= erb :"shared/card", locals: {card: card} %>
+        <% end %>
       </ul>
     </div>
   </div>
 
+  <h2>Your Hand</h2>
   <div class="row">
-    <div class="dealer-hand">
+    <div class="player-hand">
       <ul>
-        <%= erb :"shared/card" %>
-        <%= erb :"shared/card" %>
-        <%= erb :"shared/card" %>
-        <%= erb :"shared/card" %>
+        <% @blackjack.player_hand.cards.each do |card| %>
+          <%= erb :"shared/card", locals: {card: card} %>
+        <% end %>
       </ul>
     </div>
   </div>
+
 
   <div class="row">
     <div class="col-sm-12">

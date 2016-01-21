@@ -14,14 +14,23 @@ get '/' do
 end
 
 get '/blackjack' do
+  if session[:player_hand]
+    @blackjack = load_session
+  else
+    @blackjack = new_game
+  end
   @test = session[:status]
   erb :game
 end
 
 post '/blackjack/hit' do
+  player_hand = Hand.deserialize(session[:player_hand])
+  dealer_hand = Hand.deserialize(session[:dealer_hand])
+  @blackjack = Blackjack.new(player_hand, dealer_hand)
+  @blackjack.deal(@blackjack.player_hand)
+  session[:player_hand] = @blackjack.player_hand.serialize
+  session[:dealer_hand] = @blackjack.dealer_hand.serialize
   session[:status] = "hit"
-  session[:player_cards] = ['AS','JC']
-
   redirect '/blackjack'
 end
 

@@ -2,9 +2,9 @@ class Blackjack
 
   attr_accessor :player_hand, :dealer_hand
 
-  def initialize(player_hand,dealer_hand)
-    @player_hand = player_hand || Hand.new
-    @dealer_hand = dealer_hand || Hand.new
+  def initialize(player_hand = Hand.new,dealer_hand = Hand.new)
+    @player_hand = player_hand
+    @dealer_hand = dealer_hand
   end
 
   SUITS = {
@@ -55,13 +55,13 @@ class Hand
     str.chars.each_slice(2) do |card|
       suit = Blackjack::SUITS.invert[card[1]]
       rank = Blackjack::RANKS.invert[card[0]]
-      hand.cards << Card.new(rank,suit)
+      hand.cards << Card.new(rank: rank,suit: suit)
     end
     hand
   end
 
-  def initialize(cards)
-    @cards = []
+  def initialize(cards = [])
+    @cards = cards
   end
 
   def aces
@@ -79,9 +79,15 @@ class Hand
     total
   end
 
+  def serialize
+    @cards.map(&:to_s).join
+  end
+
 end
 
 class Card
+  attr_accessor :rank, :suit
+
   def initialize(rank:, suit:)
     @rank = rank
     @suit = suit
@@ -95,5 +101,3 @@ class Card
     @rank == "Ace"
   end
 end
-
-p Card.new(rank: "Ace", suit: "Spades").to_s
