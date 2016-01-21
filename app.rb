@@ -20,3 +20,16 @@ post '/blackjack' do
 
   erb :blackjack, :locals => {:player_hand => player_hand, :dealer_hand => dealer_hand, :bankroll => game.player.bankroll}
 end
+
+get '/hit' do
+  
+end
+
+get '/stay' do
+end
+
+get '/double' do
+end
+
+get '/split' do
+end
