@@ -4,23 +4,17 @@
   <p>Player Card: <%= card %></p>
 <% end %>
 
-<h3> Dealer Cards </h3
+<h3> Dealer Cards </h3>
 
 <% dealer_deck.each do |card| %>
   <p>Dealer Card: <%= card %></p>
 <% end %>
 
+#<%disabled = "active"%>
+
 <% if loser %>
-  <p><%= loser.upcase %> lost!</p>
-  <form method='get' action='/'>
-    <input type='submit' value='Play Again'>
-  </form>
+   <p><%= loser.upcase %> lost!</p>
+   <%= erb :"lost" %>
+<% else %>
+   <%= erb :"continue_playing" %>
 <% end %>
-
-<form method='get' action='/blackjack/hit'>
-  <input type='submit' name='player_action' value='Hit'>
-</form>
-
-<form method='get' action='/blackjack/stay'>
-  <input type='submit' name='player_action' value='Stay'>
-</form>
