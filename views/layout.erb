@@ -6,9 +6,18 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
-  <body>
-    <h1>Welcome to Blackjack!</h1>
-
-    <%= yield %>
+  <body class="container">
+    <div class="row">
+      <div class="col-md-12 text-center panel panel-primary">
+        <div class="panel-heading">
+          <h3 class=>Welcome to Blackjack!</h3>
+        </div>
+      </div>  
+    </div>
+    <div class="row">
+      <div class = "col-md-8 col-md-offset-2">
+        <%= yield %>
+      </div>
+    </div
   </body>
 </html>
