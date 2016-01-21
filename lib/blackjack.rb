@@ -54,6 +54,7 @@ class Blackjack
     hand
   end
 
+
   def outcome(dealer, player)
     dealer_score = calculate_score(dealer)
     player_score = calculate_score(player)
