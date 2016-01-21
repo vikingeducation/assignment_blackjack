@@ -1,6 +1,16 @@
 
 <div class="row">
   <div class="col-md-12">
-    <a href="/blackjack">THIS IS THE GAME</a>
+
+    <% player_hand.each do |card| %>
+     <img src = <%= card %>>
+    <% end %>
+
+    <br>
+
+    <% dealer_hand.each do |card| %>    
+      <img src = <%= card %>> 
+    <% end %>  
+
   </div>
 </div>

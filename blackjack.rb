@@ -3,6 +3,8 @@ require './dealer.rb'
 require './player.rb'
 
 class Blackjack
+  attr_accessor :player, :dealer
+  attr_reader :turn, :deck
 
   def initialize
     @deck = Cards.new
@@ -48,7 +50,7 @@ class Blackjack
   end
 
   def split(user)
-    if user.hand[0][0] == user.hand[1][0]
+
   end
 
   def stay
