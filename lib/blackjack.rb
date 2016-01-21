@@ -1,8 +1,8 @@
 class Blackjack
 
-  attr_accessor :player_hand, :dealer_hand
+  attr_accessor :player_hand, :dealer_hand, :player_bankroll, :player_bet
 
-  def initialize(player_hand = Hand.new,dealer_hand = Hand.new, player_bankroll, player_bet)
+  def initialize(player_hand = Hand.new,dealer_hand = Hand.new, player_bankroll=0, player_bet=0)
     @player_hand = player_hand
     @player_bankroll = player_bankroll
     @player_bet = player_bet
