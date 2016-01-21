@@ -27,7 +27,7 @@ get '/blackjack' do
   player_deck = JSON.parse( session[:player_deck] )
   dealer_deck = JSON.parse( session[:dealer_deck] )
   deck = JSON.parse( session[:main_deck] )
-  erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck}
+  erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => nil}
 end
 
 post '/blackjack' do
@@ -58,7 +58,7 @@ post '/blackjack' do
     # dealer_deck = JSON.parse( session[:dealer_deck] )
     # deck = JSON.parse( session[:main_deck] )
 
-    erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck}
+    erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => nil}
 
 end
 
@@ -68,14 +68,36 @@ get '/blackjack/hit' do
   dealer_deck = JSON.parse( session[:dealer_deck] )
   deck = JSON.parse( session[:main_deck] )
 
+  loser = nil
+
   game = Blackjack.new(deck, player_deck, dealer_deck)
   
   game.deal_card(player_deck)
 
   session['player_deck'] = game.player_cards.to_json
   session['main_deck'] = game.deck.to_json
-  print "Player Lost!" if game.lost?(player_deck)
+  loser = "player" if game.lost?(player_deck)
 
-  erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck}
+  erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => loser}
+
+end
+
+get '/blackjack/stay' do
+
+  player_deck = JSON.parse( session[:player_deck] )
+  dealer_deck = JSON.parse( session[:dealer_deck] )
+  deck = JSON.parse( session[:main_deck] )
+
+  loser = nil
+
+  game = Blackjack.new(deck, player_deck, dealer_deck)
+  
+  game.deal_card(dealer_deck)
+
+  session['dealer_deck'] = game.dealer_cards.to_json
+  session['main_deck'] = game.deck.to_json
+  loser = "dealer" if game.lost?(dealer_deck)
+
+  erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => loser}
 
 end

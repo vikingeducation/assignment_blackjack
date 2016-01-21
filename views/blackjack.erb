@@ -10,6 +10,13 @@
   <p>Dealer Card: <%= card %></p>
 <% end %>
 
+<% if loser %>
+  <p><%= loser.upcase %> lost!</p>
+  <form method='get' action='/'>
+    <input type='submit' value='Play Again'>
+  </form>
+<% end %>
+
 <form method='get' action='/blackjack/hit'>
   <input type='submit' name='player_action' value='Hit'>
 </form>
