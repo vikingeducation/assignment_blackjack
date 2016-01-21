@@ -16,7 +16,7 @@ post '/blackjack' do
   game.new_hand
   player_hand = get_hand(game.player.hand)
   dealer_hand = get_hand(game.dealer.hand)
-  p player_hand
+  game.player.bankroll = params[:bankroll]
 
-  erb :blackjack, :locals => {:player_hand => player_hand, :dealer_hand => dealer_hand}
+  erb :blackjack, :locals => {:player_hand => player_hand, :dealer_hand => dealer_hand, :bankroll => game.player.bankroll}
 end

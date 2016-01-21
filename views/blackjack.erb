@@ -1,16 +1,41 @@
 
 <div class="row">
-  <div class="col-md-12">
-
-    <% player_hand.each do |card| %>
-     <img src = <%= card %>>
-    <% end %>
-
-    <br>
-
-    <% dealer_hand.each do |card| %>    
-      <img src = <%= card %>> 
-    <% end %>  
-
+  <div class="col-md-4 col-md-offset-4 col-centered">
+    <% dealer_hand.each do |card| %> 
+      <img src = <%= card %> style = "height: 250px; width: 150px"> 
+    <% end %> 
   </div>
 </div>
+
+<div class = "row">
+  <div class="col-md-4 col-md-offset-4 col-centered">
+    <% player_hand.each do |card| %>
+     <img src = <%= card %> style = "height: 250px; width: 150px">
+    <% end %> 
+  </div>
+</div>
+
+<div class = "row">
+  <h4><%= "Player Bankroll: #{bankroll}" %><h4>
+    <form action="/blackjack" method="post">
+      <label for="bankroll col-md-offset-2">Please enter your bet</label>
+        <br>
+        <div class="input-group col-md-8">
+          <span class="input-group-btn">
+            <input class="form-control col-md-3" type ="text" name="bankroll" placeholder="50">
+            <input type="submit" value="Submit" class="btn btn-md btn-success">
+          </span>
+      </div>
+    </form>
+</div>
+
+<div class = "row">
+  <div class = 
+  <a href = "/hit" class = "btn btn-md btn-default">Hit</a>
+  <a href = "/stay" class = "btn btn-md btn-default">Stay</a>
+  <a href = "/double" class = "btn btn-md btn-default">Double</a>
+  <a href = "/split" class = "btn btn-md btn-default">Split</a>
+</div>
+
+
+
