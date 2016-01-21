@@ -47,11 +47,25 @@ class Blackjack
 
   def dealer_hit(hand)
     score = calculate_score(hand)
-    if score < 17
+    until score >= 17
       hit(hand)
+       score = calculate_score(hand)
     end
+    hand
   end
 
+  def outcome(dealer, player)
+    dealer_score = calculate_score(dealer)
+    player_score = calculate_score(player)
+    if player_score > dealer_score
+      outcome = "win"
+    elsif player_score == dealer_score
+      outcome = "tie"
+    else
+      outcome = "loss"
+    end
+    outcome
+  end
 
 
   def bust?(hand)

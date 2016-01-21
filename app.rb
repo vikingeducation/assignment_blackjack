@@ -36,7 +36,15 @@ end
 
 
 get '/loss' do
-  erb :loss, locals: { player: session[:player] }
+  erb :loss, locals: { dealer: session[:dealer], player: session[:player] }
+end
+
+get '/win' do
+  erb :win, locals: { dealer: session[:dealer], player: session[:player]}
+end
+
+get '/tie' do
+  erb :tie, locals: { dealer: session[:dealer], player: session[:player]}
 end
 
 
@@ -56,7 +64,16 @@ post '/blackjack/hit' do
 end
 
 post '/blackjack/stay' do
+  blackjack = Blackjack.new(load_deck)
+  new_dealer = blackjack.dealer_hit(session[:dealer])
+  save_hands(new_dealer, session[:player], session[:deck])
 
+  if blackjack.bust?(new_dealer)
+    redirect('/win')
+  else
+    outcome = blackjack.outcome(new_dealer, session[:player])
+    redirect("/#{outcome}")
+  end
 end
 
 post '/blackjack/split' do
