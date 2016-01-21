@@ -4,10 +4,15 @@ require 'sinatra'
 require 'thin'
 require 'pry-byebug'
 require 'sinatra/reloader' if development?
+require './helpers/session_helper.rb'
+require './lib/blackjack.rb'
 
 also_reload 'lib/*'
+also_reload 'helpers/*'
 
 enable :sessions
+
+helpers SessionHelper
 
 get '/' do
   erb :home
@@ -24,18 +29,26 @@ get '/blackjack' do
 end
 
 post '/blackjack/hit' do
-  player_hand = Hand.deserialize(session[:player_hand])
-  dealer_hand = Hand.deserialize(session[:dealer_hand])
-  @blackjack = Blackjack.new(player_hand, dealer_hand)
+  @blackjack = load_session
+
   @blackjack.deal(@blackjack.player_hand)
-  session[:player_hand] = @blackjack.player_hand.serialize
-  session[:dealer_hand] = @blackjack.dealer_hand.serialize
+
+  save_session(@blackjack)
+
   session[:status] = "hit"
+
   redirect '/blackjack'
 end
 
 post '/blackjack/stay' do
+  @blackjack = load_session
+
+  @blackjack.dealers_turn
+
+  save_session(@blackjack)
+
   session[:status] = "stay"
+
   redirect '/blackjack'
 end
 
@@ -44,5 +57,10 @@ post '/blackjack/split' do
 end
 
 post '/blackjack/double' do
+  redirect '/blackjack'
+end
+
+post '/blackjack/new_game' do
+  new_game
   redirect '/blackjack'
 end

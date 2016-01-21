@@ -30,6 +30,23 @@ class Blackjack
     'King' => "K"
   }
 
+  VALUES = {
+    'Ace' => 11,
+    '2' => 2,
+    '3' => 3,
+    '4' => 4,
+    '5' => 5,
+    '6' => 6,
+    '7' => 7,
+    '8' => 8,
+    '9' => 9,
+    '10' => 10,
+    'Jack' => 10,
+    'Queen' => 10,
+    'King' => 10
+  }
+
+
   def random_card
     Card.new(rank: RANKS.keys.sample, suit: SUITS.keys.sample)
   end
@@ -43,6 +60,12 @@ class Blackjack
 
   def deal(player)
     player.cards << random_card
+  end
+
+  def dealers_turn
+    while @dealer_hand.hard_value < 17
+      deal(@dealer_hand)
+    end
   end
 
 end
@@ -79,6 +102,16 @@ class Hand
     total
   end
 
+  def hard_value
+    total = @cards.inject(0) { |sum, card| sum += card.value }
+
+    aces.each do |ace|
+      total -= 10
+    end
+
+    total
+  end
+
   def serialize
     @cards.map(&:to_s).join
   end
@@ -99,5 +132,9 @@ class Card
 
   def ace?
     @rank == "Ace"
+  end
+
+  def value
+    Blackjack::VALUES[@rank]
   end
 end
