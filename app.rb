@@ -47,7 +47,7 @@ post '/blackjack/stay' do
 
   save_session(@blackjack)
 
-  session[:status] = "stay"
+  session[:status] = "round_over"
 
   redirect '/blackjack'
 end
@@ -62,5 +62,6 @@ end
 
 post '/blackjack/new_game' do
   new_game
+  session[:status] = "play"
   redirect '/blackjack'
 end

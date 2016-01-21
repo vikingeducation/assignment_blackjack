@@ -2,8 +2,10 @@ class Blackjack
 
   attr_accessor :player_hand, :dealer_hand
 
-  def initialize(player_hand = Hand.new,dealer_hand = Hand.new)
+  def initialize(player_hand = Hand.new,dealer_hand = Hand.new, player_bankroll, player_bet)
     @player_hand = player_hand
+    @player_bankroll = player_bankroll
+    @player_bet = player_bet
     @dealer_hand = dealer_hand
   end
 
@@ -68,6 +70,21 @@ class Blackjack
     end
   end
 
+  def winner
+    player_value = @player_hand.best_value
+    dealer_value = @dealer_hand.best_value
+    if player_value > 21
+      :dealer
+    elsif dealer_value > 21
+      :player
+    elsif  dealer_value > player_value
+      :dealer
+    elsif  dealer_value < player_value
+      :player
+    else
+      :draw
+    end
+  end
 end
 
 class Hand
@@ -138,7 +155,7 @@ class Card
   end
 
   def ace?
-    @rank == "Ace"
+    @rank == "A"
   end
 
   def unicode_suit
