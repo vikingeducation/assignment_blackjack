@@ -2,6 +2,17 @@
   <h1>Game</h1>
 
   <div class="row">
+    <div class="col-sm-6">
+      <h3>Total Player Bankroll</h3>
+      <%= %>
+    </div>
+    <div class="col-sm-6">
+      <h3>Current Bet</h3>
+      <%= %>
+    </div>
+  </div>
+
+  <div class="row">
     <div class="player-hand">
       <ul>
         <%= erb :"shared/card" %>
@@ -22,5 +33,21 @@
       </ul>
     </div>
   </div>
-</div>
 
+  <div class="row">
+    <div class="col-sm-12">
+      <form action="blackjack/hit">
+        <button class="btn btn-success">Hit</button>
+      </form>
+      <form action="blackjack/stay">
+        <button class="btn btn-primary">Stay</button>
+      </form>
+      <form action="blackjack/split">
+        <button class="btn btn-primary">Split</button>
+      </form>
+      <form action="blackjack/double">
+        <button class="btn btn-primary">Double</button>
+      </form>
+    </div>
+  </div>
+</div>
