@@ -1,9 +1,11 @@
-require './deck.rb'
+require_relative 'deck'
+
+
 class Blackjack
 
   attr_reader :dealers_hand, :players_hand
 
-  def initialize(deck)
+  def initialize(deck=nil)
     @deck = Deck.new if deck.nil?
   end
 
@@ -11,14 +13,14 @@ class Blackjack
     @dealers_hand = []
     @players_hand = []
     2.times do
-      @layers_hand << @deck.deal_card
+      @players_hand << @deck.deal_card
       @dealers_hand << @deck.deal_card
     end
-    @dealers_hand, @players_hand
+    [@dealers_hand, @players_hand]
   end
 
-  def hit
-    @players_hand << @deck.deal_card
+  def hit(hand)
+    hand << @deck.deal_card
   end
 
   def split
@@ -31,6 +33,6 @@ class Blackjack
       second_pair << @deck.deal_card
       @players_hand = [first_pair, second_pair]
     end
-
   end
+
 end

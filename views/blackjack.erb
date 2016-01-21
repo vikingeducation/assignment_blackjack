@@ -1,14 +1,14 @@
 <h1>Dealers hand: <%= dealer[1] %> </h1>
 <h1>Players hand: <%= player %> </h1>
 
-<form action='/hit'>
+<form action='/blackjack/hit' method='post'>
   <button type="submit" class="btn btn-default">Hit</button>
 </form>
 
-<form action='/stay'>
+<form action='/blackjack/stay' method='post'>
   <button type="submit" class="btn btn-default">Stay</button>
 </form>
 
-<form action='/split'>
+<form action='/blackjack/split' method='post'>
   <button type="submit" class="btn btn-default">Split</button>
 </form>

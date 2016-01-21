@@ -1,8 +1,9 @@
 #!/usr/bin/env ruby
 require 'sinatra'
 require 'sinatra/reloader' if development?
-require './helpers/blackjack.rb'
+require './lib/blackjack.rb'
 require './helpers/card_saver.rb'
+require 'pry-byebug'
 # dealer and player are each dealt 2 cards
 # player can see their two cards, but only the 2nd card for the dealer
 # session stores: bet amount, how much money they have, their hand, dealer's hand, deck
@@ -27,19 +28,27 @@ get '/new' do
   erb :blackjack, :locals => { :dealer => dealer, :player => player}
 end
 
-
-post '/blackjack' do
-  erb :blackjack
-end
-
-post '/hit' do
-  
-end
-
-post '/stay' do
+get '/blackjack' do
+  sessions[:blackjack]
 
 end
 
-post '/split' do
+post '/blackjack/hit' do
+  blackjack = Blackjack.new
+  dealer = load_dealer
+  player = load_player
+  # binding.pry
+  new_player = blackjack.hit(player)
+  erb :blackjack, :locals => { :dealer => dealer, :player => new_player}
+
+  save_hands(dealer, new_player)
+
+end
+
+post '/blackjack/stay' do
+
+end
+
+post '/blackjack/split' do
 
 end
