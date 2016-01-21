@@ -2,7 +2,10 @@
 
 require 'sinatra'
 require 'thin'
+require 'pry-byebug'
 require 'sinatra/reloader' if development?
+
+also_reload 'lib/*'
 
 enable :sessions
 
@@ -11,21 +14,26 @@ get '/' do
 end
 
 get '/blackjack' do
+  @test = session[:status]
   erb :game
 end
 
 post '/blackjack/hit' do
-  erb :game
+  session[:status] = "hit"
+  session[:player_cards] = ['AS','JC']
+
+  redirect '/blackjack'
 end
 
 post '/blackjack/stay' do
-  erb :game
+  session[:status] = "stay"
+  redirect '/blackjack'
 end
 
 post '/blackjack/split' do
-  erb :game
+  redirect '/blackjack'
 end
 
 post '/blackjack/double' do
-  erb :game
+  redirect '/blackjack'
 end
