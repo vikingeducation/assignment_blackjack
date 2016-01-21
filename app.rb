@@ -20,29 +20,28 @@ get '/' do
 end
 
 get '/new' do
-  blackjack = Blackjack.new
+  blackjack = Blackjack.new(session[:deck])
   dealer, player = blackjack.start_game
+  shoe = blackjack.get_shoe
 
-  save_hands(dealer, player)
+  save_hands(dealer, player, shoe)
 
   erb :blackjack, :locals => { :dealer => dealer, :player => player}
 end
 
 get '/blackjack' do
-  sessions[:blackjack]
-
+  
+  erb :blackjack, locals: { dealer: session[:dealer], player: session[:player], deck: session[:deck]}
 end
 
 post '/blackjack/hit' do
-  blackjack = Blackjack.new
+  blackjack = Blackjack.new(load_deck)
   dealer = load_dealer
   player = load_player
-  # binding.pry
   new_player = blackjack.hit(player)
-  erb :blackjack, :locals => { :dealer => dealer, :player => new_player}
+  save_hands(dealer, new_player, blackjack.get_shoe)
 
-  save_hands(dealer, new_player)
-
+  redirect('/blackjack')
 end
 
 post '/blackjack/stay' do

@@ -3,10 +3,13 @@ require_relative 'deck'
 
 class Blackjack
 
-  attr_reader :dealers_hand, :players_hand
+  attr_reader :dealers_hand, :players_hand, :deck
 
   def initialize(deck=nil)
-    @deck = Deck.new if deck.nil?
+    @deck = Deck.new
+    @deck.create_shoe if deck.nil?
+    @deck.shoe = deck unless deck.nil?
+
   end
 
   def start_game
@@ -33,6 +36,10 @@ class Blackjack
       second_pair << @deck.deal_card
       @players_hand = [first_pair, second_pair]
     end
+  end
+
+  def get_shoe
+    @deck.shoe
   end
 
 end
