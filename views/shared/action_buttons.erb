@@ -9,12 +9,8 @@
         <button class="btn btn-primary btn-lg">Stay</button>
       </form>
 
-      <form action="blackjack/split" method="post">
-        <button class="btn btn-primary btn-lg">Split</button>
-      </form>
-
       <form action="blackjack/double" method="post">
-        <button class="btn btn-primary btn-lg">Double</button>
+        <button class="btn btn-primary btn-lg" <%= "disabled" if !@blackjack.can_double? %> >Double</button>
       </form>
     </div>
   </div>

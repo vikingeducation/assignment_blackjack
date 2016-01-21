@@ -7,11 +7,14 @@
   <title>Blackjack</title>
 </head>
 <body>
-  <%# <%= erb :nav_bar %>
-  <% if flash[:notice] %>
-    <h2><%= flash[:notice] %></h2>
-  <% end %>
-  <%= yield %>
-  <script src="/js/bootstrap.min.js"></script>
+
+    <%# <%= erb :nav_bar %>
+    <% if flash[:notice] %>
+    <div class="alert alert-warning">
+      <h2><%= flash[:notice] %></h2>
+    </div>
+    <% end %>
+    <%= yield %>
+    <script src="/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -34,9 +34,12 @@ post '/blackjack/hit' do
 
   @blackjack.deal(@blackjack.player_hand)
 
-  save_session(@blackjack)
+  if @blackjack.winner == :dealer
+    session[:status] = "round_over"
+    @blackjack.resolve_bet
+  end
 
-  session[:status] = "active"
+  save_session(@blackjack)
 
   redirect '/blackjack'
 end
@@ -66,12 +69,16 @@ post '/blackjack/bet' do
   end
 end
 
-post '/blackjack/split' do
-  redirect '/blackjack'
-end
-
 post '/blackjack/double' do
-  redirect '/blackjack'
+
+  blackjack = load_session
+
+  if blackjack.double
+    save_session(blackjack)
+    redirect '/blackjack/stay', 307
+  else
+    redirect '/blackjack'
+  end
 end
 
 post '/blackjack/new_round' do

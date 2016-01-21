@@ -20,7 +20,7 @@
     <%= erb :"shared/hand", locals: {hand: @blackjack.player_hand }%>
     <%= erb :"shared/game_result" %>
   <% else %>
-    <%= erb :"shared/hand", locals: {hand: @blackjack.dealer_hand }%>
+    <%= erb :"shared/hidden_hand", locals: {hand: @blackjack.dealer_hand }%>
     <%= erb :"shared/hand", locals: {hand: @blackjack.player_hand }%>
     <%= erb :"shared/action_buttons" %>
   <% end %>

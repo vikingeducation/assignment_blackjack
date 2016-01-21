@@ -55,6 +55,15 @@ class Blackjack
     @player_bet = amount
   end
 
+  def can_double?
+    @player_hand.cards.size == 2 && @player_bet * 2 <= @player_bankroll
+  end
+
+  def double
+    @player_bet *= 2
+    deal(@player_hand)
+  end
+
   def random_card
     Card.new(rank: RANKS.keys.sample, suit: SUITS.keys.sample)
   end

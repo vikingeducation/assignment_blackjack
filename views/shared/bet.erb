@@ -1,11 +1,20 @@
 <div class="col-sm-6 col-sm-offset-3">
-  <h1>Place your bet</h1>
 
-  <form action="blackjack/bet" method="post">
-    <div class="form-group">
-      <label for="bet_amount">Bet Amount</label>
-      <input type="text" class="form-control" name="bet_amount">
-    </div>
-    <input type="submit" class='btn btn-success'>
-  </form>
+
+  <% if @blackjack.player_bankroll > 0 %>
+    <h1>Place your bet</h1>
+
+    <form action="blackjack/bet" method="post">
+      <div class="form-group">
+        <label for="bet_amount">Bet Amount</label>
+        <input type="text" class="form-control" name="bet_amount">
+      </div>
+      <input type="submit" class='btn btn-success'>
+    </form>
+  <% else %>
+    <h1>You're Broke!</h1>
+    <form action="blackjack/new_game" method="post">
+      <button  class="btn btn-primary btn-lg"> Start a New Game </button>
+    </form>
+  <% end %>
 </div>
