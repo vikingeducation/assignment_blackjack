@@ -75,7 +75,13 @@ class Blackjack
       "Player Wins!"
     elsif dealer_totals == 21
       "Dealer Wins"
-    end  
-  end    
+    end
+
+  end  
+
+  def lost?(cards)
+    return true if sum_cards(cards) > 21
+    false
+  end  
 
 end
