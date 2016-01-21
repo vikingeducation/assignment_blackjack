@@ -1,3 +1,5 @@
+require 'pp'
+
 class Blackjack
 
   CARD_ARRAY = ['Ace', 'King', 'Queen', 'Jack', ('2'..'10').to_a].flatten
@@ -9,10 +11,6 @@ class Blackjack
     @player_cards = player_cards || Array.new
     @dealer_cards = dealer_cards || Array.new
     deal_cards
-  end
-
-  def shuffle
-
   end
 
   def create_deck
@@ -40,23 +38,28 @@ class Blackjack
   def sum_cards(cards)
     
     sum = 0
-    @card.each do |card|
+    cards.each do |card|
+      case card
       when "King", "Queen", "Jack"
         sum += 10
-      when ("2".."10").to_a.include?(card)
+      when "Ace"
+        next
+      else
         sum += card.to_i
       end
     end  
 
     aces = cards.select {|card| card == "Ace"}
-    aces.each do |ace|
-      
-      if sum += 11 > 21
-         sum += 1
-      else
-         sum += 11
-      end
-    end  
+    unless aces.nil?
+      aces.each do |ace|
+        
+        if (sum + 11) > 21
+           sum += 1
+        else
+           sum += 11
+        end
+      end 
+    end 
     sum
   end
 
