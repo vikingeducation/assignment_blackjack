@@ -62,7 +62,7 @@ post '/blackjack/bet' do
     redirect '/blackjack'
   else
     flash[:notice] = "You can't bet more than you have, buddy."
-    redirect '/blackjack/bet'
+    redirect '/blackjack'
   end
 end
 
