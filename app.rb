@@ -11,12 +11,12 @@ get '/' do
   erb :index
 end
 
-get '/blackjack' do
+post '/blackjack' do
   game = Blackjack.new
   game.new_hand
   player_hand = get_hand(game.player.hand)
   dealer_hand = get_hand(game.dealer.hand)
   p player_hand
-  
+
   erb :blackjack, :locals => {:player_hand => player_hand, :dealer_hand => dealer_hand}
 end
