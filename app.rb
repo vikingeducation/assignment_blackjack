@@ -24,7 +24,7 @@ get '/blackjack' do
   else
     @blackjack = new_game
   end
-  @test = session[:status]
+  
   erb :game
 end
 
