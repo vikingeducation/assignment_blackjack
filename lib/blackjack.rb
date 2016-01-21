@@ -2,11 +2,13 @@ class Blackjack
 
   attr_accessor :player_hand, :dealer_hand, :player_bankroll, :player_bet
 
-  def initialize(player_hand = Hand.new,dealer_hand = Hand.new, player_bankroll=0, player_bet=0)
+  def initialize(player_hand = Hand.new,dealer_hand = Hand.new, player_bankroll = 1000, player_bet=0)
     @player_hand = player_hand
+    player_hand.name = "Player Hand"
     @player_bankroll = player_bankroll
     @player_bet = player_bet
     @dealer_hand = dealer_hand
+    dealer_hand.name = "Dealer Hand"
   end
 
   SUITS = {
@@ -48,6 +50,10 @@ class Blackjack
     'K' => 10
   }
 
+  def place_bet(amount)
+    return false if amount > @player_bankroll
+    @player_bet = amount
+  end
 
   def random_card
     Card.new(rank: RANKS.keys.sample, suit: SUITS.keys.sample)
@@ -64,8 +70,18 @@ class Blackjack
     player.cards << random_card
   end
 
+  def resolve_bet
+    case winner
+    when :player
+      @player_bankroll += @player_bet
+    when :dealer
+      @player_bankroll -= @player_bet
+    end
+  end
+
   def dealers_turn
-    while @dealer_hand.hard_value < 17
+    return if winner == :dealer
+    while @dealer_hand.best_value < 17 || @dealer_hand.best_value == 17 && @dealer_hand.hard_value < 17
       deal(@dealer_hand)
     end
   end
@@ -88,7 +104,7 @@ class Blackjack
 end
 
 class Hand
-  attr_accessor :cards
+  attr_accessor :cards, :name
 
   def self.deserialize(str)
     hand = new

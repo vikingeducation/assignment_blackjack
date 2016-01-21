@@ -12,31 +12,16 @@
     </div>
   </div>
 
-  <h2>Dealer Hand <span class="label label-primary"><%= @blackjack.dealer_hand.best_value %></span></h2>
-  <div class="row">
-    <div class="dealer-hand">
-      <ul>
-        <% @blackjack.dealer_hand.cards.each do |card| %>
-          <%= erb :"shared/card", locals: {card: card} %>
-        <% end %>
-      </ul>
-    </div>
-  </div>
 
-  <h2>Your Hand <span class="label label-primary"><%= @blackjack.player_hand.best_value %></span></h2>
-  <div class="row">
-    <div class="player-hand">
-      <ul>
-        <% @blackjack.player_hand.cards.each do |card| %>
-          <%= erb :"shared/card", locals: {card: card} %>
-        <% end %>
-      </ul>
-    </div>
-  </div>
-  <% if session[:status] == "round_over" %>
+  <% if session[:status] == "bet" %>
+    <%= erb :"shared/bet" %>
+  <% elsif session[:status] == "round_over" %>
+    <%= erb :"shared/hand", locals: {hand: @blackjack.dealer_hand }%>
+    <%= erb :"shared/hand", locals: {hand: @blackjack.player_hand }%>
     <%= erb :"shared/game_result" %>
   <% else %>
+    <%= erb :"shared/hand", locals: {hand: @blackjack.dealer_hand }%>
+    <%= erb :"shared/hand", locals: {hand: @blackjack.player_hand }%>
     <%= erb :"shared/action_buttons" %>
   <% end %>
-
 </div>

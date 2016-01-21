@@ -1,18 +1,40 @@
+body {
+  text-align: center;
+}
 .card {
   margin: 10px;
-  border: 1px solid black;
+  border: 2px solid black;
+  text-align: left;
   border-radius: 10px;
-  height: 250px;
+  height: 200px;
   font-size: 25px;
   font-weight: bold;
   padding-top: 10px;
+  width: 130px;
+  line-height: 25px;
+}
+
+.card:hover {
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.2);
+}
+
+.card-container {
+  transition: transform 0.2s;
+}
+
+.card-container:hover {
+  transform: translateY(-4px);
 }
 
 .middle {
   position: relative;
   top: 0;
-  font-size: 55px;
+  font-size: 35px;
   text-align: center;
+}
+
+.flip:hover {
+  box-shadow: 10px 0px 0px rgba(0,0,0,0);
 }
 
 .flip {
@@ -24,14 +46,6 @@
   transform: scaleX(-1) scaleY(-1);
 }
 
-/* .suit { */
-/*   font-size: 20px; */
-/* } */
-/*  */
-/* .suit { */
-/*   font-size: 20px; */
-/* } */
-
 .red {
   color: red;
   border-color: red;
@@ -39,4 +53,9 @@
 
 .black {
   color: black;
+}
+
+.action-buttons form {
+  display: inline-block;
+  margin-bottom: 10px;
 }

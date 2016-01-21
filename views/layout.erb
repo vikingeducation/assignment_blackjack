@@ -8,6 +8,9 @@
 </head>
 <body>
   <%# <%= erb :nav_bar %>
+  <% if flash[:notice] %>
+    <h2><%= flash[:notice] %></h2>
+  <% end %>
   <%= yield %>
   <script src="/js/bootstrap.min.js"></script>
 </body>

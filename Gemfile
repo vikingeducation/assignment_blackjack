@@ -4,6 +4,7 @@ source "https://rubygems.org"
 gem 'sinatra'
 gem 'sinatra-contrib'
 gem "thin"
+gem 'rack-flash3'
 
 group :development do
   gem 'pry-byebug'
