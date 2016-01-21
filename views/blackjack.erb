@@ -13,4 +13,6 @@
   <button type="submit" class="btn btn-default">Split</button>
 </form>
 
-<h1>Current shoe: <%= deck %> </h1>
+<% unless deck.nil? %>
+  <h1>Current shoe: <%= deck %> </h1>
+<% end %>

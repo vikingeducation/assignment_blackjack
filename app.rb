@@ -12,6 +12,7 @@ require 'pry-byebug'
 
 helpers CardSaver
 
+
 enable :sessions
 
 
@@ -26,13 +27,18 @@ get '/new' do
 
   save_hands(dealer, player, shoe)
 
-  erb :blackjack, :locals => { :dealer => dealer, :player => player}
+  erb :blackjack, :locals => { :dealer => dealer, :player => player, :deck => shoe}
 end
 
 get '/blackjack' do
-  
   erb :blackjack, locals: { dealer: session[:dealer], player: session[:player], deck: session[:deck]}
 end
+
+
+get '/loss' do
+  erb :loss, locals: { player: session[:player] }
+end
+
 
 post '/blackjack/hit' do
   blackjack = Blackjack.new(load_deck)
@@ -41,7 +47,12 @@ post '/blackjack/hit' do
   new_player = blackjack.hit(player)
   save_hands(dealer, new_player, blackjack.get_shoe)
 
-  redirect('/blackjack')
+  if blackjack.bust?(new_player)
+    redirect('/loss')
+  else
+    redirect('/blackjack')
+  end
+
 end
 
 post '/blackjack/stay' do
