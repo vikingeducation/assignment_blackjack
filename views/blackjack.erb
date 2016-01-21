@@ -1,1 +1,14 @@
-<h1>Here's the card: <%= card %> </h1>
+<h1>Dealers hand: <%= dealer[1] %> </h1>
+<h1>Players hand: <%= player %> </h1>
+
+<form action='/hit'>
+  <button type="submit" class="btn btn-default">Hit</button>
+</form>
+
+<form action='/stay'>
+  <button type="submit" class="btn btn-default">Stay</button>
+</form>
+
+<form action='/split'>
+  <button type="submit" class="btn btn-default">Split</button>
+</form>
