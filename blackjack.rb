@@ -10,7 +10,6 @@ class Blackjack
     @deck = Cards.new
     @player = Player.new
     @dealer = Dealer.new
-    @turn = true
   end
 
   def deal(user)
@@ -53,8 +52,19 @@ class Blackjack
 
   end
 
-  def stay
-    @turn = !@turn
+  # def blackjack?
+
+  # end
+
+  def stay(bet)
+    until hand_value(@dealer) >= 17
+      hit(@dealer)
+    end
+    if hand_value(@dealer) == hand_value(@player)
+      @player.bankroll += bet
+    elsif hand_value(@dealer) < hand_value(@player)
+      @player.bankroll += bet * 2
+    end
   end
 
 end
