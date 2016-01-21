@@ -1,19 +1,4 @@
-
-<div class="row">
-  <div class="col-md-4 col-md-offset-4 col-centered">
-    <% dealer_hand.each do |card| %>
-      <img src = <%= card %> style = "height: 250px; width: 150px">
-    <% end %>
-  </div>
-</div>
-
-<div class = "row">
-  <div class="col-md-4 col-md-offset-4 col-centered">
-    <% player_hand.each do |card| %>
-     <img src = <%= card %> style = "height: 250px; width: 150px">
-    <% end %>
-  </div>
-</div>
+<%= erb :player_hand, :locals => { :player_hand => player_hand, :dealer_hand => dealer_hand } if defined?(bet) && defined?(player_hand) && defined?(dealer_hand)%>
 
 <div class="row">
   <div class = "col-md-4 col-md-offset-4 col-centered">

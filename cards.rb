@@ -16,8 +16,8 @@ class Cards
   end
 
   def update_deck
-    player_hand.each {|card| @deck.delete(card)}
-    dealer_hand.each {|card| @deck.delete(card)}
+    @player_hand.each {|card| @deck.delete(card)}
+    @dealer_hand.each {|card| @deck.delete(card)}
   end
 
 

@@ -12,20 +12,34 @@ get '/' do
 end
 
 post '/blackjack' do
-
-  load_game
+  game = Blackjack.new
+  game.new_hand
+  session[:player_hand] = get_hand(game.player.hand)
+  session[:dealer_hand] = get_hand(game.dealer.hand)
+  session[:deck] = game.deck
   session[:bankroll] = params[:bankroll]
 
-  erb :blackjack, :locals => {:player_hand => player_hand, :dealer_hand => dealer_hand, :bankroll => session[:bankroll]}
+  erb :blackjack, :locals => {
+    :player_hand => session[:player_hand],
+    :dealer_hand => session[:dealer_hand],
+    :bankroll => session[:bankroll]}
 end
 
 post '/bet' do
-  load_game
-  erb :blackjack, :locals => {:bet => params[:bet], :bankroll => session[:bankroll]}
+  game = Blackjack.new
+  load_game(game)
+  session[:bet] = params[:bet]
+
+  erb :blackjack, :locals => {
+    :player_hand => session[:player_hand],
+    :dealer_hand => session[:dealer_hand],
+    :bet => session[:bet],
+    :bankroll => session[:bankroll]
+  }
 end
 
 get '/hit' do
-  
+
 end
 
 get '/stay' do

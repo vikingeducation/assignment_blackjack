@@ -3,8 +3,8 @@ require './dealer.rb'
 require './player.rb'
 
 class Blackjack
-  attr_accessor :player, :dealer
-  attr_reader :turn, :deck
+  attr_accessor :player, :dealer, :deck
+  attr_reader :turn
 
   def initialize
     @deck = Cards.new

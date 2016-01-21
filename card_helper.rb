@@ -8,11 +8,11 @@ module CardHelper
   def get_hand(hand)
     hand.map {|card| img_file(card)}
   end
-  
-  def load_game
-    game = Blackjack.new
-    game.new_hand
-    player_hand = get_hand(game.player.hand)
-    dealer_hand = get_hand(game.dealer.hand)
+
+  def load_game(game)
+    game.deck = session[:deck]
+    game.player.hand = session[:player_hand]
+    game.dealer.hand = session[:dealer_hand]
+    game.player.bankroll = session[:bankroll]
   end
 end
