@@ -2,8 +2,8 @@
 
 require 'sinatra'
 require 'thin'
+require 'rack-flash'
 require 'pry-byebug'
-require 'rack-flash3'
 require 'sinatra/reloader' if development?
 require './helpers/session_helper.rb'
 require './lib/blackjack.rb'
@@ -12,6 +12,7 @@ also_reload 'lib/*'
 also_reload 'helpers/*'
 
 enable :sessions
+use Rack::Flash
 
 helpers SessionHelper
 
