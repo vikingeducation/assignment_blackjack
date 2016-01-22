@@ -59,7 +59,7 @@ class Blackjack
   end
 
   def place_bet(amount)
-    return false if amount > @player_bankroll
+    return false if amount > @player_bankroll || amount <= 0
     @player_bet = amount
   end
 

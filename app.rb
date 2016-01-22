@@ -33,7 +33,7 @@ post '/blackjack/hit' do
 
   @blackjack.deal(@blackjack.player_hand)
 
-  if @blackjack.winner == :dealer
+  if @blackjack.player_hand.best_value > 21
     session[:status] = "round_over"
     @blackjack.resolve_bet
   end
@@ -59,7 +59,7 @@ end
 post '/blackjack/bet' do
   blackjack = load_session
   session[:last_bet] = params[:bet_amount]
-  if blackjack.place_bet(params[:bet_amount].to_i)
+  if blackjack.place_bet(params[:bet_amount].to_i.abs)
     save_session(blackjack)
     session[:status] = 'active'
     redirect '/blackjack'
