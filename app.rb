@@ -11,6 +11,7 @@ enable :sessions
 helpers do
   
   def set_session(game)
+    # byebug
     session['player_deck'] = game.player_cards.to_json
     session['dealer_deck'] = game.dealer_cards.to_json
     session['main_deck'] = game.deck.to_json
@@ -35,8 +36,6 @@ end
 
 
 get '/' do
-  game = Blackjack.new
-  set_session(game)
 
   erb :index
 
@@ -47,47 +46,50 @@ post '/' do
 end
 
 get '/blackjack' do
-  load_session
   
   game = Blackjack.new
 
-  player_deck,dealer_deck,deck,hit,loser,bet,totals = set_session(game)
+  set_session(game)
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session
 
   erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :hit => hit, :loser => loser, :bet => bet, :totals => totals}
 end
 
 post '/blackjack' do
-  load_session
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session
   game = Blackjack.new(deck, player_deck, dealer_deck, hit, loser,bet,totals)
  
-  player_deck,dealer_deck,deck,hit,loser,bet,totals = set_session(game)
+  set_session(game)
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session
 
   erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :hit => hit, :loser => loser, :bet => bet, :totals => totals}
 
 end
 
 get '/blackjack/hit' do
-  load_session
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session
   game = Blackjack.new(deck, player_deck, dealer_deck, hit, loser,bet,totals)
   
   game.deal_card(player_deck)
   loser = game.who_lost
 
   set_session(game)
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session
   
   erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :hit => hit, :loser => loser, :bet => bet, :totals => totals}
 end
 
 get '/blackjack/stay' do
 
-  load_session
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session
 
   game = Blackjack.new(deck, player_deck, dealer_deck, hit, loser,bet,totals)
   
   game.dealer_play
   loser = game.who_lost
 
-  set_session(game) 
+  set_session(game)
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session 
 
   erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => loser, :hit => hit, :bet => bet, :totals => totals}
 
@@ -95,7 +97,7 @@ end
 
 get '/blackjack/double' do
 
-  load_session
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session
 
   game = Blackjack.new(deck, player_deck, dealer_deck, hit, loser,bet,totals)
   
@@ -104,6 +106,7 @@ get '/blackjack/double' do
   loser = game.who_lost
 
   set_session(game)
+  player_deck,dealer_deck,deck,hit,loser,bet,totals = load_session
 
   erb :blackjack, :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => loser, :hit => hit, :bet => bet, :totals => totals}
 
