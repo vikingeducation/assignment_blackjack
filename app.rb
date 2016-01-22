@@ -5,6 +5,7 @@ require './lib/blackjack.rb'
 require './helpers/saver.rb'
 require 'pry-byebug'
 require './helpers/bankroll.rb'
+
 # dealer and player are each dealt 2 cards
 # player can see their two cards, but only the 2nd card for the dealer
 # session stores: bet amount, how much money they have, their hand, dealer's hand, deck
@@ -18,6 +19,9 @@ enable :sessions
 
 
 get '/' do
+  session.each do |key, value|
+    session[key] = nil
+  end
   erb :index
 end
 
@@ -37,7 +41,6 @@ end
 
 get '/blackjack' do
   erb :blackjack, locals: { dealer: session[:dealer], player: session[:player], deck: session[:deck], bankroll: session[:bankroll], bet: session[:bet], outcome: session[:outcome]}
-  session[:outcome] = nil
 end
 
 
@@ -94,6 +97,6 @@ post '/blackjack/stay' do
     outcome = blackjack.outcome(session[:dealer], session[:player])
     session[:outcome] = outcome
     update_bankroll(outcome)
-    redirect("/blackjack")
+    redirect("/blackjack") 
   end
 end

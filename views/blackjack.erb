@@ -1,9 +1,12 @@
 <% unless outcome.nil? %>
-  <%= erb :"shared/outcome", locals: {outcome: outcome} %>
+  <%= erb :"shared/outcome", locals: { dealer: session[:dealer], player: session[:player], bankroll: session[:bankroll], outcome: session[:outcome]} %>
 <% end %>
+
+
 <h1>Dealers hand: <%= dealer %> </h1>
 <h1>Players hand: <%= player %> </h1>
 <h1>Bankroll: <%= bankroll %></h1>
+
 <% unless bet.nil? %>
   <h1>Bet: <%= bet %></h1>
 <% end %>
@@ -33,3 +36,6 @@
 <% unless deck.nil? %>
   <h1>Current shoe: <%= deck %> </h1>
 <% end %>
+
+
+
