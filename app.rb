@@ -26,7 +26,9 @@ post '/blackjack' do
     :player_hand => session[:player_hand],
     :dealer_hand => session[:dealer_hand],
     :bankroll => session[:bankroll],
-    :victory => session[:victory]}
+    :victory => session[:victory],
+    :game => game
+  }
 end
 
 
@@ -46,7 +48,8 @@ post '/bet' do
     :dealer_hand => session[:dealer_hand],
     :bet => session[:bet],
     :bankroll => session[:bankroll],
-    :victory => session[:victory]
+    :victory => session[:victory],
+    :game => game
   }
 end
 
@@ -64,7 +67,8 @@ get '/hit' do
     :dealer_hand => session[:dealer_hand],
     :bet => session[:bet],
     :bankroll => session[:bankroll],
-    :victory => session[:victory]
+    :victory => session[:victory],
+    :game => game
   }
 end
 
@@ -83,7 +87,8 @@ get '/stay' do
     :dealer_hand => session[:dealer_hand],
     :bet => session[:bet],
     :bankroll => session[:bankroll],
-    :victory => session[:victory]
+    :victory => session[:victory],
+    :game => game
   }
 end
 
@@ -112,7 +117,7 @@ end
 # end
 
 get '/end' do
-  # game = Blackjack.new
+  game = Blackjack.new
   # game.new_hand
   # session[:player_hand] = game.player.hand
   # session[:dealer_hand] = game.dealer.hand
@@ -122,7 +127,8 @@ get '/end' do
     :dealer_hand => session[:dealer_hand],
     :bankroll => session[:bankroll],
     :victory => session[:victory],
-    :bet => session[:bet] }
+    :bet => session[:bet],
+    :game => game}
 end
 
 get '/new_hand' do
@@ -138,5 +144,6 @@ get '/new_hand' do
     :player_hand => session[:player_hand],
     :dealer_hand => session[:dealer_hand],
     :bankroll => session[:bankroll],
-    :victory => session[:victory]}
+    :victory => session[:victory],
+    :game => game}
 end

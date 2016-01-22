@@ -1,6 +1,6 @@
-<%= erb :player_hand, :locals => { :player_hand => player_hand, :dealer_hand => dealer_hand } if defined?(bet) %>
+<%= erb :player_hand, :locals => {:player_hand => player_hand, :dealer_hand => dealer_hand} if defined?(bet) %>
 
-<div class="row">
+<div class="row well">
   <div class = "col-md-4 col-md-offset-4 col-centered">
     <h4><%= "Player Bankroll: #{bankroll}" %><h4>
   <% if defined?(bet) %>
