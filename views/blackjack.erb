@@ -3,7 +3,7 @@
 <% end %>
 
 
-<h5>Dealers hand: <%= dealer %> </h5>
+<h5>Dealers hand:  ["@", <%= dealer[1].to_s %>] </h5>
 <h5>Players hand: <%= player %> </h5>
 <h5>Bankroll: <%= bankroll %></h5>
 
@@ -16,7 +16,7 @@
 
 <% if outcome.nil? %>
 
-  <form action='/blackjack/hit' method='post'>
+  <form action='/blackjack/hit' method='post' >
     <button type="submit" class="btn btn-default">Hit</button>
   </form>
 
@@ -32,11 +32,6 @@
 
 <% end %>
 
-
-
-<% unless deck.nil? %>
-  <h5>Current shoe: <%= deck %> </h5>
-<% end %>
 
 
 

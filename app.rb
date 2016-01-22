@@ -14,6 +14,7 @@ enable :sessions
 
 
 get '/' do
+  # is this necessary?
   session.each do |key, value|
     session[key] = nil
   end
@@ -54,17 +55,6 @@ get '/blackjack' do
 end
 
 
-get '/loss' do
-  erb :loss, locals: { dealer: session[:dealer], player: session[:player], bankroll: session[:bankroll] }
-end
-
-get '/win' do
-  erb :win, locals: { dealer: session[:dealer], player: session[:player], bankroll: session[:bankroll]}
-end
-
-get '/tie' do
-  erb :tie, locals: { dealer: session[:dealer], player: session[:player]}
-end
 
 post '/blackjack/hit' do
   blackjack = Blackjack.new(load_deck)

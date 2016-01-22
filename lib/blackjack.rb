@@ -73,6 +73,7 @@ class Blackjack
     player_score = calculate_score(player)
     if player_score > dealer_score
       outcome = "win"
+      # process_win
     elsif player_score == dealer_score
       outcome = "tie"
     else
