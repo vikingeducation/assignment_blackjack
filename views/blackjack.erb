@@ -1,4 +1,4 @@
-<%= erb :player_hand, :locals => { :player_hand => player_hand, :dealer_hand => dealer_hand } if defined?(bet) && defined?(player_hand) && defined?(dealer_hand)%>
+<%= erb :player_hand, :locals => { :player_hand => player_hand, :dealer_hand => dealer_hand } if defined?(bet) %>
 
 <div class="row">
   <div class = "col-md-4 col-md-offset-4 col-centered">
@@ -11,10 +11,10 @@
 
 <br>
 
-<%= erb :place_bet unless defined?(bet) %>
+<%= erb :place_bet if !defined?(bet) && victory == false %>
 
 <br>
 
 
-<%= erb :player_actions if defined?(bet) && !defined?(victory) %>
-<%= erb :new_game if defined?(victory) %>
+<%= erb :player_actions if defined?(bet) && !victory %>
+<%= erb :new_game if victory %>

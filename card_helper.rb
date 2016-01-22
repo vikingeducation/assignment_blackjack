@@ -10,9 +10,9 @@ module CardHelper
   end
 
   def load_game(game)
-    game.deck = session[:deck]
     game.player.hand = session[:player_hand]
     game.dealer.hand = session[:dealer_hand]
+    game.deck.update_deck
     game.player.bankroll = session[:bankroll]
   end
 end

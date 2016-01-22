@@ -5,11 +5,10 @@ class Player
   def initialize(bankroll = 500)
     @bankroll = bankroll
     @hand = []
-    @bet = 0
   end
 
   def has_bankroll?(bet_amount)
-    @bankroll - bet_amount > 0
+    @bankroll - bet_amount >= 0
   end
 
   def make_bet(bet_amount)
@@ -19,5 +18,5 @@ class Player
       return false
     end
   end
-  
+
 end
