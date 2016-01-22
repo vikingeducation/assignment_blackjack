@@ -41,9 +41,9 @@ get '/' do
 
 end
 
-post '/' do
-  redirect to('/blackjack')
-end
+# post '/' do
+#   redirect to('/blackjack')
+# end
 
 get '/blackjack' do
   

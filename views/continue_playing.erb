@@ -3,55 +3,36 @@
   <% if hit %>  
 
     <div class="col-md-3 col-md-offset-2">  
-      <div class="row">
-        <div col="col-md-12 centered">
-         <form method='get' action='/blackjack/hit'>
-          <input type='submit' class='btn btn-info btn-md' name=' player_action' value='Hit'>
-         </form>
-        </div>
-      </div>
+     <form method='get' action='/blackjack/hit'>
+      <input type='submit' class='btn btn-info btn-md' name=' player_action' value='Hit'>
+     </form>
     </div>    
-    
-    <div class="col-md-3">  
-      <div class="row">
-        <div col="col-md-12">
-          <form method='get' action='/blackjack/double'>
-            <input type='submit' class='btn btn-info btn-md' name='player_action' value='Double'>
-          </form>
-        </div>
-      </div>       
-    </div>       
+  
+    <div class="col-md-3"> 
+      <form method='get' action='/blackjack/double'>
+        <input type='submit' class='btn btn-info btn-md' name='player_action' value='Double'>
+      </form>
+    </div> 
+
   <% else %>
 
     <div class="col-md-3 col-md-offset-2"> 
-      <div class="row">
-        <div col="col-md-12">
-          <form method='get' action='/blackjack/hit'>
-            <input type='submit' class='btn btn-info btn-md' name='player_action' value='Hit' disabled>
-          </form>
-       </div>
-      </div>       
+      <form method='get' action='/blackjack/hit'>
+        <input type='submit' class='btn btn-info btn-md' name='player_action' value='Hit' disabled>
+      </form>     
     </div>  
 
     <div class="col-md-3">
-      <div class="row">
-        <div col="col-md-12 centered">
-          <form method='get' action='/blackjack/double'>
-            <input type='submit' class='btn btn-info btn-md' name='player_action' value='Double' disabled>
-          </form>
-        </div>
-      </div>       
-    </div>    
+      <form method='get' action='/blackjack/double'>
+        <input type='submit' class='btn btn-info btn-md' name='player_action' value='Double' disabled>
+      </form> 
+    </div>  
   <% end %>
 
   <div class="col-md-3"> 
-    <div class="row">
-      <div col="col-md-12">
-        <form method='get' action='/blackjack/stay'>
-           <input type='submit' class='btn btn-info btn-md' name='player_action' value='Stay'>
-        </form>
-      </div>
-    </div>       
+    <form method='get' action='/blackjack/stay'>
+       <input type='submit' class='btn btn-info btn-md' name='player_action' value='Stay'>
+    </form>     
   </div>   
 
 </div>
