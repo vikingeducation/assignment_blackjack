@@ -17,6 +17,7 @@ class Blackjack
     setup_cards if @player_cards == []
   end
 
+  #Creates the first time game is started
   def create_deck
     @deck = []
     4.times do
@@ -58,17 +59,15 @@ class Blackjack
     end  
 
     aces = cards.select {|card| card == "Ace"}
+    
     unless aces.nil?
-      aces.each do |ace|
-        
-        if (sum + 11) > 21
-           sum += 1
-        else
-           sum += 11
-        end
-      end 
+      aces.each do |ace|    
+        (sum + 11) > 21 ? (sum += 1) : sum += 11
+      end
     end 
+    
     sum
+
   end
 
   def who_lost
@@ -92,6 +91,7 @@ class Blackjack
   end 
 
   def double
+    @totals -= @bet
     @bet *= 2
     deal_card(@player_cards)
     @hit = false

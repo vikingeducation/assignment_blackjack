@@ -1,12 +1,35 @@
 
-<form method='get' action='/blackjack/hit'>
-  <input type='submit' class="btn btn-warning btn-md disabled" name='player_action' value='Hit'>
-</form>
+<div class="row" id="continue_container">  
+  
+  <div class="col-md-3 col-offset=3">  
+    <div class="row">
+      <div col="col-md-12">
+        <form method='get' action='/blackjack/hit'>
+          <input type='submit' class="btn btn-warning btn-md disabled" name='player_action' value='Hit'>
+        </form>
+      </div>
+    </div>
+  </div>
 
-<form method='get' action='/blackjack/stay'>
-  <input type='submit' class="btn btn-warning btn-md disabled" name='player_action' value='Stay'>
-</form>
+  <div class="col-md-3">  
+    <div class="row">
+      <div col="col-md-12">  
+        <form method='get' action='/blackjack/stay'>
+          <input type='submit' class="btn btn-warning btn-md disabled" name='player_action' value='Stay'>
+        </form>
+      </div>
+    </div>
+  </div>
 
-<form method='get' action='/'>
-    <input type='submit' class="btn btn-info btn-md" value='Play Again'>
-</form>
+  
+  <div class="col-md-3">  
+    <div class="row">
+      <div col="col-md-12">  
+        <form method='get' action='/'>
+          <input type='submit' class="btn btn-info btn-md" value='Play Again'>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>  
