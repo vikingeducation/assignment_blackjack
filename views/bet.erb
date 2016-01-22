@@ -2,11 +2,10 @@
 <h5>Current bankroll: <%= bankroll %> </h5>
 
 
-<% if !bet.nil? && bet > bankroll %>
+<% if !bet.nil? && bet.to_i > bankroll.to_i %>
+  <h5>Your bet must be less than bankroll.</h5>
 
-    <h5>Your bet must be less than bankroll.</h5>
-
-    <form action='/start' method='post'>
+  <form action='/start' method='post'>
     <label>Amount to bet:</label>
     <input name="bet"><br>
     <button type="submit" class="btn btn-default">Bet!</button>

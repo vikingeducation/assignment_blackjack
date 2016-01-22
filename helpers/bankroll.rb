@@ -25,7 +25,7 @@ module Bankroll
     session[:bet] = nil
   end
 
-  def check_bet?(bankroll, bet)
-    bankroll >= bet
+  def valid_bet?(bankroll, bet)
+    bankroll.to_i >= bet.to_i
   end
 end

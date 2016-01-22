@@ -23,14 +23,15 @@ end
 get '/new' do
   session[:bankroll] = params[:bankroll] if session[:bankroll].nil?
 
-  erb :bet, locals: { bankroll: session[:bankroll], bet: nil }
+  erb :bet, locals: { bankroll: session[:bankroll], bet: session[:bet] }
 end
 
 post '/start' do
   session[:bet] = params[:bet]
-  unless check_bet?(session[:bankroll], session[:bet])
-    erb :bet, locals: { bankroll: session[:bankroll], bet: session[:bet] }
+  unless valid_bet?(session[:bankroll], session[:bet])
+    redirect('/new')
   end
+
 
   blackjack = Blackjack.new(session[:deck])
   dealer, player = blackjack.start_game
