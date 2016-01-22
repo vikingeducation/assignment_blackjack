@@ -59,6 +59,7 @@ end
 
 post '/blackjack/bet' do
   blackjack = load_session
+  session[:last_bet] = params[:bet_amount]
   if blackjack.place_bet(params[:bet_amount].to_i)
     save_session(blackjack)
     session[:status] = 'active'
@@ -70,7 +71,6 @@ post '/blackjack/bet' do
 end
 
 post '/blackjack/double' do
-
   blackjack = load_session
 
   if blackjack.double

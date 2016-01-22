@@ -3,13 +3,26 @@
 
   <div class="row">
     <div class="col-sm-6">
-      <h3>Total Player Bankroll</h3>
-      <h3><%= @blackjack.player_bankroll %></h3>
+      <h3>Bankroll <label class="label label-success"><%= @blackjack.player_bankroll %></label></h3>
     </div>
     <div class="col-sm-6">
-      <h3>Current Bet</h3>
-      <h3><%= @blackjack.player_bet %></h3>
+      <h3>Current Bet <label class="label label-warning"><%= @blackjack.player_bet %></label></h3>
     </div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-bar progress-bar-success" style="width: <%= @blackjack.percent_bank %>%">
+    </div>
+    <% if session[:status] == "active" %>
+    <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: <%= @blackjack.percent_bet %>%">
+    </div>
+    <% elsif @blackjack.winner == :player %>
+    <div class="progress-bar progress-bar-success progress-bar-striped" style="width: <%= @blackjack.percent_bet %>%">
+    </div>
+    <% elsif @blackjack.winner == :dealer %>
+    <div class="progress-bar progress-bar-danger progress-bar-striped" style="width: <%= @blackjack.percent_bet %>%">
+    </div>
+    <% end %>
   </div>
 
 

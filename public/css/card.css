@@ -2,6 +2,7 @@ body {
   text-align: center;
 }
 .card {
+  background-color:  white;
   margin: 10px;
   border: 2px solid black;
   text-align: left;
@@ -12,6 +13,8 @@ body {
   padding-top: 10px;
   width: 130px;
   line-height: 25px;
+  box-shadow: 5px 5px 10px rgba(0,0,0,0);
+  transition: all 0.5s;
 }
 
 .card:hover {
@@ -19,7 +22,7 @@ body {
 }
 
 .card-container {
-  transition: transform 0.2s;
+  transition: all 0.5s;
 }
 
 .card-container:hover {
@@ -38,6 +41,7 @@ body {
 }
 
 .flip {
+  box-shadow: 10px 0px 0px rgba(0,0,0,0);
   position: absolute;
   bottom: -10px;
   right: 0px;
@@ -53,6 +57,10 @@ body {
 
 .black {
   color: black;
+}
+
+.well {
+  padding: 10px 0;
 }
 
 .action-buttons form {

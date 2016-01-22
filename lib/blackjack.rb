@@ -50,6 +50,14 @@ class Blackjack
     'K' => 10
   }
 
+  def percent_bet
+    (@player_bet / @player_bankroll.to_f) * 100
+  end
+
+  def percent_bank
+    100 - percent_bet
+  end
+
   def place_bet(amount)
     return false if amount > @player_bankroll
     @player_bet = amount
