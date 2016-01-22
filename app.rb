@@ -3,7 +3,6 @@
 require 'sinatra'
 require 'thin'
 require 'rack-flash'
-require 'pry-byebug'
 require 'sinatra/reloader' if development?
 require './helpers/session_helper.rb'
 require './lib/blackjack.rb'
