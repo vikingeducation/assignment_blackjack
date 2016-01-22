@@ -24,6 +24,19 @@ class Blackjack
     [@dealers_hand, @players_hand]
   end
 
+  def check_blackjack(dealer, player)
+    if calculate_score(player) == 21
+      outcome = "player21"
+    elsif calculate_score(dealer) == 21
+      outcome = 'dealer21'
+    elsif calculate_score(player) == 21 && calculate_score(dealer) == 21
+      outcome = 'tie'
+    else
+      outcome = nil
+    end
+    outcome
+  end
+
   def calculate_score(hand)
     total = 0
     hand.each do |card|

@@ -27,14 +27,27 @@ end
 
 get '/new' do
   bankroll = params[:bankroll]
+  save_bankroll(bankroll)
+
+  erb :bet, locals: { bankroll: session[:bankroll] }
+end
+
+post '/start' do
+  session[:bet] = params[:bet]
+  unless check_bet?(session[:bankroll], session[:bet])
+    erb :bet, locals: { bankroll: session[:bankroll] }
+  end
+
   blackjack = Blackjack.new(session[:deck])
   dealer, player = blackjack.start_game
+  session[:outcome] = blackjack.check_blackjack(dealer, player)
+  
+  
   shoe = blackjack.get_shoe
 
   save_dealer(dealer)
   save_player(player)
   save_deck(shoe)
-  save_bankroll(bankroll)
 
   erb :blackjack, :locals => { :dealer => dealer, :player => player, :deck => shoe, :bankroll => session[:bankroll], bet: session[:bet], outcome: session[:outcome]}
 end
@@ -56,47 +69,34 @@ get '/tie' do
   erb :tie, locals: { dealer: session[:dealer], player: session[:player]}
 end
 
-
-
-post '/new' do
-
-
-end
-
-
 post '/blackjack/hit' do
   blackjack = Blackjack.new(load_deck)
-
-  session[:bet] = params[:bet] unless session[:bet]
 
   session[:player] = blackjack.hit(session[:player])
 
   save_deck(blackjack.get_shoe)
 
   if blackjack.bust?(session[:player])
-    decrease_bankroll
-    redirect('/blackjack')
-  else
-    redirect('/blackjack')
+    update_bankroll('loss')
   end
-
+  redirect('/blackjack')
 end
 
 post '/blackjack/stay' do
   blackjack = Blackjack.new(load_deck)
   session[:dealer] = blackjack.dealer_hit(session[:dealer])
 
-  session[:bet] = params[:bet] unless session[:bet]
-
   save_deck(blackjack.get_shoe)
 
   if blackjack.bust?(session[:dealer])
-    increase_bankroll
-    redirect('/win')
+    update_bankroll('win')
   else
     outcome = blackjack.outcome(session[:dealer], session[:player])
-    session[:outcome] = outcome
     update_bankroll(outcome)
-    redirect("/blackjack") 
+  end
+  if outcome.nil?
+    redirect("/blackjack")
+  else
+    redirect("/new")
   end
 end
