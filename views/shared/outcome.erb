@@ -1,0 +1,15 @@
+<% if outcome == 'win' %>
+
+  <h5>You won! Your hand was: <%= player %>, Dealers hand was: <%= dealer %></h5>
+  <h5>Here's your current bankroll: <%= bankroll %></h5>
+
+<% elsif outcome == 'loss' %>
+
+  <h5>You lost, sorry! Here was your hand: <%= player %> Dealers hand was: <%= dealer %></h5>
+  <h5>Here's your current bankroll: <%= bankroll %></h5>
+
+<% else %>
+
+  <h5>It's a tie! Here was your hand: <%= player %> Dealers hand was: <%= dealer %></h5>
+
+<% end %>
