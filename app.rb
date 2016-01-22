@@ -59,7 +59,11 @@ end
 post '/blackjack/bet' do
   blackjack = load_session
   session[:last_bet] = params[:bet_amount]
-  if blackjack.place_bet(params[:bet_amount].to_i.abs)
+  if params[:bet_amount].to_i < 0
+    flash[:notice] = "Nice try, Andur."
+    redirect '/blackjack'
+  end
+  if blackjack.place_bet(params[:bet_amount].to_i)
     save_session(blackjack)
     session[:status] = 'active'
     redirect '/blackjack'
