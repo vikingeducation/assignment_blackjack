@@ -71,7 +71,10 @@ end
 get '/stay' do
   game = Blackjack.new
   load_game(game)
+  #binding.pry
   game.stay(session[:bet])
+  session[:player_hand] = game.player.hand
+  session[:dealer_hand] = game.dealer.hand
   session[:victory] = true
   session[:bankroll] = game.player.bankroll
 
@@ -103,8 +106,10 @@ get '/double' do
   end
 end
 
-get '/split' do
-end
+# get '/split' do
+
+#   erb :split :locals => {}
+# end
 
 get '/end' do
   # game = Blackjack.new

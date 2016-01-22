@@ -22,19 +22,36 @@ class Blackjack
     deal(@player)
   end
 
-  def hand_value(user)
-    user.hand.inject(0) do |sum, card|
-      if card[0] >= 10
-        sum += 10
-      else
+  def non_ace_value(user)
+    sum = 0
+    user.hand.each do |card|
+      if card[0] != 1 && card[0] < 10
         sum += card[0]
+      elsif card[0] >= 10
+        sum += 10
       end
     end
+    return sum
   end
 
-  def has_won?
-
+  def aces(user)
+    count = 0
+    user.hand.each do |card|
+      if card[0] == 1
+        count += 1
+      end
+    end
+    count
   end
+
+  def hand_value(user)
+    return non_ace_value(user) if aces(user) == 0
+    low = non_ace_value(user) + aces(user)
+    high = non_ace_value(user) + 11 + aces(user) - 1
+    high < 22 ? high : low
+  end
+
+
 
   def bust?(user)
     hand_value(user) > 21
@@ -57,9 +74,13 @@ class Blackjack
 
   end
 
-  # def blackjack?
-
-  # end
+  def blackjack? 
+    if hand_value(@player) == 21
+      return true
+    else
+      return false
+    end
+  end
 
   def stay(bet)
     until hand_value(@dealer) >= 17
