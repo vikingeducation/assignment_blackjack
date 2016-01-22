@@ -7,8 +7,7 @@
   <title>Blackjack</title>
 </head>
 <body>
-
-    <%# <%= erb :nav_bar %>
+    <%= erb :"shared/navbar" %>
     <% if flash[:notice] %>
     <div class="alert alert-warning">
       <h2><%= flash[:notice] %></h2>
