@@ -1,0 +1,53 @@
+<div class="row">
+
+  <div class="col-md-12">  
+    <h3 class ="alert alert-info"> Player Bet: <%=bet%>, Totals: <%=totals%> </h3>
+  </div>
+
+  <div class="col-md-6">  
+    <h4 class ="alert alert-info"> Player Cards </h4>
+    <%ctr = 1%>
+    <% player_deck.each do |card| %>
+      <p style="font-size: 20px;">Player Card <%=ctr%>:
+        <span class="label label-success label-as-badge">
+          <%= card %>
+        </span>  
+      </p>
+      <%ctr += 1%>
+     <% end %>
+  </div>
+
+  <div class="col-md-6">  
+    <h4 class ="alert alert-info"> Dealer Cards </h4>
+    <%ctr = 1%>
+    <% dealer_deck.each do |card| %>
+      <p style="font-size: 20px;">Dealer Card <%=ctr%>:
+        <span class="label label-success label-as-badge">
+          <%= card %>
+        </span> 
+      </p>
+      <%ctr += 1%>
+    <% end %>
+  </div>
+
+</div>   
+
+<div class="row" id="play_container">
+
+  <div class="col-md-12">   
+    <% if loser %>
+     <div style="height:20px;"><p></p></div> 
+      <p style="font-size: 20px;" class="text-center">
+        <span class="label label-danger label-as-badge">
+          <%= loser.upcase %> LOST!
+        </span>  
+      </p>
+       <div style="height:20px;"><p></p></div> 
+      <%= erb :"lost", :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => loser, :hit => hit} %>
+   <% else %>
+     <div style="height:20px;"><p></p></div> 
+     <%= erb :"continue_playing", :locals => {:player_deck => player_deck, :dealer_deck => dealer_deck, :loser => loser, :hit => hit} %>
+   <% end %>
+  </div>
+
+</div>  
