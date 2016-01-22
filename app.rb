@@ -7,8 +7,8 @@ require 'sinatra/reloader' if development?
 require './helpers/session_helper.rb'
 require './lib/blackjack.rb'
 
-also_reload 'lib/*'
-also_reload 'helpers/*'
+also_reload 'lib/*' if development?
+also_reload 'helpers/*' if development?
 
 enable :sessions
 use Rack::Flash
