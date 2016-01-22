@@ -3,30 +3,39 @@
 <% end %>
 
 
-<h1>Dealers hand: <%= dealer %> </h1>
-<h1>Players hand: <%= player %> </h1>
-<h1>Bankroll: <%= bankroll %></h1>
+<h5>Dealers hand: <%= dealer %> </h5>
+<h5>Players hand: <%= player %> </h5>
+<h5>Bankroll: <%= bankroll %></h5>
 
 <% unless bet.nil? %>
-  <h1>Bet: <%= bet %></h1>
+  <h5>Bet: <%= bet %></h5>
 <% end %>
 
 
-<form action='/blackjack/hit' method='post'>
-  <button type="submit" class="btn btn-default">Hit</button>
-</form>
-
-<form action='/blackjack/stay' method='post'>
-  <button type="submit" class="btn btn-default">Stay</button>
-</form>
 
 
-<form action='/blackjack/split' method='post'>
-  <button type="submit" class="btn btn-default">Split</button>
-</form>
+<% if outcome.nil? %>
+
+  <form action='/blackjack/hit' method='post'>
+    <button type="submit" class="btn btn-default">Hit</button>
+  </form>
+
+  <form action='/blackjack/stay' method='post'>
+    <button type="submit" class="btn btn-default">Stay</button>
+  </form>
+
+<% else %>
+
+  <form action='/new' method='get'>
+    <button type="submit" class="btn btn-default">Play Again</button>
+  </form>
+
+<% end %>
+
+
 
 <% unless deck.nil? %>
-  <h1>Current shoe: <%= deck %> </h1>
+  <h5>Current shoe: <%= deck %> </h5>
 <% end %>
 
 

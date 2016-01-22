@@ -6,11 +6,6 @@ require './helpers/saver.rb'
 require 'pry-byebug'
 require './helpers/bankroll.rb'
 
-# dealer and player are each dealt 2 cards
-# player can see their two cards, but only the 2nd card for the dealer
-# session stores: bet amount, how much money they have, their hand, dealer's hand, deck
-
-
 
 helpers Saver, Bankroll
 
@@ -26,22 +21,23 @@ get '/' do
 end
 
 get '/new' do
-  bankroll = params[:bankroll]
-  save_bankroll(bankroll)
+  session[:bankroll] = params[:bankroll] if session[:bankroll].nil?
 
-  erb :bet, locals: { bankroll: session[:bankroll] }
+  erb :bet, locals: { bankroll: session[:bankroll], bet: nil }
 end
 
 post '/start' do
   session[:bet] = params[:bet]
   unless check_bet?(session[:bankroll], session[:bet])
-    erb :bet, locals: { bankroll: session[:bankroll] }
+    erb :bet, locals: { bankroll: session[:bankroll], bet: session[:bet] }
   end
 
   blackjack = Blackjack.new(session[:deck])
   dealer, player = blackjack.start_game
   session[:outcome] = blackjack.check_blackjack(dealer, player)
-  
+  unless session[:outcome].nil?
+    redirect('/new')
+  end
   
   shoe = blackjack.get_shoe
 
@@ -94,9 +90,5 @@ post '/blackjack/stay' do
     outcome = blackjack.outcome(session[:dealer], session[:player])
     update_bankroll(outcome)
   end
-  if outcome.nil?
-    redirect("/blackjack")
-  else
-    redirect("/new")
-  end
+  redirect("/blackjack")
 end

@@ -7,9 +7,8 @@ module Bankroll
       decrease_bankroll
     elsif outcome == 'player21'
       blackjack
-    else
-      session[:outcome] = outcome
     end
+    session[:outcome] = outcome
   end
 
   def blackjack
