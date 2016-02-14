@@ -1,6 +1,5 @@
 class Deck
   attr_reader :deck
-  # initialize a new deck
 
   def initialize
     @deck = ('2'..'10').to_a
