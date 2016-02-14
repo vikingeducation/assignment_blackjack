@@ -14,12 +14,14 @@
 	Your Hand: <%=players_cards%> - <%=player_total%>
 </p>
 
-<form action='/blackjack/hit' method='post'>
-	<input type="submit" value="Hit"></input>
-</form>
+<% if !(player_finished) %>
+	<form action='/blackjack/hit' method='post'>
+		<input type="submit" value="Hit"></input>
+	</form>
 
-<form action='/blackjack/stand' method='get'>
-	<input type="submit" value="Stand"></input>
-</form>
-<br>
+	<form action='/blackjack/stand' method='get'>
+		<input type="submit" value="Stand"></input>
+	</form>
+	<br>
+<% end %>
 <a href="/blackjack">New Hand</a>
