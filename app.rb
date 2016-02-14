@@ -83,23 +83,15 @@ post '/blackjack/hit' do
   save_deck(deck)
   save_players_cards(players_cards)
   save_dealers_cards(dealers_cards)
-  if player_total[0] < 1000
+  if player_total[0] <= 21
     erb :blackjack, locals: {players_cards: players_cards, dealers_cards: dealers_cards, player_finished: false, player_total: player_total}
   else
-    'blackjack/stay'
+    redirect to('blackjack/busted')
   end
 end
 
-get 'blackjack/stay' do
-
-end
-
-post '/blackjack/stand' do
-  deck = load_deck
+get '/blackjack/busted' do
   players_cards = load_players_cards
   dealers_cards = load_dealers_cards
-  save_deck(deck)
-  save_players_cards(players_cards)
-  save_dealers_cards(dealers_cards)
-  erb :blackjack, locals: {players_cards: players_cards, dealers_cards: dealers_cards, player_finished: true}
+  erb :blackjack, locals: {players_cards: players_cards, dealers_cards: dealers_cards, player_finished: true, dealer_total: dealer_total}
 end

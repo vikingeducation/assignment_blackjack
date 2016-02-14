@@ -3,7 +3,7 @@
 <p>
 	Dealer's Hand:
 	<% if player_finished %>
-		<%=dealers_cards%>
+		<%=dealers_cards%> - <%=dealer_total%>
 	<% else %>
 		<%=dealers_cards[0]%>, ["X", "X"]
 	<% end %>
@@ -18,7 +18,7 @@
 	<input type="submit" value="Hit"></input>
 </form>
 
-<form action='/blackjack/stand' method='post'>
+<form action='/blackjack/stand' method='get'>
 	<input type="submit" value="Stand"></input>
 </form>
 <br>
