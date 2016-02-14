@@ -93,5 +93,5 @@ end
 get '/blackjack/busted' do
   players_cards = load_players_cards
   dealers_cards = load_dealers_cards
-  erb :blackjack, locals: {players_cards: players_cards, dealers_cards: dealers_cards, player_finished: true, dealer_total: dealer_total}
+  erb :blackjack, locals: {players_cards: players_cards, dealers_cards: dealers_cards, player_finished: true, dealer_total: dealer_total, outcome: "YOU BUSTED!"}
 end
