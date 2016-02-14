@@ -10,10 +10,10 @@
   3. Create any supporting classes you need to make the game go.
   Hint: a great method to explore for building the deck is product (DONE)
 
-  # I'm thinking he wants us to combine two arrays, one that goes from A to K and another that has the suits. 
+  # I'm thinking he wants us to combine two arrays, one that goes from A to K and another that has the suits. (DONE)
 
   4. The player's turn comes first. You should have buttons available to HIT or STAY.
-    HIT will go to post '/blackjack/hit', which adds a card to the player's hand and re-renders the main page.
+    HIT will go to post '/blackjack/hit', which adds a card to the player's hand and re-renders the main page. (DONE)
 
   5. If the player hitting would bust that player (bring the total over 21 points), redirect to get /blackjack/stay.
 
@@ -83,7 +83,15 @@ post '/blackjack/hit' do
   save_deck(deck)
   save_players_cards(players_cards)
   save_dealers_cards(dealers_cards)
-  erb :blackjack, locals: {players_cards: players_cards, dealers_cards: dealers_cards, player_finished: false}
+  if player_total[0] < 1000
+    erb :blackjack, locals: {players_cards: players_cards, dealers_cards: dealers_cards, player_finished: false, player_total: player_total}
+  else
+    'blackjack/stay'
+  end
+end
+
+get 'blackjack/stay' do
+
 end
 
 post '/blackjack/stand' do

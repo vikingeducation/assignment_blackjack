@@ -11,7 +11,7 @@
 <br>
 <br>
 <p>
-	Your Hand: <%=players_cards%>
+	Your Hand: <%=players_cards%> - <%=player_total%>
 </p>
 
 <form action='/blackjack/hit' method='post'>
@@ -21,3 +21,5 @@
 <form action='/blackjack/stand' method='post'>
 	<input type="submit" value="Stand"></input>
 </form>
+<br>
+<a href="/blackjack">New Hand</a>
