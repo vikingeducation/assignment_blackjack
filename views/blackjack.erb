@@ -1,0 +1,23 @@
+<h1>Blackjack!</h1>
+
+<p>
+	Dealer's Hand:
+	<% if player_finished %>
+		<%=dealers_cards%>
+	<% else %>
+		<%=dealers_cards[0]%>, ["X", "X"]
+	<% end %>
+</p>
+<br>
+<br>
+<p>
+	Your Hand: <%=players_cards%>
+</p>
+
+<form action='/blackjack/hit' method='post'>
+	<input type="submit" value="Hit"></input>
+</form>
+
+<form action='/blackjack/stand' method='post'>
+	<input type="submit" value="Stand"></input>
+</form>
