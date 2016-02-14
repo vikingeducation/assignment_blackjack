@@ -23,7 +23,7 @@ module BlackjackHelpers
     JSON.parse(session[:dealers_cards])
   end
 
-  def player_total
+  def get_player_total
     total = [0,0]
     ace = false
     JSON.parse(session[:players_cards]).each do |card|
@@ -44,7 +44,7 @@ module BlackjackHelpers
     total
   end
 
-  def dealer_total
+  def get_dealer_total
     total = [0,0]
     ace = false
     JSON.parse(session[:dealers_cards]).each do |card|
