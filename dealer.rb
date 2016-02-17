@@ -57,7 +57,7 @@ class Dealer
       # If there are multiple aces, only one can count as a 11!
       elsif card[0].upcase == 'A'
         total[0] += 1
-        total[0] += 10
+        total[1] = total[0]+10
       # All other cards (suited but not ace) add ten to both
       else
         total[0] += 10

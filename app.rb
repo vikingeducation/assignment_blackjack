@@ -32,7 +32,7 @@ post '/blackjack/hit' do
   save_deck(deck)
   save_players_cards(player.hand)
   save_dealers_cards(dealer.hand)
-  if player.get_player_total[0] <= 21
+  if player.get_player_total.min <= 21
     erb :blackjack, locals: {players_cards: player.hand, dealers_cards: dealer.hand, player_finished: false, player_total: player.get_player_total}
   else
     redirect to('blackjack/busted')
@@ -44,7 +44,7 @@ post '/blackjack/stand' do
   player = Player.new(load_players_cards)
   dealer = Dealer.new(load_dealers_cards, deck, player)
 
-  player_total = player.get_highest_total
+  player_total = player.get_player_total.max
 
   dealer_total = dealer.return_dealers_final_total(false)
 
