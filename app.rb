@@ -44,17 +44,10 @@ post '/blackjack/stand' do
   player = Player.new(load_players_cards)
   dealer = Dealer.new(load_dealers_cards, deck, player)
 
-  # At this point in time, we know that payer can't make any more decisions so I want that to be a set number as well. if player_total.size == 2, player_total = player_total[1] else player_total = player_total[0]
   player_total = player.get_highest_total
 
-  # Because doesn't have to make a decision once a number has been reached. if dealer_total.size == 2 and dealer_total[1] >= 17, dealer_total = dealer_total[1].
-  # We can also use this number to figure out whether we want to keep drawing cards or not.
-  dealer_total = dealer.get_highest_total
+  dealer_total = dealer.return_dealers_final_total(false)
 
-  until dealer_total >= 17
-    dealer.deal_card_to_dealer
-    dealer_total = dealer.get_highest_total
-  end
 
   if dealer_total > 21
     outcome = "Dealer Busts, You Win!"
@@ -73,5 +66,5 @@ end
 get '/blackjack/busted' do
   player = Player.new(load_players_cards)
   dealer = Dealer.new(load_dealers_cards, load_deck, player)
-  erb :blackjack, locals: {players_cards: player.hand, dealers_cards: dealer.hand, player_finished: true, dealer_total: dealer.get_dealer_total, outcome: "YOU BUSTED!", player_total: player.get_player_total}
+  erb :blackjack, locals: {players_cards: player.hand, dealers_cards: dealer.hand, player_finished: true, dealer_total: dealer.return_dealers_final_total(true), outcome: "YOU BUSTED!", player_total: player.get_player_total}
 end
