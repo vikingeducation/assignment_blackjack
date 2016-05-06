@@ -1,0 +1,11 @@
+<div class="row">
+  <% cards.each_with_index do |card, index| %>
+    <div class="col-xs-2 col-sm-2">
+      <% if index == 0 && hide_first %>
+        <img src="/card_images/back.png" class='img-responsive'>
+      <% else %>
+        <img src="<%= card_image(card) %>" class='img-responsive'>
+      <% end %>
+    </div>
+  <% end %>
+</div>

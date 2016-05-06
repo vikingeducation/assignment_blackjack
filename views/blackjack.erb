@@ -1,0 +1,40 @@
+<div class="row">
+  <!-- Sidebar -->
+  <div class="col-sm-3">
+    <h2 class="text-muted">Dashboard</h2>
+    <% if winner %>
+      <div class="panel panel-success
+        <% if winner == 'Dealer Wins!' %>
+          <%= 'panel-danger' %>
+        <% elsif winner == 'Draw!' %>
+          <%= 'panel-warning' %>
+        <% end %>">
+        <div class="panel-heading">
+          <h4 class="text-center"><%= winner %></h4>
+        </div>
+      </div>
+    <% end %>
+    <dl>
+      <dt>Bankroll</dt>
+      <dd>$<%= bankroll %></dd>
+
+      <dt>Bet</dt>
+      <dd>$<%= bet %></dd>
+    </dl>
+
+    <%= partial :actions, locals: {winner: winner} %>
+  </div>
+
+  <!-- Hands -->
+  <div class="col-sm-9">
+    <h2 class="text-muted">Dealer Hand</h2>
+      <%= partial :cards, locals: {cards: dealer_hand, hide_first: hide_first }
+     %>
+    </ul>
+
+    <h2 class="text-muted">Player Hand</h2>
+    <%= partial :cards, locals: {cards: player_hand, hide_first: false } %>
+  </div>
+</div>
+
+

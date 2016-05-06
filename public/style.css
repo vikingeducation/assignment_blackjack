@@ -1,0 +1,57 @@
+body{
+  background-image: url('/card_table.jpg');
+  background-repeat: no-repeat;
+  background-position: center, center;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: 'Roboto', sans-serif;
+}
+
+h2, h3, h4, h5, h6 {
+  font-weight: 100;
+}
+
+.action-button {
+  margin-right: 10px;
+}
+
+.well {
+  background-color: rgba(255, 255, 255, 0.8);
+  border: none;
+}
+
+.title {
+  font-size: 3.5em;
+}
+
+.subtitle, .panel h4 {
+  font-family: 'Mr Dafoe', cursive;
+  font-size: 2em;
+  transform: rotate(355deg);
+}
+
+hr {
+  border-top: 2px solid #777;
+}
+
+#home-link a {
+  color: #ccc;
+}
+
+#home-link a:hover {
+  color: #a94442;
+  text-decoration: none;
+}
+
+.footer {
+  color: white;
+}
+
+.footer a {
+  color: #ccc;
+}
+
+.footer a:hover {
+  text-decoration: none;
+  color: #a94442;
+}
