@@ -3,7 +3,7 @@
     <h2>Dealer's Hand</h2>
     <div class="row">
       <% dealer.each_with_index do |card, index| %>
-        <% if index == 0 %>
+        <% if index == 0 && !game_over %>
           <div class="col-md-2">
             <p>Hidden!</p>
           </div>
@@ -25,18 +25,28 @@
     </div>
   </div>
   <div class="col-md-3">
-    <h3>Total Bankroll</h3>
+    <h3>Dealer Points</h3>
+    <% if game_over %>
+      <p><%= dealer_points %></p>
+    <% end %>
     <br>
-    <h3>Bet Amount</h3>
+    <h3>Your Points</h3>
+    <p>
+      <%= points %>
+    </p>
   </div>
 </div>
-<div class="row">
-  <div class="col-md-12">
-    <form action="blackjack/hit" method="post">
-      <input type="submit" value="Hit">
-    </form>
-    <form action="blackjack/stay" method="post">
-      <input type="submit" value="Stand">
-    </form>
+<% if game_over %>
+  <h2><%= message %></h2>
+<% else %>
+  <div class="row">
+    <div class="col-md-12">
+      <form action="/blackjack/hit" method="post">
+        <input type="submit" value="Hit">
+      </form>
+      <form action="/blackjack/stay" method="post">
+        <input type="submit" value="Stand">
+      </form>
+    </div>
   </div>
-</div>
+<% end %>
