@@ -1,3 +1,5 @@
+Assignment completed by [Stephen Mayeux](http://stephenmayeux.com)
+
 # assignment_blackjack
 Hit me baby one more time?
 
