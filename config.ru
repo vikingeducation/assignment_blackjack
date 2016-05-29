@@ -1,2 +1,2 @@
 require './app'
-run Sinatra::Aplication
+run Sinatra::Application
