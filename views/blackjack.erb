@@ -1,0 +1,52 @@
+<div class="row">
+  <div class="col-md-9">
+    <h2>Dealer's Hand</h2>
+    <div class="row">
+      <% dealer.each_with_index do |card, index| %>
+        <% if index == 0 && !game_over %>
+          <div class="col-md-2">
+            <p>Hidden!</p>
+          </div>
+        <% else %>
+          <div class="col-md-2">
+            <p><%= card %></p>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+    <br>
+    <h2>Your Hand</h2>
+    <div class="row">
+      <% player.each do |card| %>
+        <div class="col-md-2">
+          <p><%= card %></p>
+        </div>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <h3>Dealer Points</h3>
+    <% if game_over %>
+      <p><%= dealer_points %></p>
+    <% end %>
+    <br>
+    <h3>Your Points</h3>
+    <p>
+      <%= points %>
+    </p>
+  </div>
+</div>
+<% if game_over %>
+  <h2><%= message %></h2>
+<% else %>
+  <div class="row">
+    <div class="col-md-12">
+      <form action="/blackjack/hit" method="post">
+        <input type="submit" value="Hit">
+      </form>
+      <form action="/blackjack/stay" method="post">
+        <input type="submit" value="Stand">
+      </form>
+    </div>
+  </div>
+<% end %>
