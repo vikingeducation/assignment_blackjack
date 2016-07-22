@@ -3,6 +3,34 @@ module BlackjackHelper
     deck.pop(num)
   end
 
+  def state(cards)
+    case calc_value(cards)
+    when calc_value(cards) > 21
+      :busted
+    when calc_value(cards) == 21 && cards.length == 2
+      :blackjack
+    else
+      calc_value(cards)
+    end
+  end
+
+  def final_result(dealer_cards, player_cards)
+    dealer_state = state(dealer_cards)
+    player_state = state(player_cards)
+    if dealer_state == player_state
+      "It was a tie!!"
+    elsif player_state == :busted
+      "You lost!"
+    elsif dealer_state == :blackjack
+      "The dealer had blackjack! You lose..."
+    elsif player_state == :blackjack
+      "You had blackjack, you win!"
+    elsif player_state < dealer_state
+      "You lose..."
+    elsif dealer_state < player_state
+      "You win!"
+    end
+  end
 
   def cards_total(cards)
     cards.map do |card|
