@@ -16,24 +16,15 @@ class Player
   end
 
   def hand_value
+    aces = 0
     values = @hand.map{ |card| card[0] }
-    high_ace = values.inject do |total, value|
-      value = 13 ? total + 11 : total + [value, 10].min
+    sum = values.inject do |total, value|
+      value = 13 ? aces += 1 : total + [value, 10].min
     end
-
-    low_ace = values.inject do |total, value|
-      value = 13 ? total + 1 : total + [value, 10].min
-    end
-
-    if low_ace < 21 && high_ace < 21
-      [low_ace, high_ace].max
-    elsif low_ace > 21 && high_ace < 21
-      high_ace
-    elsif low_ace < 21 && high_ace > 21
-      low_ace
-    end
+    # add ages and values logically
   end
-
+#the dealer also hits on a "soft" 17, i.e. a hand containing an ace and one or more other cards totaling six.) 
+# also what if a hand contains two aces?
 
 
 end
