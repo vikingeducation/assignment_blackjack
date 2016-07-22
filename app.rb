@@ -17,7 +17,8 @@ class Deck
 
   def initialize(cards=nil, player_hand = [], dealer_hand = [])
     if cards
-      @deck = cards.shuffle
+      #convert array to deck object
+      @deck = cards.map{ |card| Card.new(card[0],0,card[1]) }.shuffle
       @player_hand = player_hand
       @dealer_hand = dealer_hand
     else
@@ -89,9 +90,10 @@ class Deck
     end
   end
 
-  # def to_array
-  #   @deck.map { |card| [card.rank,card.suit] }
-  # end
+  #convert deck to an array
+  def to_array
+    @deck.map { |card| [card.rank,card.suit] }
+  end
 
 end
 
@@ -100,7 +102,7 @@ get "/blackjack" do
   deck = Deck.new(session['cards'])
   player_hand = deck.show_rank_suit(deck.player_hand)
   dealer_hand = deck.show_rank_suit(deck.dealer_hand)
-  session['cards'] = deck
+  session['cards'] = deck.to_array
   session['player_hand'] = deck.player_hand
   session['dealer_hand'] = deck.dealer_hand
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand }
@@ -109,7 +111,7 @@ end
 
 post "/blackjack/hit" do
 
-  deck = session['cards']
+  deck = Deck.new(session['cards'])
   deck.player_hit
   player_hand = deck.player_hand
   session['player_hand'] = player_hand
