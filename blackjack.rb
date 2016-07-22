@@ -2,10 +2,11 @@ class Blackjack
 
   attr_reader :deck, :dealer, :player
 
-  def initialize
-    @deck = Deck.new
-    @dealer = Dealer.new
-    @player = Player.new
+  def initialize(deck = nil, player_hand = nil, dealer_hand = nil)
+
+    @deck = Deck.new(deck)
+    @dealer = Dealer.new(dealer_hand)
+    @player = Player.new(player_hand)
   end
 
   def start

@@ -1,19 +1,22 @@
-require_relative 'dealer'
-
 class Player
 
   attr_reader :hand
 
-  def initialize
-    @hand = []
+  def initialize(hand = nil)
+    hand ||= []
+    @hand = hand
   end
 
   def draw(cards)
     @hand << cards.pop
   end
 
-  def hit_or_stay?
+  def hit
     
+  end
+
+  def stay
+
   end
 
 end
