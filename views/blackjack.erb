@@ -1,7 +1,7 @@
-<%= deck.deck_arr.length %>
-<% player.hit(deck.deal) %>
-<% dealer.hit(deck.deal) %>
-<% player.hit(deck.deal) %>
-<% dealer.hit(deck.deal) %>
 
-<a href="/blackjack/hit"><button>Hit me!</button></a>
+<%= player_hand %>
+<%= deck %>
+
+<form method="post" action="/blackjack/hit">
+  <button type="submit" value="Hit me!">Submit</button>
+</form>
