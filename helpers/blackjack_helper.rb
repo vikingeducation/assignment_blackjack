@@ -6,7 +6,7 @@ module BlackjackHelper
   end
 
   def load_deck
-    Deck.new( JSON.parse( session[:deck_arr] ) )
+    Deck.new( JSON.parse( session["deck_arr"] ) )
   end
 
 
