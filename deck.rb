@@ -7,11 +7,13 @@ class Deck
   end
 
   def generate_deck
-    arr = %w(2 3 4 5 6 7 8 9 10 j q k a)
+    ranks = %w(2 3 4 5 6 7 8 9 10 J Q K A)
+    suits = %w(C D H S)
     deck = []
-    4.times { deck << arr }
-    deck.flatten.shuffle
+    ranks.each do |rank|
+      suits.each { |suit| deck << rank + suit }
+    end
+    deck.shuffle
   end
-
 
 end

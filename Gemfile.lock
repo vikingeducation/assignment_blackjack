@@ -4,6 +4,7 @@ GEM
     backports (3.6.8)
     byebug (9.0.5)
     coderay (1.1.1)
+    json (1.8.3)
     method_source (0.8.2)
     multi_json (1.12.1)
     pry (0.10.4)
@@ -36,6 +37,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  json
   pry-byebug
   sinatra
   sinatra-contrib
