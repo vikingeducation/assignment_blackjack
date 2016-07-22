@@ -14,41 +14,41 @@ end
 
 get '/blackjack/bet' do
   game = make_blackjack
-  bank = get_bank
+  save_game(game)
   erb :bet
 end
 
 post '/blackjack/bet' do
   session["bet"] = params[:bet]
-  bet = get_bet
-  bank = get_bank
-
-  redirect ('blackjack')
+  if enough_money?(get_bet)
+    redirect('blackjack')
+  else
+    redirect('blackjack/bet')
+  end
 end
 
 get '/blackjack' do
   winner = session[:condition]
-
   game = make_blackjack
   save_game(game) unless get_player_hand
-  winner = game.end_game if game.over? 
-  erb :blackjack, locals: { player_hand: get_player_hand, dealer_hand: get_dealer_hand, condition: winner, bet: bet}
+  if game.over?
+    winner = game.end_game(get_bet)
+    save_game(game)
+  end
+  erb :blackjack, locals: { player_hand: get_player_hand, dealer_hand: get_dealer_hand, condition: winner}
 end
 
 post '/blackjack/hit' do
   game = make_blackjack
   game.give_card(game.player_hand)
-  #check for end
   save_game(game)
-  # add_card
-
-  redirect ('blackjack')
+  redirect('blackjack')
 end
 
 post '/blackjack/stay' do
   game = make_blackjack
-  game.dealer_play
-  session[:condition] = game.end_game
+  game.dealer_play(get_bet)
+  session[:condition] = game.end_game(get_bet)
   save_game(game)
-  redirect ('blackjack')
+  redirect('blackjack')
 end

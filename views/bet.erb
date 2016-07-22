@@ -1,5 +1,11 @@
 What's your bet?
-<form action="blackjack/bet" method="post">
+<form action="bet" method="post">
   <input type="text" placeholder="100" name="bet">
   <input type="submit" value="Place Bet">
 </form>
+
+<%unless enough_money?(get_bet)%>
+
+  <p>Not enough money!</p>
+
+<%end%>

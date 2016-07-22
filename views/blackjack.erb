@@ -1,7 +1,13 @@
 Player:<%=  player_hand %><br>
+Total:<%= get_player_score %>
+<br>
 Dealer:<%=  dealer_hand %><br>
+Total:<%= get_dealer_score %>
+<br>
+Bank: <%= get_bank %>
+Bet: <%= get_bet %>
 
-<%= condition %>
+<% if condition%>
 
 <form action="blackjack/hit" method="post" >
   <input type="submit" value="Hit" name="choice">
@@ -11,10 +17,17 @@ Dealer:<%=  dealer_hand %><br>
   <input type="submit" value="Stay" name="choice">
 </form>
 
-<% if session["conditions"]%>
 
-<% end %>
+<% else %>
 
-<% if session["conditions"]%>
+<%= condition %>
+<form action="blackjack/hit" method="post" >
+  <input type="submit" value="Hit" name="choice">
+</form>
+<br>
+<form action="blackjack/stay" method="post">
+  <input type="submit" value="Stay" name="choice">
+</form>
+
 
 <% end %>

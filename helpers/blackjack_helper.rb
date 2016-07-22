@@ -1,7 +1,7 @@
 module BlackjackHelper
 
   def make_blackjack
-    Blackjack.new(get_player_hand, get_dealer_hand)
+    Blackjack.new(get_player_hand, get_dealer_hand, get_bank)
   end
 
   def get_player_hand
@@ -21,11 +21,16 @@ module BlackjackHelper
   end
 
   def get_bet
-    session["bet"]
+    session["bet"].to_i
   end
 
   def get_bank
-    session["bank"]
+    session["bank"].to_i
+  end
+
+  def enough_money?(bet)
+    bet ||= 0
+    session["bank"].to_i >= bet.to_i
   end
 
 
@@ -34,9 +39,7 @@ module BlackjackHelper
     session["player"] = state["player"]
     session["dealer"] = state["dealer"]
     session["bank"] = game.player_hand.bank
-    # session["player"] = state["player_score"]
-    # session["dealer"] = state["dealer_score"]
+    session["player_score"] = game.player_hand.hand_value
+    session["dealer_score"] = game.dealer_hand.hand_value
   end
-
-
 end

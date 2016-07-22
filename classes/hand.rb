@@ -4,9 +4,9 @@ class Hand
 
 # [[face, suit][face, suit]]
 
-  def initialize(cards = [], bank = 1000)
+  def initialize(cards = [], bank = nil)
     @cards = get_cards(cards)
-    @bank = bank
+    @bank ||= 1000
   end
 
   # add_card, count value, see_cards,
@@ -16,6 +16,13 @@ class Hand
     cards.map { |card| Card.new(card[0], card[1])}
   end
 
+  def make_bank(bet)
+    @bank += bet
+  end
+
+  def lose_bank(bet)
+    @bank -= bet
+  end
 
   def ace_logic(value, aces)
     while value > 21 && aces > 0

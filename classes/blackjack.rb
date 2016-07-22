@@ -24,11 +24,11 @@ class Blackjack
   "K": 10
   }
 
-  def initialize(player_hand, dealer_hand)
+  def initialize(player_hand, dealer_hand, bank)
     player_hand ||= []
     dealer_hand ||= []
     @deck = {}
-    @player_hand = Hand.new(player_hand)
+    @player_hand = Hand.new(player_hand, bank)
     @dealer_hand = Dealer.new(dealer_hand)
     build_deck()
     start_game if player_hand.empty?
@@ -41,15 +41,21 @@ class Blackjack
     player.add_card(face, suit)
   end
 
-  def dealer_play
+  def dealer_play(bet)
     give_card(@dealer_hand) while @dealer_hand.decide_hit?
-    end_game
+    end_game(bet)
   end
 
-  def end_game
-    return "player" if win?
-    return "tie" if tie?
-    return "dealer" if lose?
+  def end_game(bet)
+    if win?
+      @player_hand.make_bank(bet)
+      return "player"
+    elsif tie?
+      return "tie"
+    elsif lose?
+       @player_hand.lose_bank(bet)
+       return "dealer"
+    end
   end
 
   def over?
