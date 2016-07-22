@@ -1,4 +1,11 @@
 <!-- display if you haven't been here -->
 <h1>Welcome to your table, go ahead and take seat</h1>
-<a href="/blackjack">Deal Cards</a>
+
 <!-- display if you've started game -->
+<h2>Player hand: <%= @player_hand %>  </h2>
+<h2>Dealer showing: <%= @dealer_hand[1..-1] %> </h2>
+
+<button type="submit" formaction="blackjack/hit" formmethod="post">Hit me!</button>
+<button type="submit" formaction="blackjack/stay" formmethod="get">I'll stay</button>
+
+
