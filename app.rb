@@ -86,13 +86,27 @@ class Deck
 
   def show_rank_suit(hand)
     hand.map do |card|
-      [card.rank, card.suit]
+      [card.rank, card.value, card.suit]
     end
   end
 
   #convert deck to an array
   def to_array
     @deck.map { |card| [card.rank,card.suit] }
+  end
+
+  def card_array_to_structs(hand)
+    hand.map do |card|
+      Card.new(card[0], card[1], card[2])
+    end
+  end
+
+  def store_player_hand(hand)
+    @player_hand = card_array_to_structs(hand)
+  end
+
+  def store_dealer_hand(hand)
+    @dealer_hand = card_array_to_structs(hand)
   end
 
 end
@@ -105,6 +119,7 @@ get "/blackjack" do
   session['cards'] = deck.to_array
   session['player_hand'] = deck.player_hand
   session['dealer_hand'] = deck.dealer_hand
+
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand }
 
 end
@@ -112,11 +127,24 @@ end
 post "/blackjack/hit" do
 
   deck = Deck.new(session['cards'])
+  deck.store_player_hand(session["player_hand"])
+  deck.store_dealer_hand(session["dealer_hand"])
   deck.player_hit
-  player_hand = deck.player_hand
+  player_hand = deck.show_rank_suit(deck.player_hand)
   session['player_hand'] = player_hand
-  dealer_hand = deck.dealer_hand
+  dealer_hand = deck.show_rank_suit(deck.dealer_hand)
   session['dealer_hand'] = dealer_hand
+
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand }
+
+end
+
+
+get "/blackjack/stay" do
+  deck = Deck.new(session['cards'])
+  deck.store_player_hand(session["player_hand"])
+  deck.store_dealer_hand(session["dealer_hand"])
+  player_hand = deck.show_rank_suit(deck.player_hand)
+
 
 end
