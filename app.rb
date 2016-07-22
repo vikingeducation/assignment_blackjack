@@ -18,10 +18,15 @@ get '/blackjack' do
   #do you have deck if yes play with deck
   # if no create deck cookie that deck
   # deck passed
-  if request.cookies["deck"]
+  shuffling = nil
+  unless request.cookies["hand_counter"]
+    response.set_cookie("hand_counter" , 1)
+  end
+  if request.cookies["deck"] && request.cookies["hand_counter"].to_i < 6
     blackjack = Blackjack.new(JSON.parse(request.cookies["deck"]))
   else
     blackjack = Blackjack.new
+    shuffling = true
   end
   if request.cookies["player_hand"]
     current_hand = Hand.new(blackjack.cards, JSON.parse(request.cookies["player_hand"]), JSON.parse(request.cookies["dealer_hand"]))
@@ -55,13 +60,18 @@ get '/blackjack' do
     message = nil
   end
 
+
+
+
+
+
   player_display = BlackjackHelper.convert_hand(player_hand)
   dealer_display = BlackjackHelper.convert_hand(dealer_hand)
 
   response.set_cookie("player_hand", player_hand.to_json)
   response.set_cookie("dealer_hand", dealer_hand.to_json)
   response.set_cookie("deck", blackjack.cards.to_json)
-  erb :blackjack, :locals =>{:dealer_hand => dealer_display, :player_hand => player_display, :player_sum => player_sum, :dealer_sum => dealer_sum, :message => message}
+  erb :blackjack, :locals =>{:dealer_hand => dealer_display, :player_hand => player_display, :player_sum => player_sum, :dealer_sum => dealer_sum, :message => message, :shuffling => shuffling}
 
 end
 
@@ -107,6 +117,8 @@ post '/stand' do
 end
 
 post '/next_hand' do
+  counter = JSON.parse(request.cookies["hand_counter"])
+  response.set_cookie("hand_counter", (counter+1).to_json)
   response.delete_cookie("player_hand")
   response.delete_cookie("dealer_hand")
   response.delete_cookie("player_bust") if request.cookies["player_bust"]

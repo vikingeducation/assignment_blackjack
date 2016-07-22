@@ -7,6 +7,10 @@
 </form>
 <%end%>
 
+<%if shuffling%>
+<h1> SHUFFLING! </h1>
+<% end %>
+
 <h2>Computer</h2>
 <p> Hand:</p>
 <ul>
@@ -26,14 +30,15 @@
 </ul>
 <p> Total is  <%= player_sum%> </p>
 
+<% unless message %>
+  <form method="post" action="hit">
+    <button type="submit" value="hit">Hit</button>
+  </form>
 
-<form method="post" action="hit">
-  <button type="submit" value="hit">Hit</button>
-</form>
-
-<form method="post" action="stand">
-  <button type="submit" value="Stand">Stand</button>
-</form>
+  <form method="post" action="stand">
+    <button type="submit" value="Stand">Stand</button>
+  </form>
+<% end %>  
 <!--
 <button type="submit" value="Double">Double Down</button>
 <button type="submit" value="Split">Split</button>
