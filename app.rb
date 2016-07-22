@@ -1,9 +1,11 @@
 require 'pry'
 require './helpers/view_helpers'
+require './helpers/controller_helpers'
 require 'sinatra'
 require 'sinatra/form_helpers'
 
 helpers ViewHelpers
+helpers ControllerHelpers
 
 enable :sessions
 
@@ -82,10 +84,6 @@ class Deck
 
   def bust_player
     get_total_points(get_player_points) > 21  || nil
-  end
-
-  def bust_dealer
-    get_total_points(get_dealer_points) > 21 || nil
   end
 
   #When the player busts or stays
@@ -175,13 +173,14 @@ get "/blackjack" do
   deck = Deck.new(session['cards'])
   player_hand = nil; dealer_hand = nil
   #Check if hands are already present in the session.
-  check_hands(player_hand,dealer_hand)
+  hands = check_hands(deck, player_hand,dealer_hand)
   deck.compute_value
+  outcome = deck.bust_player
   session['cards'] = deck.to_array
   session['player_hand'] = deck.player_hand
   session['dealer_hand'] = deck.dealer_hand
 
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: nil }
+  erb :blackjack, locals: { deck: deck, player_hand: hands[0], dealer_hand: hands[1], outcome: outcome }
 
 end
 
@@ -193,7 +192,7 @@ post "/blackjack/hit" do
   deck.player_hit
   player_hand = deck.show_rank_suit(deck.get_player_points)
   dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
-  outcome = [deck.bust_player, deck.bust_dealer]
+  outcome = deck.bust_player
   session['player_hand'] = player_hand
   session['dealer_hand'] = dealer_hand
   session['cards'] = deck.to_array
@@ -207,6 +206,7 @@ get "/blackjack/stay" do
   deck = Deck.new(session['cards'])
   deck.store_player_hand(session["player_hand"])
   deck.store_dealer_hand(session["dealer_hand"])
+  session.clear
   outcome = deck.end_game
   player_hand = deck.show_rank_suit(deck.player_hand)
   dealer_hand = deck.show_rank_suit(deck.dealer_hand)

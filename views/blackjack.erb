@@ -1,14 +1,20 @@
 <h1>Hello, Blackjack!</h1>
-<%= show_outcome(outcome) if outcome %>
 
 <h2> The player's hand is: <%= player_hand %></h2>
 
 <h2> The Dealer's hand is <%= dealer_hand[1..-1] %><h2>
 
-<form action="/blackjack/hit" method="post">
-  <input type="submit" name="hit" value="hit">
-</form>
+<% if outcome %>
+  <%= show_outcome(outcome)  %>
+  <form action="/blackjack" method="get">
+    <input type="submit" name="Reset" value="reset">
+  </form>
 
-<form action="/blackjack/stay" method="get">
-  <input type="submit" name="stay" value="stay">
-</form>
+<% else %>
+  <form action="/blackjack/hit" method="post">
+    <input type="submit" name="Hit" value="hit">
+  </form>
+  <form action="/blackjack/stay" method="get">
+    <input type="submit" name="Stay" value="stay">
+  </form>
+<% end %>
