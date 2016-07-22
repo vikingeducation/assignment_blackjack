@@ -16,10 +16,5 @@ class Player
     @hand
   end
 
-  def split
-  end
-
-  def double
-  end
 
 end

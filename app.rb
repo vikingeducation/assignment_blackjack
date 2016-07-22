@@ -1,7 +1,13 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require './lib/deck'
+require './lib/player'
+require './lib/hand'
+require './helpers/blackjack_helper'
+require 'pry'
 require 'json'
+
+helpers BlackjackHelper
 
 enable :sessions
 
@@ -11,37 +17,28 @@ end
 
 
 get '/blackjack' do
+  #binding.pry
+  if session["deck_arr"]
+    deck = load_deck
+  else
+    deck = save_deck( Deck.new.deck_arr )
+  end
 
-  deck = session["deck_arr"] ? load_deck : Deck.new
+  if session["player_hand_arr"]
+    player_hand = load_player_hand
+  else
+    save_player_hand( Player.new.hand )
+  end
 
-    #show player and dealer hands
-    if  session["player_hand_arr"] 
-      player_hand = Player.new(JSON.parse(session["player_hand_arr"])).hand
-    else
-      player_hand = Player.new.hand
-      sesion["player_hand_arr"] = player_hand
-    end
-
-
-  erb :blackjack, locals: { deck: deck }
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand }
 end
 
 
-get '/blackjack/play' do
-  erb :blackjack
-end
-
-
-#get the deck
-#take one card from the deck
-#add the card to the player's hand
 post '/blackjack/hit' do
-  deck = Deck.new(session["deck_arr"])
+  deck = Deck.new(session["deck_arr"]).deck_arr
   card = deck.deal
-  session["deck_arr"] = deck.deck_arr.to_json
-  
+  save_deck(deck)
+  player_hand = save_player_hand(Player.new(load_player_hand).hit(card))
 
-
-
-  erb :blackjack, locals: {}
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand}
 end
