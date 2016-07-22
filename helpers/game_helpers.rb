@@ -42,10 +42,35 @@ module GameHelpers
   end
 
   def compare_values(player_hand, dealer_hand)
-    return "Dealer busts!, you win" if check_hand(dealer_hand) > 21  
+    return "Dealer busts! You win!" if check_hand(dealer_hand) > 21
+    return "It's a tie. You get your money back" if check_hand(player_hand) == check_hand(dealer_hand)  
     check_hand(player_hand) > check_hand(dealer_hand) ? "You win!" : "You lose, sorry"
   end
 
+  def get_message(player_hand, dealer_hand)
+    message = "What's your next move?"
+    if session["stayed"]
+      message = compare_values(player_hand, dealer_hand)
+    else
+      if check_hand(dealer_hand) == 21
+        if check_hand(player_hand) == 21
+          message = "It's a tie!"
+        else
+          message = "You lose without even playing."
+        end
+      end
+      if check_hand(player_hand) > 21
+        message = "Bust!"
+      end
+    end
+    message
+  end
+
+  def save_session(deck, player_hand, dealer_hand)
+    session["deck"] = deck.to_json
+    session["player_hand"] = player_hand.to_json
+    session["dealer_hand"] = dealer_hand.to_json
+  end
 
 
 

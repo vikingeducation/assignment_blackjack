@@ -3,7 +3,13 @@
 
 <!-- display if you've started game -->
 <h2>Player hand: <%= player_hand %>  Total: <%= player_total %></h2>
-<h2>Dealer showing: <%= dealer_hand[1..-1] %> Dealer showing: <%= dealer_showing %></h2>
+<h2>Dealer showing: 
+  <% if message == "What's your next move?" %>
+    <%= dealer_hand[1..-1] %> Dealer showing: <%= dealer_showing %>
+  <% else %>
+    <%= dealer_hand %> Dealer total: <%= check_hand(dealer_hand) %>
+  <% end %>
+</h2>
 
 <h3><%= message %></h3>
 
@@ -15,3 +21,7 @@
     <input type="submit" value="I'll stay...">
   </form>
 <% end %>
+
+<form action="blackjack/reset" method="get">
+  <input type="submit" value="Deal a new hand">
+</form>
