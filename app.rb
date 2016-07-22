@@ -22,6 +22,7 @@ get '/blackjack' do
   unless request.cookies["hand_counter"]
     response.set_cookie("hand_counter" , 1)
   end
+
   if request.cookies["deck"] && request.cookies["hand_counter"].to_i < 6
     blackjack = Blackjack.new(JSON.parse(request.cookies["deck"]))
   else
@@ -59,10 +60,6 @@ get '/blackjack' do
   else
     message = nil
   end
-
-
-
-
 
 
   player_display = BlackjackHelper.convert_hand(player_hand)
@@ -124,7 +121,28 @@ post '/next_hand' do
   response.delete_cookie("player_bust") if request.cookies["player_bust"]
   response.delete_cookie("dealer_bust")
   response.delete_cookie("hand_complete") 
-  redirect to('/blackjack')
+  redirect to('/bet')
+end
+
+get '/bet' do
+  unless request.cookies["bankroll"]
+    response.set_cookie("bankroll" , 1000)
+  end
+  low_funds = nil
+  bank_remaining = request.cookies["bankroll"]
+  erb :bet, :locals => {:bankroll => bank_remaining, :low_funds => low_funds}
+end
+
+post '/bet' do
+  bet_placed = params[:bet]
+  bankroll = request.cookies["bankroll"]
+  if bet_placed > bankroll
+    low_funds = true
+    erb '/bet', :locals => {:low_funds => low_funds}
+  else
+    response.set_cookie("bet_amount", bet_placed)
+    redirect to('/blackjack')
+  end
 end
 
 # post '/stand' do

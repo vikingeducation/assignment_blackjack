@@ -14,8 +14,12 @@
 <h2>Computer</h2>
 <p> Hand:</p>
 <ul>
-  <% dealer_hand.each do |card| %>
-  <li><%=card%></li>
+  <%if message%>
+    <% dealer_hand.each do |card| %>
+    <li><%=card%></li>
+    <%end%>
+  <%else%>
+    <li><%=dealer_hand[0]%></li>
   <%end%>
 </ul>
 <p> Total is <%= dealer_sum%> </p>
@@ -39,6 +43,7 @@
     <button type="submit" value="Stand">Stand</button>
   </form>
 <% end %>  
+
 <!--
 <button type="submit" value="Double">Double Down</button>
 <button type="submit" value="Split">Split</button>
