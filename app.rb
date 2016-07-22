@@ -9,8 +9,17 @@ end
 
 get '/blackjack' do
   #unless request.cookies["deck"]
+  #do you have deck if yes play with deck
+  # if no create deck cookie that deck
+  # deck passed
+
+
+
+
+
+
   blackjack = Blackjack.new
-  deck = blackjack.create_deck
+  deck = blackjack
   cards = blackjack.deal_to_players(2)
   player_hand = cards[0]
   dealer_hand = cards[1]

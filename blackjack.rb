@@ -1,7 +1,25 @@
 class Blackjack
 
-  def initialize
-    @cards = []
+=begin
+
+blackjack is main game, creates the deck
+and sends cards to individual games
+
+hand hold hit methods
+
+game resolves hand then moves to blackjack
+
+=end
+
+
+
+
+  def initialize(deck=nil)
+    if deck
+      @cards = deck
+    else
+      @cards = create_deck
+    end
   end
 
   def create_deck
@@ -13,6 +31,12 @@ class Blackjack
     @cards.shuffle!
     @cards
   end
+
+
+  def card_to(player)
+    player_hand << @cards.pop
+  end
+
 
   def deal_to_players(num_players)
     cards_in_play = []
