@@ -14,7 +14,7 @@ get '/blackjack' do
   deck = session["deck_arr"] ? Deck.new(session["deck_arr"]): Deck.new
 
     #show player and dealer hands
-
+  dealer_hand =
 
 
   erb :blackjack, locals: { deck: deck }
