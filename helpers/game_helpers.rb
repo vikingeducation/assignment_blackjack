@@ -2,7 +2,7 @@
 
 module GameHelpers
 
-  
+
 
   def check_hand(hand)
     values = {
@@ -23,11 +23,15 @@ module GameHelpers
 
     sum = 0
     hand.each do |card|
-      sum += values[card[0]]
+      if card.length  == 3
+        sum += 10
+      else
+        sum += values[card[0]]
+      end
     end
-    until sum < 21
+    if sum > 21
       card_count = 0
-      while card_count < hand.length
+      while sum > 21 && card_count < hand.length
         if hand[card_count][0] == "A"
           sum -= 10
         end
@@ -35,6 +39,11 @@ module GameHelpers
       end
     end
     sum
+  end
+
+  def compare_values(player_hand, dealer_hand)
+    return "Dealer busts!, you win" if check_hand(dealer_hand) > 21  
+    check_hand(player_hand) > check_hand(dealer_hand) ? "You win!" : "You lose, sorry"
   end
 
 

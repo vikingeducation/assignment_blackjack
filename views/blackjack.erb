@@ -7,9 +7,11 @@
 
 <h3><%= message %></h3>
 
-<form action="blackjack/hit" method="post">
-  <input type="submit" value="Hit me!">
-</form>
-<form action="blackjack/stay" method="get">
-  <input type="submit" value="I'll stay...">
-</form>
+<% if message ==  "What's your next move?" %>
+  <form action="blackjack/hit" method="post">
+    <input type="submit" value="Hit me!">
+  </form>
+  <form action="blackjack/stay" method="get">
+    <input type="submit" value="I'll stay...">
+  </form>
+<% end %>

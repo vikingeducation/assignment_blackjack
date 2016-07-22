@@ -31,15 +31,16 @@ get "/blackjack" do
 
   message = "What's your next move?"
 
-  if check_hand(player_hand) > 21
-    message = "Bust!"
+  if session["stayed"]
+    message = compare_values(player_hand, dealer_hand)
+  else
+    if check_hand(player_hand) > 21
+      message = "Bust!"
+    end
+    session["deck"] = deck.to_json
+    session["player_hand"] = player_hand.to_json
+    session["dealer_hand"] = dealer_hand.to_json
   end
-
-
-  session["deck"] = deck.to_json
-  session["player_hand"] = player_hand.to_json
-  session["dealer_hand"] = dealer_hand.to_json
-
 
   erb :blackjack, :locals => { player_hand: player_hand, dealer_hand: dealer_hand, player_total: check_hand(player_hand),
     dealer_showing: check_hand(dealer_hand[1..-1]), message: message}
@@ -56,6 +57,15 @@ post "/blackjack/hit" do
   redirect to("blackjack")
 end
 
-get "blackjack/stay" do
+get "/blackjack/stay" do
+  dealer_hand = JSON.parse(session["dealer_hand"])
+  deck = JSON.parse(session["deck"])
 
+  until check_hand(dealer_hand) > 16
+    dealer_hand << deck.pop
+  end
+  session["stayed"] = true
+  session["deck"] = deck.to_json
+  session["dealer_hand"] = dealer_hand.to_json
+  redirect to("blackjack")
 end
