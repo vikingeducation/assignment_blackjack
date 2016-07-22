@@ -27,8 +27,8 @@ get '/blackjack' do
     save_deck( Deck.new.deck_arr )
   end
 
-  erb :blackjack, locals: { deck: deck,
- player_hand: player_hand, dealer_hand: dealer_hand}
+  erb :blackjack, locals: { deck: load_deck,
+ player_hand: load_hand, dealer_hand: load_dealer_hand}
 end
 
 
@@ -39,7 +39,7 @@ post '/blackjack/hit' do
 
   player_hand = save_hand(Hand.new(load_hand).hit(card))
 
-  redirect to('/blackjack/bust') if Hand.new(load_hand).bust?
+  redirect to('bust') if Hand.new(load_hand).bust?
 
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: load_dealer_hand}
 end
@@ -49,9 +49,8 @@ post '/blackjack/stay' do
   erb :blackjack, locals: { deck: load_deck, player_hand: load_hand, dealer_hand: load_dealer_hand}
 end
 
-get '/blackjack/bust' do
+get '/bust' do
   get_dealer_moves
-
   erb :blackjack, locals: { deck: load_deck, player_hand: load_hand, dealer_hand: load_dealer_hand}
 end
 
