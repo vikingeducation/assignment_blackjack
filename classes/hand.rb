@@ -27,9 +27,16 @@ class Hand
     value = ace_logic(value, aces)
   end
 
-  def add_card
-    @cards << @deck.
+  def add_card(face, suit)
+    @cards << Card.new(face, suit)
   end
 
+  def busted?
+    hand_value > 21
+  end
+
+  def contains?(face, suit)
+    
+  end
 
 end

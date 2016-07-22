@@ -4,7 +4,7 @@ class Card
 
   attr_reader :suit, :face
 
-  def initialize(suit, face)
+  def initialize(face, suit)
     @face = face
     @suit = suit
   end
