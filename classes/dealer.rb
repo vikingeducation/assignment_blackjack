@@ -3,7 +3,7 @@
 class Dealer < Hand
 
   def decide
-    if hand_value > 16
+    add_card until hand_value > 16
   end
 
 end

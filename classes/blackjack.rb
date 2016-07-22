@@ -3,9 +3,9 @@ require_relative 'hand'
 
 class Blackjack
 
+  SUITS = ["H", "S", "C", "D"]
 
-
-VALUES = {
+  VALUES = {
   "A": 11
   "2": 2
   "3": 3
@@ -19,11 +19,22 @@ VALUES = {
   "J": 10
   "Q": 10
   "K": 10
-}
+  }
 
-SUITS = ["H", "S", "C", "D"]
+  def initialize
+    @deck = {}
+    build_deck
+  end
 
+  def build_deck
+    VALUES.keys.each do |key|
+      @deck[key] = SUITS
+    end
+  end
 
+  def give_card
+    @deck[@deck.keys.sample]
+  end
 
 
 
