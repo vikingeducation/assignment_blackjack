@@ -1,4 +1,7 @@
+require 'pry'
 require 'sinatra'
+require 'sinatra/form_helpers'
+
 enable :sessions
 
 class Deck
@@ -62,7 +65,52 @@ class Deck
     get_card(@dealer_hand)
   end
 
-  def fold
+  #Check if player's hand beats dealer's.
+  def compare_hands
+    total_player = get_total_points(get_player_points)
+    total_dealer = get_total_points(get_dealer_points)
+    total_player > total_dealer
+  end
+
+  def dealer_should_hit?
+    total_dealer = get_total_points(get_dealer_points)
+    total_dealer < 17
+  end
+
+  #When the player busts or stays
+  def end_game
+    dealer_hit while dealer_should_hit?
+    compare_hands ? "Player wins." : "Dealer wins."
+  end
+
+  #Getting points.
+  def get_total_points(hand)
+    hand.reduce(0) do |m,card|
+      m + card.value
+    end
+  end
+
+  def get_dealer_points
+    @dealer_hand.map do |card|
+      card.value = get_card_points(card)
+      card
+    end
+  end
+
+  def get_player_points
+    @player_hand.map do |card|
+      card.value = get_card_points(card)
+      card
+    end
+  end
+
+  def get_card_points(card)
+    case card.rank
+    when 'A', 'K', 'Q', 'J'
+      10
+    when Fixnum
+      card.rank
+    end
   end
 
   def blackjack?(hand)
@@ -88,6 +136,7 @@ class Deck
     hand.map do |card|
       [card.rank, card.value, card.suit]
     end
+    binding.pry
   end
 
   #convert deck to an array
@@ -120,7 +169,7 @@ get "/blackjack" do
   session['player_hand'] = deck.player_hand
   session['dealer_hand'] = deck.dealer_hand
 
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand }
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: nil }
 
 end
 
@@ -135,7 +184,7 @@ post "/blackjack/hit" do
   dealer_hand = deck.show_rank_suit(deck.dealer_hand)
   session['dealer_hand'] = dealer_hand
 
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand }
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: nil }
 
 end
 
@@ -144,7 +193,9 @@ get "/blackjack/stay" do
   deck = Deck.new(session['cards'])
   deck.store_player_hand(session["player_hand"])
   deck.store_dealer_hand(session["dealer_hand"])
+  outcome = deck.end_game
   player_hand = deck.show_rank_suit(deck.player_hand)
+  dealer_hand = deck.show_rank_suit(deck.dealer_hand)
 
-
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: outcome }
 end
