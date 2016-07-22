@@ -51,6 +51,9 @@ module GameHelpers
     message = "What's your next move?"
     if session["stayed"]
       message = compare_values(player_hand, dealer_hand)
+      if check_hand(player_hand) > 21
+        message = "Bust!"
+      end
     else
       if check_hand(dealer_hand) == 21
         if check_hand(player_hand) == 21

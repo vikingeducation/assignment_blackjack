@@ -86,3 +86,26 @@ get "/blackjack/reset" do
   redirect to("/")
 
 end
+
+
+get "/blackjack/split" do
+
+end
+
+
+get "/blackjack/double" do
+  
+  session["bet"] = session["bet"].to_i * 2
+  player_hand = JSON.parse(session["player_hand"])
+  deck = JSON.parse(session["deck"])
+  player_hand << deck.pop
+  session["player_hand"] = player_hand.to_json
+  session["deck"] = deck.to_json
+
+  if check_hand(player_hand) > 21
+    redirect to("/blackjack")
+  else
+    redirect to("/blackjack/stay")
+  end
+
+end
