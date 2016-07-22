@@ -2,8 +2,10 @@
 <h1>Welcome to your table, go ahead and take seat</h1>
 
 <!-- display if you've started game -->
-<h2>Player hand: <%= player_hand %>  </h2>
-<h2>Dealer showing: <%= dealer_hand[1..-1] %> </h2>
+<h2>Player hand: <%= player_hand %>  Total: <%= player_total %></h2>
+<h2>Dealer showing: <%= dealer_hand[1..-1] %> Dealer showing: <%= dealer_showing %></h2>
+
+<h3><%= message %></h3>
 
 <form action="blackjack/hit" method="post">
   <input type="submit" value="Hit me!">

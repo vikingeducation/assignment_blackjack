@@ -3,6 +3,9 @@ require "sinatra/reloader" if development?
 require "pry"
 require_relative "deck"
 require "json"
+require_relative "./helpers/game_helpers.rb"
+
+helpers GameHelpers
 
 enable :sessions
 
@@ -26,12 +29,20 @@ get "/blackjack" do
     end
   end
 
+  message = "What's your next move?"
+
+  if check_hand(player_hand) > 21
+    message = "Bust!"
+  end
+
+
   session["deck"] = deck.to_json
   session["player_hand"] = player_hand.to_json
   session["dealer_hand"] = dealer_hand.to_json
 
 
-  erb :blackjack, :locals => { player_hand: player_hand, dealer_hand: dealer_hand }
+  erb :blackjack, :locals => { player_hand: player_hand, dealer_hand: dealer_hand, player_total: check_hand(player_hand),
+    dealer_showing: check_hand(dealer_hand[1..-1]), message: message}
 end
 
 post "/blackjack/hit" do
