@@ -12,4 +12,8 @@ class Player
     @hand << cards.pop
   end
 
+  def hit_or_stay?
+    
+  end
+
 end

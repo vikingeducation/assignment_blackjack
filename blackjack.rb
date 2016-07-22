@@ -1,6 +1,6 @@
 class Blackjack
 
-  attr_reader :deck
+  attr_reader :deck, :dealer, :player
 
   def initialize
     @deck = Deck.new
@@ -11,6 +11,7 @@ class Blackjack
   def start
     shuffle
     first_draw
+    @player.hit_or_stay?
   end
 
   def shuffle
