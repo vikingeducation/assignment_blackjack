@@ -9,14 +9,9 @@ Bet: <%= get_bet %>
 
 <% if condition%>
 
-<form action="blackjack/hit" method="post" >
-  <input type="submit" value="Hit" name="choice">
+<form action="blackjack/reset" method="post" >
+  <input type="submit" value="Play again?">
 </form>
-<br>
-<form action="blackjack/stay" method="post">
-  <input type="submit" value="Stay" name="choice">
-</form>
-
 
 <% else %>
 

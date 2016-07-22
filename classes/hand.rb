@@ -6,7 +6,8 @@ class Hand
 
   def initialize(cards = [], bank = nil)
     @cards = get_cards(cards)
-    @bank ||= 1000
+    bank ||= 1000
+    @bank = bank
   end
 
   # add_card, count value, see_cards,

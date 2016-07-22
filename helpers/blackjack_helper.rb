@@ -1,7 +1,12 @@
 module BlackjackHelper
 
   def make_blackjack
-    Blackjack.new(get_player_hand, get_dealer_hand, get_bank)
+    if session["bank"].nil?
+      bank = nil
+    else
+      bank = get_bank
+    end
+    Blackjack.new(get_player_hand, get_dealer_hand, bank)
   end
 
   def get_player_hand
@@ -29,10 +34,16 @@ module BlackjackHelper
   end
 
   def enough_money?(bet)
+    binding.pry
     bet ||= 0
     session["bank"].to_i >= bet.to_i
   end
 
+  def reset
+    session["player"] = nil
+    session["dealer"] = nil
+    session["condition"] = nil
+  end
 
   def save_game(game)
     state = game.save

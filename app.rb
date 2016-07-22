@@ -27,6 +27,11 @@ post '/blackjack/bet' do
   end
 end
 
+post '/blackjack/reset' do
+  reset
+  redirect('blackjack/bet')
+end
+
 get '/blackjack' do
   winner = session[:condition]
   game = make_blackjack
