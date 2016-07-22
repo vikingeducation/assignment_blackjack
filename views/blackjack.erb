@@ -1,4 +1,6 @@
-<h1>Hello, Blackjack!</h1>
+<div class="jumbotron">
+  <h1 class="text-center"><span style="color:red">Hello</span>, <span style="color:#DAA520">Blackjack!</span></h1>
+</div>
 
 <h2> The player's hand is: <%= player_hand %></h2>
 
@@ -12,9 +14,9 @@
 
 <% else %>
   <form action="/blackjack/hit" method="post">
-    <input type="submit" name="Hit" value="hit">
+    <input class="btn btn-primary" type="submit" name="Hit" value="Hit!">
   </form>
   <form action="/blackjack/stay" method="get">
-    <input type="submit" name="Stay" value="stay">
+    <input class="btn btn-default" type="submit" name="Stay" value="Stay">
   </form>
 <% end %>
