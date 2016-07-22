@@ -4,7 +4,7 @@
 
 <h2> The player's hand is: <%= player_hand %></h2>
 
-<h2> The Dealer's hand is <%= dealer_hand[1..-1] %><h2>
+<h2> The Dealer's hand is <%= show_dealer_hand(dealer_hand,outcome) %><h2>
 
 <% if outcome %>
   <h1 class="bg-danger"><%= show_outcome(outcome) %></h1>

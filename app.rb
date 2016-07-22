@@ -57,8 +57,8 @@ class Deck
     get_card(@dealer_hand)
     get_card(@player_hand)
     get_card(@dealer_hand)
-    @player_win = blackjack?(@player_hand)
-    @dealer_win = blackjack?(@dealer_hand)
+    @pblackjack = blackjack?(@player_hand)
+    @dblackjack = blackjack?(@dealer_hand)
     any_win?
     compute_value
   end
@@ -75,6 +75,7 @@ class Deck
   def compare_hands
     total_player = get_total_points(get_player_points)
     total_dealer = get_total_points(get_dealer_points)
+    #NOTE: Check for dealer bust?
     total_player > total_dealer
   end
 
@@ -84,7 +85,11 @@ class Deck
   end
 
   def bust_player
-    get_total_points(get_player_points) > 21  || nil
+    get_total_points(get_player_points) > 21 ? "Player busts. Dealer wins."  : nil
+  end
+
+  def tie?
+    return :tie if @pblackjack && @dblackjack
   end
 
   #When the player busts or stays
@@ -141,14 +146,12 @@ class Deck
     end
   end
 
-
   def show_rank_suit(hand)
     hand.map do |card|
       [card.rank, card.value, card.suit]
     end
   end
 
-  #convert deck to an array
 end
 
 get "/blackjack" do 
@@ -175,7 +178,7 @@ post "/blackjack/hit" do
   deck.player_hit
   player_hand = deck.show_rank_suit(deck.get_player_points)
   dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
-  outcome = deck.bust_player
+  outcome = deck.bust_player || deck.tie?
   if outcome
     session.clear
   else
@@ -191,7 +194,7 @@ get "/blackjack/stay" do
   deck = Deck.new(session['cards'])
   store_player_hand(deck, session["player_hand"])
   store_dealer_hand(deck, session["dealer_hand"])
-  outcome = deck.end_game
+  outcome = deck.tie? ? :tie : deck.end_game
   session.clear
   player_hand = deck.show_rank_suit(deck.player_hand)
   dealer_hand = deck.show_rank_suit(deck.dealer_hand)
