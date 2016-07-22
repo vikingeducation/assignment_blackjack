@@ -77,6 +77,14 @@ class Deck
     total_dealer < 17
   end
 
+  def bust_player
+    get_total_points(get_player_points) > 21  || nil
+  end
+
+  def bust_dealer
+    get_total_points(get_dealer_points) > 21 || nil
+  end
+
   #When the player busts or stays
   def end_game
     dealer_hit while dealer_should_hit?
@@ -136,7 +144,6 @@ class Deck
     hand.map do |card|
       [card.rank, card.value, card.suit]
     end
-    binding.pry
   end
 
   #convert deck to an array
@@ -163,8 +170,9 @@ end
 get "/blackjack" do 
 
   deck = Deck.new(session['cards'])
-  player_hand = deck.show_rank_suit(deck.player_hand)
-  dealer_hand = deck.show_rank_suit(deck.dealer_hand)
+  player_hand = deck.show_rank_suit(deck.get_player_points)
+  dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
+  deck.compute_value
   session['cards'] = deck.to_array
   session['player_hand'] = deck.player_hand
   session['dealer_hand'] = deck.dealer_hand
@@ -179,12 +187,14 @@ post "/blackjack/hit" do
   deck.store_player_hand(session["player_hand"])
   deck.store_dealer_hand(session["dealer_hand"])
   deck.player_hit
-  player_hand = deck.show_rank_suit(deck.player_hand)
+  player_hand = deck.show_rank_suit(deck.get_player_points)
+  dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
+  outcome = [deck.bust_player, outcome.bust_dealer]
   session['player_hand'] = player_hand
-  dealer_hand = deck.show_rank_suit(deck.dealer_hand)
   session['dealer_hand'] = dealer_hand
+  session['cards'] = deck.to_array
 
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: nil }
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: outcome }
 
 end
 
