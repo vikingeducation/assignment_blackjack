@@ -12,6 +12,8 @@ get '/' do
 end
 
 get '/blackjack' do
+  session['purse'] ||= 1000
+  
   deck = session['deck'] = new_deck.shuffle
   player_cards = session['player_cards'] = deal(deck, 2)
   dealer_cards = session['dealer_cards'] = deal(deck, 2) 
@@ -23,7 +25,6 @@ end
 post '/blackjack/hit' do
   session['player_cards'] << deal(session['deck'], 1).flatten
   player_cards = session['player_cards']
-  # player_cards = [[:ace,:spade],[:ace, :club],[10, :spade]]
   if bust?(player_cards)
     redirect('/blackjack/stay')
   else
@@ -45,5 +46,9 @@ get '/blackjack/stay' do
                              dealer_cards: session['dealer_cards'], wording: wording }
 
 end
+
+get '/bet' do 
+
+  end
 
 
