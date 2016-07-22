@@ -1,12 +1,7 @@
 module ViewHelpers
 
   def show_outcome(outcome)
-    case outcome
-    when :tie
-      "Tie."
-    else      
-      outcome
-    end
+    outcome == :tie ? 'Tie' : outcome
   end
 
   def show_dealer_hand(dealer_hand,outcome)

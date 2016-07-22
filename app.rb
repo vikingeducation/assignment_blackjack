@@ -15,9 +15,7 @@ Card = Struct.new(:rank, :value, :suit)
 class Deck
   attr_reader :deck, 
               :player_win, 
-              :dealer_win, 
-              :pvalue, 
-              :dvalue
+              :dealer_win
   attr_accessor :player_hand, 
                 :dealer_hand
 
@@ -74,7 +72,6 @@ class Deck
   def compare_hands
     total_player = get_total_points(get_player_points)
     total_dealer = get_total_points(get_dealer_points)
-    #NOTE: Check for dealer bust?
     total_player > total_dealer
   end
 
@@ -143,6 +140,12 @@ class Deck
     return true if hand[1].rank == 'a' && hand[0].value == 10
   end
 
+  def blackjack_outcome
+    return :tie if tie?
+    return "Player blackjack" if @pblackjack
+    return "Dealer blackjack" if @dblackjack
+  end
+
   def any_win?
     @player_win || @dealer_win
   end
@@ -165,8 +168,11 @@ get "/blackjack" do
   session['cards'] = to_array(deck)
   session['player_hand'] = hands[0]
   session['dealer_hand'] = hands[1]
-
-  erb :blackjack, locals: { deck: deck, player_hand: hands[0], dealer_hand: hands[1], outcome: outcome }
+  if outcome = deck.blackjack_outcome
+    redirect ("blackjack/stay?outcome=#{outcome}")
+  else
+    erb :blackjack, locals: { deck: deck, player_hand: hands[0], dealer_hand: hands[1], outcome: outcome }
+  end
 
 end
 
@@ -194,7 +200,12 @@ get "/blackjack/stay" do
   deck = Deck.new(session['cards'])
   store_player_hand(deck, session["player_hand"])
   store_dealer_hand(deck, session["dealer_hand"])
-  outcome = deck.tie? ? :tie : deck.end_game
+  outcome = nil
+  if params['outcome']
+    outcome = params['outcome']
+  else
+    outcome = deck.tie? ? :tie : deck.end_game
+  end
   session.clear
   player_hand = deck.show_rank_suit(deck.player_hand)
   dealer_hand = deck.show_rank_suit(deck.dealer_hand)
