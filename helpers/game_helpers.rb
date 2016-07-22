@@ -61,8 +61,9 @@ module GameHelpers
         else
           message = "You lose without even playing."
         end
-      end
-      if check_hand(player_hand) > 21
+      elsif check_hand(player_hand) == 21
+        message = "Congratulations, you win without trying!"
+      elsif check_hand(player_hand) > 21
         message = "Bust!"
       end
     end
@@ -85,6 +86,8 @@ module GameHelpers
       bankroll -= bet
     elsif winning_messages.include?(message)
       bankroll += bet
+    elsif message == "Congratulations, you win without trying!"
+      bankroll += (bet * 1.5)
     end
     response.set_cookie("bankroll", bankroll)
     bankroll

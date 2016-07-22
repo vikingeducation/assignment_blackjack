@@ -88,13 +88,13 @@ get "/blackjack/reset" do
 end
 
 
-get "/blackjack/split" do
-
-end
+# get "/blackjack/split" do
+#   
+# end
 
 
 get "/blackjack/double" do
-  
+
   session["bet"] = session["bet"].to_i * 2
   player_hand = JSON.parse(session["player_hand"])
   deck = JSON.parse(session["deck"])
