@@ -12,7 +12,7 @@ class Blackjack
   def start
     shuffle
     first_draw
-    @player.hit_or_stay?
+    
   end
 
   def shuffle

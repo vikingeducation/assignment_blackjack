@@ -17,11 +17,28 @@ class Player
 
   def hand_value
     aces = 0
-    values = @hand.map{ |card| card[0] }
-    sum = values.inject do |total, value|
-      value = 13 ? aces += 1 : total + [value, 10].min
+    remaining = aces - 1
+    values = hand.map{ |card| card[0] }
+    sum = 0
+    values.each do |value|
+      value == 13 ? aces += 1 : sum += [value, 10].min
     end
+
+    if sum > 21
+      return sum + aces
+    elsif aces > 0
+      return sum + 11 + remaining if sum + 11 + remaining <= 21
+      return sum + aces if sum + 11 + remaining > 21 
+    else 
+      
+    end
+
     # add ages and values logically
+  end
+
+  def bust?
+
+
   end
 
 

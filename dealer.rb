@@ -4,31 +4,29 @@ class Dealer < Player
 
 
   def hit(cards)
-    until hand_value >= 17
+    until hand_value(@hand) >= 17
       draw
     end
   end
 
-  def hand_value
+  def hand_value(hand)
     aces = 0
-    values = @hand.map{ |card| card[0] }
-    sum = values.inject (0) do |total, value|
-      value = 13 ? aces += 1 : total + [value, 10].min
+    values = hand.map{ |card| card[0] }
+    sum = 0
+    values.each do |value|
+      value == 13 ? aces += 1 : sum += [value, 10].min
     end
 
     if aces > 0
       remaining = aces - 1
       high_sum = sum + remaining + 11
       # soft 17 edge case
-      if high_sum == 17
-        sum + remaining + 1 
-      elsif high_sum > 17 && high_sum <= 21 
-        high_sum 
-      else
-        sum + aces
-      end
+      
+      return sum + remaining + 1  if high_sum == 17
+      return  high_sum if high_sum > 17 && high_sum <= 21 
+      
     end
-
+    sum + aces
   end
 
 end
