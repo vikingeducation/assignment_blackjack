@@ -10,16 +10,25 @@ helpers GameHelpers
 enable :sessions
 
 get "/" do
-  erb :home
+  unless request.cookies["bankroll"]
+    response.set_cookie("bankroll", 1000)
+  end
+  bankroll = request.cookies["bankroll"]
+  erb :home, :locals => { bankroll: bankroll }
 end
 
 get "/blackjack" do
-
   if session["deck"]
+    bet = session["bet"]
+    bankroll = request.cookies["bankroll"]
     deck = JSON.parse(session["deck"])
     player_hand = JSON.parse(session["player_hand"])
     dealer_hand = JSON.parse(session["dealer_hand"])
   else
+    bankroll = 1000
+    response.set_cookie("bankroll", 1000)
+    session["bet"] = params["bet"]
+    bet = params["bet"]
     deck = Deck.new.deck
     player_hand = []
     dealer_hand = []
@@ -30,10 +39,11 @@ get "/blackjack" do
   end
 
   message = get_message(player_hand, dealer_hand)
-  save_session(deck, player_hand, dealer_hand)
+  save_session(deck, player_hand, dealer_hand, bet)
+  bankroll = update_bankroll(message, bankroll)
 
   erb :blackjack, :locals => { player_hand: player_hand, dealer_hand: dealer_hand, player_total: check_hand(player_hand),
-    dealer_showing: check_hand(dealer_hand[1..-1]), message: message}
+    dealer_showing: check_hand(dealer_hand[1..-1]), message: message, bet: bet, bankroll: bankroll }
 end
 
 
@@ -66,11 +76,6 @@ end
 get "/blackjack/reset" do
 
   session.clear
-  redirect to("blackjack")
-  
+  redirect to("/")
+
 end
-
-
-
-
-
