@@ -1,6 +1,7 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require './lib/deck'
+require 'json'
 
 enable :sessions
 
@@ -11,10 +12,15 @@ end
 
 get '/blackjack' do
 
-  deck = session["deck_arr"] ? Deck.new(session["deck_arr"]): Deck.new
+  deck = session["deck_arr"] ? load_deck : Deck.new
 
     #show player and dealer hands
-  dealer_hand =
+    if  session["player_hand_arr"] 
+      player_hand = Player.new(JSON.parse(session["player_hand_arr"])).hand
+    else
+      player_hand = Player.new.hand
+      sesion["player_hand_arr"] = player_hand
+    end
 
 
   erb :blackjack, locals: { deck: deck }
@@ -30,9 +36,12 @@ end
 #take one card from the deck
 #add the card to the player's hand
 post '/blackjack/hit' do
-  card = Deck.new(session["deck_arr"]).deal
+  deck = Deck.new(session["deck_arr"])
+  card = deck.deal
+  session["deck_arr"] = deck.deck_arr.to_json
   
 
 
-  erb :blackjack, loclas: {}
+
+  erb :blackjack, locals: {}
 end
