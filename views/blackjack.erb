@@ -1,7 +1,7 @@
 <p>Player hand: <%= player_cards %></p>
 <p>Dealer hand: <%= dealer_cards %></p>
-<p>Player bankroll:</p>
-<p>Bet amounts:</p>
+<p>Player bankroll:<%= purse %></p>
+<p>Bet amounts: <%= bet %> </p>
 
 <form action='/blackjack/hit' method='post' name='hit'>
 <button type="submit" class="btn btn-success" name="hit">Hit</button>
@@ -15,6 +15,3 @@
 
 
 <h2><%= wording %><h2>
-
-  <a href="/bet" class="btn btn-warning">Play Hand</a>
-  

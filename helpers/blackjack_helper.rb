@@ -3,6 +3,17 @@ module BlackjackHelper
     deck.pop(num)
   end
 
+  def handle_bet(bet, purse)
+    bet = bet.to_i
+    if bet < purse
+      session['bet'] = bet
+      session['purse'] -= bet
+      redirect('/blackjack')
+    else
+      get :bet, locals: { message: "Please enter valid bet" }
+    end
+  end
+
   def state(cards)
     if calc_value(cards) > 21
       :busted
@@ -16,7 +27,6 @@ module BlackjackHelper
   def final_result(dealer_cards, player_cards)
     dealer_state = state(dealer_cards)
     player_state = state(player_cards)
-    binding.pry
     if dealer_state == player_state
       "It was a tie!!"
     elsif player_state == :busted
