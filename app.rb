@@ -32,6 +32,7 @@ get '/blackjack' do
   dealer_sum = current_hand.sum_of_cards(dealer_hand)
 
   #check for end of hand
+  binding.pry
   if request.cookies["player_bust"]
     message = "Player busted"
   elsif request.cookies["dealer_bust"]
@@ -42,8 +43,10 @@ get '/blackjack' do
     dealer_sum = current_hand.sum_of_cards(dealer_hand)
     if player_sum > dealer_sum
       message = "You won!"
+    elsif dealer_sum > player_sum
+      message = "Dealer won."
     else
-      message = "Dealer won"
+      message = "It's a push."
     end
   else
     message = nil
