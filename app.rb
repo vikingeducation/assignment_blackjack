@@ -11,10 +11,12 @@ helpers GameHelpers
 enable :sessions
 
 get "/" do
-  unless request.cookies["bankroll"]
+  if request.cookies["bankroll"] != nil
+    bankroll = request.cookies["bankroll"]
+  else
     response.set_cookie("bankroll", 1000)
+    redirect to("/")
   end
-  bankroll = request.cookies["bankroll"]
   erb :home, :locals => { bankroll: bankroll }
 end
 
@@ -76,7 +78,11 @@ end
 
 get "/blackjack/reset" do
 
-  session.clear
+  session["stayed"] = nil
+  session["deck"] = nil
+  session["dealer_hand"] = nil
+  session["player_hand"] = nil
+  session["bet"] = nil
   redirect to("/")
 
 end

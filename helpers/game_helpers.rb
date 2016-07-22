@@ -83,8 +83,8 @@ module GameHelpers
     elsif winning_messages.include?(message)
       bankroll += bet
     end
-    request.cookies[:bankroll] = bankroll
-
+    response.set_cookie("bankroll", bankroll)
+    bankroll
   end
 
 
