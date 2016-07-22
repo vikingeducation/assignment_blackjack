@@ -21,6 +21,16 @@
   <form action="blackjack/stay" method="get">
     <input type="submit" value="I'll stay...">
   </form>
+  <% if player_hand.length == 2 %>
+    <form action="blackjack/double" method="get">
+      <input type="submit" value="Double down!">
+    </form>
+    <% if player_hand[0][0] == player_hand[1][0] %>
+      <form action="blackjack/split" method="get">
+        <input type="submit" value="Split em.">
+      </form>
+    <% end %>
+  <% end %>
 <% end %>
 
 <form action="blackjack/reset" method="get">
