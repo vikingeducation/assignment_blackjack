@@ -2,10 +2,7 @@
 
 module GameHelpers
 
-
-
-  def check_hand(hand)
-    values = {
+VALUES = {
     "2" => 2,
     "3" => 3,
     "4" => 4,
@@ -21,20 +18,19 @@ module GameHelpers
     "A" => 11
   }
 
+  def check_hand(hand)
     sum = 0
     hand.each do |card|
-      if card.length  == 3
-        sum += 10
-      else
-        sum += values[card[0]]
-      end
+      card.length == 3 ? sum += 10 : sum += VALUES[card[0]]
     end
+    sum = check_for_aces(sum, hand)
+  end
+
+  def check_for_aces(sum, hand)
     if sum > 21
       card_count = 0
       while sum > 21 && card_count < hand.length
-        if hand[card_count][0] == "A"
-          sum -= 10
-        end
+        sum -= 10 if hand[card_count][0] == "A"
         card_count += 1
       end
     end
@@ -51,9 +47,6 @@ module GameHelpers
     message = "What's your next move?"
     if session["stayed"]
       message = compare_values(player_hand, dealer_hand)
-      if check_hand(player_hand) > 21
-        message = "Bust!"
-      end
     else
       if check_hand(dealer_hand) == 21
         if check_hand(player_hand) == 21
@@ -70,7 +63,10 @@ module GameHelpers
     message
   end
 
-  def save_session(deck, player_hand, dealer_hand, bet)
+  def save_session(args* deck, player_hand, dealer_hand, bet)
+    args.each do |key|
+      session["#{key}"] = key.to_json
+
     session["deck"] = deck.to_json
     session["player_hand"] = player_hand.to_json
     session["dealer_hand"] = dealer_hand.to_json
@@ -93,7 +89,14 @@ module GameHelpers
     bankroll
   end
 
+  def hit_player
+    deck = JSON.parse(session["deck"])
+    player_hand = JSON.parse(session["player_hand"])
+    player_hand << deck.pop
 
+    session["deck"] = deck.to_json
+    session["player_hand"] = player_hand.to_json
+  end
 
 
 

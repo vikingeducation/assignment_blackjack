@@ -33,8 +33,7 @@ get "/blackjack" do
     session["bet"] = params["bet"]
     bet = params["bet"]
     deck = Deck.new.deck
-    player_hand = []
-    dealer_hand = []
+    player_hand, dealer_hand = [], []
     2.times do
       player_hand << deck.pop
       dealer_hand << deck.pop
@@ -51,13 +50,7 @@ end
 
 
 post "/blackjack/hit" do
-  deck = JSON.parse(session["deck"])
-  player_hand = JSON.parse(session["player_hand"])
-  player_hand << deck.pop
-
-  session["deck"] = deck.to_json
-  session["player_hand"] = player_hand.to_json
-
+  hit_player
   redirect to("blackjack")
 end
 
@@ -72,7 +65,7 @@ get "/blackjack/stay" do
   session["stayed"] = true
   session["deck"] = deck.to_json
   session["dealer_hand"] = dealer_hand.to_json
-  redirect to("blackjack")
+  redirect to("/blackjack")
 end
 
 
@@ -96,12 +89,8 @@ end
 get "/blackjack/double" do
 
   session["bet"] = session["bet"].to_i * 2
+  hit_player
   player_hand = JSON.parse(session["player_hand"])
-  deck = JSON.parse(session["deck"])
-  player_hand << deck.pop
-  session["player_hand"] = player_hand.to_json
-  session["deck"] = deck.to_json
-
   if check_hand(player_hand) > 21
     redirect to("/blackjack")
   else
