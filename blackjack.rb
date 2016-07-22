@@ -30,7 +30,7 @@ class Blackjack
   end
 
   def dealer_wins?(player_hand, dealer_hand)
-    return true if dealer_hand > player_hand && dealer_hand <= 21
+    return true if @dealer.hand_value(dealer_hand) > @player.hand_value(player_hand) &&  @dealer.hand_value(dealer_hand) <= 21
   end
   
 end

@@ -37,6 +37,7 @@ post '/turn' do
         session['message'] = "You busted."
       elsif game.player.blackjack?(session['player_hand'])
         session['message'] = "You won!"
+
       end
       session['deck'] = game.deck.cards
       session['player_hand'] = game.player.hand
@@ -47,7 +48,13 @@ post '/turn' do
     game.dealer.hit(game.deck.cards)
     session['deck'] = game.deck.cards
     session['dealer_hand'] = game.dealer.hand
-    session['message'] = "Who won?"
+    
+   if game.dealer_wins?(session['player_hand'], session['dealer_hand'])
+     session['message'] = "You lost, Dealer wins"
+   else
+     session['message'] = "You won!"
+   end
+    
     redirect '/game_over'
   end
 
