@@ -15,7 +15,7 @@ class Player
     draw(cards)
   end
 
-  def hand_value
+  def hand_value(hand)
     aces = 0
     remaining = aces - 1
     values = hand.map{ |card| card[0] }
@@ -24,23 +24,23 @@ class Player
       value == 13 ? aces += 1 : sum += [value, 10].min
     end
 
-    if sum > 21
-      return sum + aces
-    elsif aces > 0
+    if aces > 0
       return sum + 11 + remaining if sum + 11 + remaining <= 21
       return sum + aces if sum + 11 + remaining > 21 
-    else 
-      
     end
 
-    # add ages and values logically
+    sum
   end
 
-  def bust?
-
-
+  
+  def bust?(hand)
+    return true if hand_value(hand) > 21
+    false
   end
 
-
+  def blackjack?(hand)
+    return true if hand_value(hand) == 21
+    false
+  end
 
 end

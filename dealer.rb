@@ -5,7 +5,7 @@ class Dealer < Player
 
   def hit(cards)
     until hand_value(@hand) >= 17
-      draw
+      draw(cards)
     end
   end
 
