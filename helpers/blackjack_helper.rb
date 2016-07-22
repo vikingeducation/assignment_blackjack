@@ -4,10 +4,9 @@ module BlackjackHelper
   end
 
   def state(cards)
-    case calc_value(cards)
-    when calc_value(cards) > 21
+    if calc_value(cards) > 21
       :busted
-    when calc_value(cards) == 21 && cards.length == 2
+    elsif calc_value(cards) == 21 && cards.length == 2
       :blackjack
     else
       calc_value(cards)
@@ -17,6 +16,7 @@ module BlackjackHelper
   def final_result(dealer_cards, player_cards)
     dealer_state = state(dealer_cards)
     player_state = state(player_cards)
+    binding.pry
     if dealer_state == player_state
       "It was a tie!!"
     elsif player_state == :busted
@@ -66,9 +66,9 @@ module BlackjackHelper
     end
   end
 
-  def no_aces?(cards)
-    !cards.map { |card| card[0] }.any? { |card| card == :ace }
-  end
+  # def no_aces?(cards)
+  #   !cards.map { |card| card[0] }.any? { |card| card == :ace }
+  # end
 
   def num_of_aces(cards)
     cards.select { |card| card[0] == :ace }.length
