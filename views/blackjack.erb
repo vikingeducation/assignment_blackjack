@@ -2,4 +2,12 @@
 
 <h2> The player's hand is: <%= player_hand %></h2>
 
-<h2> The Dealer's hand is <%= dealer_hand %><h2>
+<h2> The Dealer's hand is <%= dealer_hand[1..-1] %><h2>
+
+<form action="/blackjack/hit" method="post">
+  <input type="button" name="hit" value="hit">
+</form>
+
+<form action="/blackjack/stay" method="get">
+  <input type="button" name="stay" value="stay">
+</form>

@@ -2,9 +2,15 @@ require 'sinatra'
 enable :sessions
 
 class Deck
-  attr_reader :deck, :player_hand, :dealer_hand, :player_win, :dealer_win, :pvalue, :dvalue
+  attr_reader :deck, 
+              :player_hand, 
+              :dealer_hand, 
+              :player_win, 
+              :dealer_win, 
+              :pvalue, 
+              :dvalue
 
-  SUITS = ["Clubs", "Heards", "Spades", "Diamonds"]
+  SUITS = ["Clubs", "Hearts", "Spades", "Diamonds"]
   RANK = ["A", "K", "Q", "J"].concat((2..10).to_a)
 
   Card = Struct.new(:rank, :value, :suit)
@@ -83,21 +89,32 @@ class Deck
     end
   end
 
+  # def to_array
+  #   @deck.map { |card| [card.rank,card.suit] }
+  # end
+
 end
-
-
-
 
 get "/blackjack" do 
 
   deck = Deck.new(session['cards'])
-  deck.deal
   player_hand = deck.show_rank_suit(deck.player_hand)
   dealer_hand = deck.show_rank_suit(deck.dealer_hand)
+  session['cards'] = deck
+  session['player_hand'] = deck.player_hand
+  session['dealer_hand'] = deck.dealer_hand
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand }
 
+end
 
+post "/blackjack/hit" do
 
-
+  deck = session['cards']
+  deck.player_hit
+  player_hand = deck.player_hand
+  session['player_hand'] = player_hand
+  dealer_hand = deck.dealer_hand
+  session['dealer_hand'] = dealer_hand
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand }
 
 end
