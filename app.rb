@@ -4,6 +4,7 @@ require "pry"
 require_relative "deck"
 require "json"
 require_relative "./helpers/game_helpers.rb"
+require "sinatra/cookies"
 
 helpers GameHelpers
 
@@ -40,7 +41,7 @@ get "/blackjack" do
 
   message = get_message(player_hand, dealer_hand)
   save_session(deck, player_hand, dealer_hand, bet)
-  bankroll = update_bankroll(message, bankroll)
+  bankroll = update_bankroll(message)
 
   erb :blackjack, :locals => { player_hand: player_hand, dealer_hand: dealer_hand, player_total: check_hand(player_hand),
     dealer_showing: check_hand(dealer_hand[1..-1]), message: message, bet: bet, bankroll: bankroll }

@@ -73,6 +73,22 @@ module GameHelpers
     session["bet"] = bet
   end
 
+  def update_bankroll(message)
+    bankroll = request.cookies["bankroll"].to_i
+    bet = session["bet"].to_i
+    losing_messages = ["You lose without even playing.", "You lose, sorry", "Bust!"]
+    winning_messages = ["Dealer busts! You win!", "You win!"]
+    if losing_messages.include?(message)
+      bankroll -= bet
+    elsif winning_messages.include?(message)
+      bankroll += bet
+    end
+    request.cookies[:bankroll] = bankroll
+
+  end
+
+
+
 
 
 end
