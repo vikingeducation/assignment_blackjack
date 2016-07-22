@@ -1,6 +1,9 @@
 require 'pry'
+require './helpers/view_helpers'
 require 'sinatra'
 require 'sinatra/form_helpers'
+
+helpers ViewHelpers
 
 enable :sessions
 
@@ -189,7 +192,7 @@ post "/blackjack/hit" do
   deck.player_hit
   player_hand = deck.show_rank_suit(deck.get_player_points)
   dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
-  outcome = [deck.bust_player, outcome.bust_dealer]
+  outcome = [deck.bust_player, deck.bust_dealer]
   session['player_hand'] = player_hand
   session['dealer_hand'] = dealer_hand
   session['cards'] = deck.to_array
