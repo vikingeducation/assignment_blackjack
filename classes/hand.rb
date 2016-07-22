@@ -1,11 +1,12 @@
 class Hand
 
-  attr_reader :cards
+  attr_reader :cards, :bank
 
 # [[face, suit][face, suit]]
 
-  def initialize(cards = [])
+  def initialize(cards = [], bank = 1000)
     @cards = get_cards(cards)
+    @bank = bank
   end
 
   # add_card, count value, see_cards,

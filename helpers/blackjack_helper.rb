@@ -20,11 +20,20 @@ module BlackjackHelper
     session["dealer_score"]
   end
 
+  def get_bet
+    session["bet"]
+  end
+
+  def get_bank
+    session["bank"]
+  end
+
 
   def save_game(game)
     state = game.save
     session["player"] = state["player"]
     session["dealer"] = state["dealer"]
+    session["bank"] = game.player_hand.bank
     # session["player"] = state["player_score"]
     # session["dealer"] = state["dealer_score"]
   end
