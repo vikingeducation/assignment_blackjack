@@ -1,17 +1,22 @@
 require 'sinatra'
+enable :sessions
 
 class Deck
   attr_reader :deck, :player_hand, :dealer_hand, :player_win, :dealer_win, :pvalue, :dvalue
 
-  SUITS = ["C", "H", "S", "D"]
+  SUITS = ["Clubs", "Heards", "Spades", "Diamonds"]
   RANK = ["A", "K", "Q", "J"].concat((2..10).to_a)
 
   Card = Struct.new(:rank, :value, :suit)
 
-  def initialize(cards=nil)
+  def initialize(cards=nil, player_hand = [], dealer_hand = [])
     if cards
       @deck = cards.shuffle
+      @player_hand = player_hand
+      @dealer_hand = dealer_hand
     else
+      @player_hand = []
+      @dealer_hand = []
       @deck = get_deck.shuffle
       deal
     end
@@ -32,8 +37,10 @@ class Deck
   end
 
   def deal
-    @player_hand = [get_card,get_card]
-    @dealer_hand = [get_card,get_card]
+    get_card(@player_hand)
+    get_card(@dealer_hand)
+    get_card(@player_hand)
+    get_card(@dealer_hand)
     @player_win = blackjack?(@player_hand)
     @dealer_win = blackjack?(@dealer_hand)
     any_win?
@@ -69,15 +76,28 @@ class Deck
     end
   end
 
+
+  def show_rank_suit(hand)
+    hand.map do |card|
+      [card.rank, card.suit]
+    end
+  end
+
 end
+
 
 
 
 get "/blackjack" do 
 
-  cards = session['cards']
-  deck = Deck.new(cards)
+  deck = Deck.new(session['cards'])
+  deck.deal
+  player_hand = deck.show_rank_suit(deck.player_hand)
+  dealer_hand = deck.show_rank_suit(deck.dealer_hand)
 
-  erb :blackjack, locals: { deck: deck }
+
+
+
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand }
 
 end
