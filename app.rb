@@ -26,8 +26,8 @@ post '/bet' do
     session['bet_message'] = "You don't have that much guap."
     redirect '/bet'
   else
-    session['bet'] = params[:bet_value]
-    session['bankroll'] -= params[:bet_value]
+    session['bet'] = params[:bet_value].to_i
+    session['bankroll'] -= params[:bet_value].to_i
     redirect '/blackjack'
   end
 end
@@ -60,7 +60,7 @@ post '/turn' do
         session['bankroll'] += session['bet']
       else
         session['message'] = "You won!"
-        session['bankroll'] += session['bet'] * 1.5
+        session['bankroll'] += session['bet'].to_i * 3
       end
       session['deck'] = game.deck.cards
       session['player_hand'] = game.player.hand
@@ -76,6 +76,7 @@ post '/turn' do
      session['message'] = "You lost, Dealer wins"
    else
      session['message'] = "You won!"
+     session['bankroll'] += session['bet'].to_i * 2
    end
     
     redirect '/game_over'
