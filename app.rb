@@ -2,6 +2,9 @@
 
 require 'sinatra'
 require 'sinatra/contrib'
+require 'deck'
+
+enable :sessions
 
 get '/' do 
   erb :home
