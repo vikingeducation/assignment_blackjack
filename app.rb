@@ -24,13 +24,17 @@ get '/blackjack' do
 end
 
 post '/turn' do 
-  Blackjack.new.deck = session[:deck]
+  game = Blackjack.new(session['deck'], session['player_hand'], session['dealer_hand'])
   if params[:hit] 
-    session['player_hand']
-  elsif params[:stay]
-
+    game.player.hit(game.deck.cards)
+  else 
+    game.dealer.hit(game.deck.cards)
   end
+  session['deck'] = game.deck.cards
+  session['player_hand'] = game.player.hand
+  session['dealer_hand'] = game.dealer.hand
 
+  erb :blackjack
 end
 
 # Deck class

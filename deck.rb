@@ -2,8 +2,9 @@ class Deck
 
   attr_reader :cards
 
-  def initialize
-    @cards = new_deck
+  def initialize(cards = nil)
+    cards ||= new_deck
+    @cards = cards
   end
 
 
