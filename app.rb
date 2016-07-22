@@ -60,7 +60,6 @@ class Deck
     @pblackjack = blackjack?(@player_hand)
     @dblackjack = blackjack?(@dealer_hand)
     any_win?
-    compute_value
   end
 
   def player_hit
@@ -148,15 +147,6 @@ class Deck
     @player_win || @dealer_win
   end
 
-  def compute_value
-    @pvalue = @player_hand.reduce(0) do |m,n|
-      m + n.value
-    end
-    @dvalue = @dealer_hand.reduce(0) do |m,n|
-      m + n.value
-    end
-  end
-
   def show_rank_suit(hand)
     hand.map do |card|
       [card.rank, card.value, card.suit]
@@ -171,7 +161,6 @@ get "/blackjack" do
   player_hand = nil; dealer_hand = nil
   #Check if hands are already present in the session.
   hands = check_hands(deck, player_hand,dealer_hand)
-  deck.compute_value
   outcome = deck.bust_player
   session['cards'] = to_array(deck)
   session['player_hand'] = hands[0]
