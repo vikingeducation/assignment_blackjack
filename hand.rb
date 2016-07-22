@@ -1,7 +1,7 @@
 class Hand
 
   attr_reader :player_hand, :dealer_hand
-  def initialize(deck, player_hand, dealer_hand)
+  def initialize(deck, player_hand=nil, dealer_hand=nil)
     @deck = deck   #dealer and and players hand
     if player_hand
       @player_hand = player_hand

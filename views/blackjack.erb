@@ -18,7 +18,10 @@
 </ul>
 <p> Total is  <%= player_hand.reduce(:+)%> </p>
 
-<button type="submit" value="Hit">Hit</button>
+
+<form method="post" action="hit">
+  <button type="submit" value="hit">Hit</button>
+</form>
 <button type="submit" value="Stand">Stand</button>
 <button type="submit" value="Double">Double Down</button>
 <button type="submit" value="Split">Split</button>
