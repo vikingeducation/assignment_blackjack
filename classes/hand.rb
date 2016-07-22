@@ -2,12 +2,19 @@ class Hand
 
   attr_reader :cards
 
+# [[face, suit][face, suit]]
+
   def initialize(cards = [])
-    @cards = cards
+    @cards = get_cards(cards) unless cards.empty?
   end
 
   # add_card, count value, see_cards,
   # ace logic: 11, subtract until <21
+
+  def get_cards(cards)
+    cards.map { |card| Card.new(card[0], card[1])}
+  end
+
 
   def ace_logic(value, aces)
     while value > 21 && aces > 0
@@ -35,8 +42,11 @@ class Hand
     hand_value > 21
   end
 
-  def contains?(face, suit)
-    
-  end
+  # def contains?(face, suit)
+  #   @cards.each do |card|
+  #     return true if card.face == face && card.suit == suit
+  #   end
+  #   false
+  # end
 
 end

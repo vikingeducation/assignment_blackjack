@@ -33,23 +33,42 @@ class Blackjack
 
   def build_deck
     VALUES.keys.each do |key|
-      # don't add cards from hands
       @deck[key] = SUITS.dup
     end
+    @player_hand.cards.each {|card| delete(card.face, card.suit)}
+    @dealer_hand.cards.each {|card| delete(card.face, card.suit)}
+  end
+
+
+  def delete(face, suit)
+    @deck[face].delete(suit)
   end
 
   def give_card(player)
     face = @deck.keys.sample
     suit = @deck[face].sample
-    @deck[face].delete(suit)
+    delete(face, suit)
     player.add_card(face, suit)
   end
 
-  def finish
-    return #dealer wins if @player_hand.busted?
-    return #player wins if @dealer_hand.busted?
-    return #player if @player_hand.hand_value > @dealer_hand.hand_value
-    return #dealer hand
+  # def finish
+  #   return #dealer wins if @player_hand.busted?
+  #   return #player wins if @dealer_hand.busted?
+  #   return #player if @player_hand.hand_value > @dealer_hand.hand_value
+  #   return #dealer hand
+  # end
+
+# (dealer)[[face, suit][face, suit]],
+# (player)[[face,suit],[face,suit]]
+
+
+  def save
+    save = {}
+    dealer = @dealer_hand.cards.map { |card| [card.face, card.suit] }
+    player = @player_hand.cards.map { |card| [card.face, card.suit] }
+    save["dealer"] = dealer
+    save["player"] = player
+    save
   end
 
 end
