@@ -24,11 +24,16 @@ class Blackjack
   "K": 10
   }
 
-  def initialize(player_hand = [], dealer_hand = [])
+  def initialize(player_hand, dealer_hand)
+    player_hand ||= []
+    dealer_hand ||= []
     @deck = {}
     @player_hand = Hand.new(player_hand)
     @dealer_hand = Dealer.new(dealer_hand)
     build_deck()
+  end
+
+  def start_game
   end
 
   def build_deck

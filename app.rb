@@ -12,14 +12,18 @@ get '/' do
 end
 
 get '/blackjack' do
-  player_hand = get_player_hand
-  dealer_hand = get_dealer_hand
-  erb :blackjack, locals: { player_hand: player_hand, dealer_hand: dealer_hand }
+  @game = make_blackjack
+  erb :blackjack, locals: { player_hand: get_player_hand, dealer_hand: get_dealer_hand }
 end
 
 post '/blackjack/hit' do
+  @game = make_blackjack
+  @game.give_card(@game.player_hand)
+  #check for end
+  save_game(@game)
+
   # add_card
-  get_player_hand
+  
   redirect ('blackjack')
 end
 
