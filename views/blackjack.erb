@@ -1,3 +1,6 @@
+<%if message%>
+<h2><%=message%>
+<% end%>
 
 <h2>Computer</h2>
 <p> Hand:</p>
@@ -6,7 +9,7 @@
   <li><%=card%></li>
   <%end%>
 </ul>
-<p> Total is <%= dealer_hand.reduce(:+)%> </p>
+<p> Total is <%= dealer_sum%> </p>
 
 
 <h2>Player 1</h2>
@@ -16,12 +19,15 @@
   <li><%=card%></li>
   <%end%>
 </ul>
-<p> Total is  <%= player_hand.reduce(:+)%> </p>
+<p> Total is  <%= player_sum%> </p>
 
 
 <form method="post" action="hit">
   <button type="submit" value="hit">Hit</button>
 </form>
-<button type="submit" value="Stand">Stand</button>
+
+<form method="post" action="stand">
+  <button type="submit" value="Stand">Stand</button>
+</form>
 <button type="submit" value="Double">Double Down</button>
 <button type="submit" value="Split">Split</button>

@@ -23,6 +23,17 @@ class Hand
     end
   end
 
+  def sum_of_cards(hand)
+    card_values = hand.map do |card|
+      if card >= 11
+        card = 10
+      else
+        card
+      end
+    end
+    card_values.reduce(:+)
+  end
+
   def player_hit(player_hand)
     player_hand << @deck.pop 
   end
