@@ -1,22 +1,33 @@
 require 'sinatra'
 require 'erb'
-require './helpers/blackjack_helper.rb'
-
-helpers BlackjackHelper
+require './blackjack.rb'
+require "sinatra/reloader" if development?
 
 get '/' do
   erb :index
 end
 
 get '/blackjack' do
-
-  player_hand = BlackjackHelper.deal_hand 
-  dealer_hand = BlackjackHelper.deal_hand
-  responds.set_cookie("player_hand", player_hand)
-  repsonds.set_cookie("player_hand", player_hand)
+  #unless request.cookies["deck"]
+  blackjack = Blackjack.new
+  deck = blackjack.create_deck
+  cards = blackjack.deal_to_players(2)
+  player_hand = cards[0]
+  dealer_hand = cards[1]
+  response.set_cookie("player_hand", player_hand)
+  response.set_cookie("dealer_hand", dealer_hand)
+  response.set_cookie("deck", deck)
   erb :blackjack, :locals =>{:dealer_hand => dealer_hand, :player_hand => player_hand }
 
 end
 
 post '/hit' do
+  player_hand = request.cookies["player_hand"]
+  deck = request.cookies["deck"]
+  new_card = deck.pop
+  player_hand << new_card
+  response.set_cookie("player_hand", player_hand)
+  response.set_cookie("deck", deck)
+  redirect to('/blackjack')
+end
 
