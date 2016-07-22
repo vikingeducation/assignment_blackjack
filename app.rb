@@ -13,7 +13,23 @@ enable :sessions
 helpers BlackjackHelpers
 
 get '/' do 
+  session['bankroll'] ||= 1_000
   erb :home
+end
+
+get '/bet' do 
+  erb :bet
+end
+
+post '/bet' do 
+  if params[:bet_value].to_i > session['bankroll']
+    session['bet_message'] = "You don't have that much guap."
+    redirect '/bet'
+  else
+    session['bet'] = params[:bet_value]
+    session['bankroll'] -= params[:bet_value]
+    redirect '/blackjack'
+  end
 end
 
 get '/blackjack' do
@@ -22,7 +38,11 @@ get '/blackjack' do
   session['deck'] ||= game.deck.cards
   session['player_hand'] = game.player.hand
   session['dealer_hand'] = game.dealer.hand
-  
+
+  if game.player.blackjack?(game.player.hand)
+    session['message'] = "You won!"
+    redirect '/game_over'
+  end
   erb :blackjack
 end
 
@@ -35,9 +55,12 @@ post '/turn' do
     if game.game_over?(session['player_hand'])
       if game.player.bust?(session['player_hand'])
         session['message'] = "You busted."
-      elsif game.player.blackjack?(session['player_hand'])
+      elsif game.player.blackjack?(session['player_hand']) && game.dealer.blackjack?(session['dealer_hand'])
+        session['message'] = "You tied."
+        session['bankroll'] += session['bet']
+      else
         session['message'] = "You won!"
-
+        session['bankroll'] += session['bet'] * 1.5
       end
       session['deck'] = game.deck.cards
       session['player_hand'] = game.player.hand
@@ -65,6 +88,7 @@ post '/turn' do
 end
 
 get '/game_over' do 
+  session['bet_message'] = nil
   erb :game_over
 end
 
