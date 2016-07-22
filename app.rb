@@ -3,6 +3,7 @@ require 'sinatra/reloader' if development?
 require 'pry'
 # also_reload './views'
 
+helpers BlackjackHelper
 enable :sessions
 
 get '/' do
@@ -11,4 +12,14 @@ end
 
 get '/blackjack' do
   erb :blackjack
+end
+
+post '/blackjack/hit' do
+  # add_card
+  redirect ('blackjack')
+end
+
+post '/blackjack/stay' do
+
+  redirect ('blackjack')
 end
