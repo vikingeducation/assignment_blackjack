@@ -53,7 +53,7 @@ class Blackjack
   end
 
   def over?
-    @player_hand.busted? || @player_hand.value == 21 || @dealer_hand.busted?
+    @player_hand.busted? || @player_hand.hand_value == 21 || @dealer_hand.busted?
   end
 
   def save
@@ -88,14 +88,14 @@ class Blackjack
   end
 
   def tie?
-    (@player_hand.busted && @player_hand.busted) || (@player_hand.value && @dealer_hand.value)
+    (@player_hand.busted? && @dealer_hand.busted?) || (@player_hand.hand_value == @dealer_hand.hand_value)
   end
 
   def win?
-    (@player_hand.value > @dealer_hand.value) && !@player_hand.busted?
+    ((@player_hand.hand_value > @dealer_hand.hand_value) || @dealer_hand.busted?) && !@player_hand.busted?
   end
 
   def lose?
-    (@player_hand.value < @dealer_hand.value) || @player_hand.busted?
+    ((@player_hand.hand_value < @dealer_hand.hand_value) || @player_hand.busted?) && !@dealer_hand.busted?
   end
 end

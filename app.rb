@@ -13,13 +13,11 @@ get '/' do
 end
 
 get '/blackjack' do
+  winner = session[:condition]
   game = make_blackjack
   save_game(game) unless get_player_hand
-  # if game.over?
-  #   erb :blackjack_finish, locals: { conditions:conditions }
-  # else
-    erb :blackjack, locals: { player_hand: get_player_hand, dealer_hand: get_dealer_hand}
-  # end
+  winner = game.end_game if game.over? 
+  erb :blackjack, locals: { player_hand: get_player_hand, dealer_hand: get_dealer_hand, condition: winner}
 end
 
 post '/blackjack/hit' do
@@ -35,6 +33,7 @@ end
 post '/blackjack/stay' do
   game = make_blackjack
   game.dealer_play
+  session[:condition] = game.end_game
   save_game(game)
   redirect ('blackjack')
 end
