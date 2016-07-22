@@ -31,15 +31,21 @@ class Blackjack
     @player_hand = Hand.new(player_hand)
     @dealer_hand = Dealer.new(dealer_hand)
     build_deck()
+    start_game if player_hand.empty?
   end
 
   def start_game
+    2.times do 
+      give_card(@player_hand)
+      give_card(@dealer_hand)
+    end
   end
 
   def build_deck
     VALUES.keys.each do |key|
       @deck[key] = SUITS.dup
     end
+
     @player_hand.cards.each {|card| delete(card.face, card.suit)}
     @dealer_hand.cards.each {|card| delete(card.face, card.suit)}
   end

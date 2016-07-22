@@ -5,7 +5,7 @@ class Hand
 # [[face, suit][face, suit]]
 
   def initialize(cards = [])
-    @cards = get_cards(cards) unless cards.empty?
+    @cards = get_cards(cards)
   end
 
   # add_card, count value, see_cards,
