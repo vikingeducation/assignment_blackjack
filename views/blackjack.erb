@@ -1,5 +1,15 @@
-<h2>Player 1</h2>
-<p>Hand:</p>
 
 <h2>Computer</h2>
-<p>Hand:>/p>
+<p> Hand: <%= dealer_hand[0] %>  <%= dealer_hand[1] %></p>
+<p> Total is <%= dealer_hand[0] + dealer_hand[1] %> </p>
+
+
+
+<h2>Player 1</h2>
+<p>Hand:<%= player_hand[0] %> <%= player_hand[1] %>  </p>
+<p> Total is  <%= player_hand[0] + player_hand[1] %> </p>
+
+<button type="submit" value="Hit">Hit</button>
+<button type="submit" value="Stand">Stand</button>
+<button type="submit" value="Double">Double Down</button>
+<button type="submit" value="Split">Split</button>
