@@ -63,14 +63,14 @@ VALUES = {
     message
   end
 
-  def save_session(args* deck, player_hand, dealer_hand, bet)
-    args.each do |key|
-      session["#{key}"] = key.to_json
-
-    session["deck"] = deck.to_json
-    session["player_hand"] = player_hand.to_json
-    session["dealer_hand"] = dealer_hand.to_json
-    session["bet"] = bet
+  def save_session( options = {} )
+    options.each do |key, value|
+      session[key] = value
+    end
+    # session["deck"] = deck.to_json
+    # session["player_hand"] = player_hand.to_json
+    # session["dealer_hand"] = dealer_hand.to_json
+    # session["bet"] = bet
   end
 
   def update_bankroll(message)
@@ -96,6 +96,14 @@ VALUES = {
 
     session["deck"] = deck.to_json
     session["player_hand"] = player_hand.to_json
+  end
+
+  def get_redirect(player_hand)
+    if check_hand(player_hand) > 21
+      redirect to("/blackjack")
+    else
+      redirect to("/blackjack/stay")
+    end
   end
 
 
