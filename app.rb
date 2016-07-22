@@ -95,13 +95,22 @@ class Deck
   #When the player busts or stays
   def end_game
     dealer_hit while dealer_should_hit?
+    return "Dealer busts. Player wins." if get_total_points(get_dealer_points) > 21
     compare_hands ? "Player wins." : "Dealer wins."
   end
 
   #Getting points.
   def get_total_points(hand)
     hand.reduce(0) do |m,card|
-      m + card.value
+      if card.value.is_a? Array
+        if m + 11 > 21
+          m + 1
+        else
+          m + 11
+        end
+      else
+        m + card.value
+      end
     end
   end
 
@@ -121,7 +130,9 @@ class Deck
 
   def get_card_points(card)
     case card.rank
-    when 'A', 'K', 'Q', 'J'
+    when 'A'
+      [1,11]
+    when "K", "K", "Q", "J"
       10
     when Fixnum
       card.rank
