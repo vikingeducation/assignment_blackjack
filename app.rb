@@ -173,8 +173,9 @@ end
 get "/blackjack" do 
 
   deck = Deck.new(session['cards'])
-  player_hand = deck.show_rank_suit(deck.get_player_points)
-  dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
+  player_hand = nil; dealer_hand = nil
+  #Check if hands are already present in the session.
+  check_hands(player_hand,dealer_hand)
   deck.compute_value
   session['cards'] = deck.to_array
   session['player_hand'] = deck.player_hand
