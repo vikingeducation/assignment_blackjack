@@ -17,9 +17,9 @@ get '/' do
 end
 
 get '/blackjack' do
-  game = Blackjack.new
+  game = Blackjack.new(session['deck'])
   game.start
-  session['deck'] = game.deck.cards
+  session['deck'] ||= game.deck.cards
   session['player_hand'] = game.player.hand
   session['dealer_hand'] = game.dealer.hand
   
