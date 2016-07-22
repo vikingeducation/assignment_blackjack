@@ -13,7 +13,7 @@ module ControllerHelpers
 
 
   def to_array(deck)
-    deck.map { |card| [card.rank,card.suit] }
+    deck.deck.map { |card| [card.rank,card.suit] }
   end
 
   def card_array_to_structs(hand)
@@ -28,6 +28,12 @@ module ControllerHelpers
 
   def store_dealer_hand(deck, hand)
     deck.dealer_hand = card_array_to_structs(hand)
+  end
+
+  def store_session(player_hand,dealer_hand,deck)
+    session['player_hand'] = player_hand
+    session['dealer_hand'] = dealer_hand
+    session['cards'] = to_array(deck)
   end
 
 end

@@ -9,19 +9,19 @@ helpers ControllerHelpers
 
 enable :sessions
 
+Card = Struct.new(:rank, :value, :suit)
+
 class Deck
   attr_reader :deck, 
-              :player_hand, 
-              :dealer_hand, 
               :player_win, 
               :dealer_win, 
               :pvalue, 
               :dvalue
+  attr_accessor :player_hand, 
+                :dealer_hand
 
   SUITS = ["Clubs", "Hearts", "Spades", "Diamonds"]
   RANK = ["A", "K", "Q", "J"].concat((2..10).to_a)
-
-  Card = Struct.new(:rank, :value, :suit)
 
   def initialize(cards=nil, player_hand = [], dealer_hand = [])
     if cards
@@ -159,8 +159,8 @@ get "/blackjack" do
   deck.compute_value
   outcome = deck.bust_player
   session['cards'] = to_array(deck)
-  session['player_hand'] = deck.player_hand
-  session['dealer_hand'] = deck.dealer_hand
+  session['player_hand'] = hands[0]
+  session['dealer_hand'] = hands[1]
 
   erb :blackjack, locals: { deck: deck, player_hand: hands[0], dealer_hand: hands[1], outcome: outcome }
 
@@ -175,9 +175,11 @@ post "/blackjack/hit" do
   player_hand = deck.show_rank_suit(deck.get_player_points)
   dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
   outcome = deck.bust_player
-  session['player_hand'] = player_hand
-  session['dealer_hand'] = dealer_hand
-  session['cards'] = to_array(deck)
+  if outcome
+    session.clear
+  else
+    store_session(player_hand,dealer_hand,deck)
+  end
 
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: outcome }
 
@@ -188,8 +190,8 @@ get "/blackjack/stay" do
   deck = Deck.new(session['cards'])
   store_player_hand(deck, session["player_hand"])
   store_dealer_hand(deck, session["dealer_hand"])
-  session.clear
   outcome = deck.end_game
+  session.clear
   player_hand = deck.show_rank_suit(deck.player_hand)
   dealer_hand = deck.show_rank_suit(deck.dealer_hand)
 
