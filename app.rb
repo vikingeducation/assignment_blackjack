@@ -148,24 +148,6 @@ class Deck
   end
 
   #convert deck to an array
-  def to_array
-    @deck.map { |card| [card.rank,card.suit] }
-  end
-
-  def card_array_to_structs(hand)
-    hand.map do |card|
-      Card.new(card[0], card[1], card[2])
-    end
-  end
-
-  def store_player_hand(hand)
-    @player_hand = card_array_to_structs(hand)
-  end
-
-  def store_dealer_hand(hand)
-    @dealer_hand = card_array_to_structs(hand)
-  end
-
 end
 
 get "/blackjack" do 
@@ -176,7 +158,7 @@ get "/blackjack" do
   hands = check_hands(deck, player_hand,dealer_hand)
   deck.compute_value
   outcome = deck.bust_player
-  session['cards'] = deck.to_array
+  session['cards'] = to_array(deck)
   session['player_hand'] = deck.player_hand
   session['dealer_hand'] = deck.dealer_hand
 
@@ -187,15 +169,15 @@ end
 post "/blackjack/hit" do
 
   deck = Deck.new(session['cards'])
-  deck.store_player_hand(session["player_hand"])
-  deck.store_dealer_hand(session["dealer_hand"])
+  store_player_hand(deck, session["player_hand"])
+  store_dealer_hand(deck, session["dealer_hand"])
   deck.player_hit
   player_hand = deck.show_rank_suit(deck.get_player_points)
   dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
   outcome = deck.bust_player
   session['player_hand'] = player_hand
   session['dealer_hand'] = dealer_hand
-  session['cards'] = deck.to_array
+  session['cards'] = to_array(deck)
 
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: outcome }
 
@@ -204,8 +186,8 @@ end
 
 get "/blackjack/stay" do
   deck = Deck.new(session['cards'])
-  deck.store_player_hand(session["player_hand"])
-  deck.store_dealer_hand(session["dealer_hand"])
+  store_player_hand(deck, session["player_hand"])
+  store_dealer_hand(deck, session["dealer_hand"])
   session.clear
   outcome = deck.end_game
   player_hand = deck.show_rank_suit(deck.player_hand)

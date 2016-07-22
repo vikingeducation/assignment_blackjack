@@ -10,4 +10,24 @@ module ControllerHelpers
     end
     [player_hand, dealer_hand]
   end
+
+
+  def to_array(deck)
+    deck.map { |card| [card.rank,card.suit] }
+  end
+
+  def card_array_to_structs(hand)
+    hand.map do |card|
+      Card.new(card[0], card[1], card[2])
+    end
+  end
+
+  def store_player_hand(deck, hand)
+    deck.player_hand = card_array_to_structs(hand)
+  end
+
+  def store_dealer_hand(deck, hand)
+    deck.dealer_hand = card_array_to_structs(hand)
+  end
+
 end
