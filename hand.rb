@@ -26,7 +26,7 @@ class Hand
 #Aces considered 11 for now
   def sum_of_cards(hand)
     card_values = hand.map do |card|
-      if card == 14
+      if card == 1
         card = 11
       elsif card >= 11
         card = 10
@@ -36,6 +36,22 @@ class Hand
     end
     card_values.reduce(:+)
   end
+
+  def ace_changer(hand)
+    hand_sum = sum_of_cards(hand)
+    if hand.include?(1) && hand_sum > 21
+      hand_sum -= 10
+    end
+    hand_sum
+  end
+
+  # def sum_of_cards(hard)
+  #     card_values = hand.map do |card|
+  #       if !hand.includes?(11..13)
+  #         card_values.reduce(:+)
+  #       elsif
+
+
 
   def player_hit(player_hand)
     player_hand << @deck.pop 

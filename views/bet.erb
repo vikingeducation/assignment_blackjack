@@ -1,9 +1,9 @@
-<p>Bankroll remaining: <%= bankroll%></p>
+<p>Bankroll remaining: <%= bankroll%> </p>
 <form action = "bet" method = "post">
   Place your bet:
   <input type = "text" name = "bet">
   <input type = "submit" value = "Place bet">
 </form>
-<% if low_funds%>
-  <p>You don't have enough money! </p>
+<% if low_funds %>
+  <p> You don't have enough money! </p>
 <%end%>

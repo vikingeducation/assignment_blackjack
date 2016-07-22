@@ -14,4 +14,9 @@ end
 
 end
 
- 
+# A 6  total = 7 or 17
+# A 3 K total = 14 
+
+#
+#
+#
