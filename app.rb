@@ -29,8 +29,8 @@ get "/blackjack" do
     player_hand = JSON.parse(session["player_hand"])
     dealer_hand = JSON.parse(session["dealer_hand"])
   else
-    bankroll = 1000
-    response.set_cookie("bankroll", 1000)
+    bankroll = 1000.00
+    response.set_cookie("bankroll", 1000.00)
     session["bet"] = params["bet"]
     bet = params["bet"]
     deck = Deck.new.deck

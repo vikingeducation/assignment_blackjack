@@ -1,35 +1,48 @@
-<h1>Welcome to your table, go ahead and take seat</h1>
-<h2>Player hand: <%= player_hand %>  Total: <%= player_total %></h2>
-<h2>Dealer showing:
-  <% if message == "What's your next move?" %>
-    <%= dealer_hand[1..-1] %> Dealer showing: <%= dealer_showing %>
-  <% else %>
-    <%= dealer_hand %> Dealer total: <%= check_hand(dealer_hand) %>
-  <% end %>
-</h2>
-<h2>Your current bet is <%= bet %> and your current bankroll is <%= bankroll %></h2>
+<div style="text-align:center">
+  <h1>Welcome to your table, go ahead and take seat</h1>
+  <h2>Player hand: 
+  <% player_hand.each do |card|%>
+    <img src="PNG-cards-1.3/<%= PICTURES[card] %>" height="100">
+  <% end %>  
+  Total: <%= player_total %></h2>
+  <h2>Dealer showing:
+    <% if message == "What's your next move?" %>
+      <img src="http://chetart.com/blog/wp-content/uploads/2012/05/playing-card-back.jpg" height="100">
+      <% dealer_hand[1..-1].each do |card|%>
+        <img src="PNG-cards-1.3/<%= PICTURES[card] %>" height="100">
+      <% end %>
+      Dealer showing total: <%= dealer_showing %>
+    <% else %>
+      <% dealer_hand.each do |card|%>
+        <img src="PNG-cards-1.3/<%= PICTURES[card] %>" height="100">
+      <% end %>
+      Dealer total: <%= check_hand(dealer_hand) %>
+    <% end %>
+  </h2>
+  <h2>Your current bet is $<%= bet %> and your current bankroll is $<%= bankroll %></h2>
 
-<h3><%= message %></h3>
+  <h2><%= message %></h2>
 
-<% if message ==  "What's your next move?" %>
-  <form action="blackjack/hit" method="post">
-    <input type="submit" value="Hit me!">
-  </form>
-  <form action="blackjack/stay" method="get">
-    <input type="submit" value="I'll stay...">
-  </form>
-  <% if player_hand.length == 2 %>
-    <form action="blackjack/double" method="get">
-      <input type="submit" value="Double down!">
+  <% if message ==  "What's your next move?" %>
+    <form action="blackjack/hit" method="post">
+      <input type="submit" value="Hit me!">
     </form>
-    <% if player_hand[0][0] == player_hand[1][0] %>
-      <form action="blackjack/split" method="get">
-        <input type="submit" value="Split em.">
+    <form action="blackjack/stay" method="get">
+      <input type="submit" value="I'll stay...">
+    </form>
+    <% if player_hand.length == 2 %>
+      <form action="blackjack/double" method="get">
+        <input type="submit" value="Double down!">
       </form>
+      <% if player_hand[0][0] == player_hand[1][0] %>
+        <form action="blackjack/split" method="get">
+          <input type="submit" value="Split em.">
+        </form>
+      <% end %>
     <% end %>
   <% end %>
-<% end %>
 
-<form action="blackjack/reset" method="get">
-  <input type="submit" value="Deal a new hand">
-</form>
+  <form action="blackjack/reset" method="get">
+    <input type="submit" value="Deal a new hand">
+  </form>
+</div>

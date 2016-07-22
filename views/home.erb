@@ -1,6 +1,8 @@
-<h1>Welcome to Blackjack</h1>
-<h2>Your bankroll: <%= bankroll %></h2>
-<form action="/blackjack" method="get">
-  <input type="number" placeholder="Place Bet Here" min="0" max="<%= bankroll %>" name="bet"/>
-  <input type="submit" value="Deal Hand" />
-</form>
+<div style="text-align: center">  
+  <h1>Welcome to Blackjack</h1>
+  <h2>Your bankroll: $<%= bankroll %></h2>
+  <form action="/blackjack" method="get">
+    <input type="number" placeholder="Place Bet Here" min="0" max="<%= bankroll %>" name="bet" style="width:150"/>
+    <input type="submit" value="Deal Hand" />
+  </form>
+</div>

@@ -67,10 +67,6 @@ VALUES = {
     options.each do |key, value|
       session[key] = value
     end
-    # session["deck"] = deck.to_json
-    # session["player_hand"] = player_hand.to_json
-    # session["dealer_hand"] = dealer_hand.to_json
-    # session["bet"] = bet
   end
 
   def update_bankroll(message)
@@ -106,6 +102,60 @@ VALUES = {
     end
   end
 
+  PICTURES = {
+    "10C" => "10_of_clubs.png",
+    "10D" => "10_of_diamonds.png",
+    "10H" => "10_of_hearts.png",
+    "10S" => "10_of_spades.png",
+    "2C" => "2_of_clubs.png",
+    "2D" => "2_of_diamonds.png",
+    "2H" => "2_of_hearts.png",
+    "2S" => "2_of_spades.png",
+    "3C" => "3_of_clubs.png",
+    "3D" => "3_of_diamonds.png",
+    "3H" => "3_of_hearts.png",
+    "3S" => "3_of_spades.png",
+    "4C" => "4_of_clubs.png",
+    "4D" => "4_of_diamonds.png",
+    "4H" => "4_of_hearts.png",
+    "4S" => "4_of_spades.png",
+    "5C" => "5_of_clubs.png",
+    "5D" => "5_of_diamonds.png",
+    "5H" => "5_of_hearts.png",
+    "5S" => "5_of_spades.png",
+    "6C" => "6_of_clubs.png",
+    "6D" => "6_of_diamonds.png",
+    "6H" => "6_of_hearts.png",
+    "6S" => "6_of_spades.png",
+    "7C" => "7_of_clubs.png",
+    "7D" => "7_of_diamonds.png",
+    "7H" => "7_of_hearts.png",
+    "7S" => "7_of_spades.png",
+    "8C" => "8_of_clubs.png",
+    "8D" => "8_of_diamonds.png",
+    "8H" => "8_of_hearts.png",
+    "8S" => "8_of_spades.png",
+    "9C" => "9_of_clubs.png",
+    "9D" => "9_of_diamonds.png",
+    "9H" => "9_of_hearts.png",
+    "9S" => "9_of_spades.png",
+    "AC" => "ace_of_clubs.png",
+    "AD" => "ace_of_diamonds.png",
+    "AH" => "ace_of_hearts.png",
+    "AS" => "ace_of_spades.png",
+    "JH" => "jack_of_clubs.png",
+    "JS" => "jack_of_diamonds.png",
+    "JC" => "jack_of_hearts.png",
+    "JD" => "jack_of_spades.png",
+    "KH" => "king_of_clubs.png",
+    "KS" => "king_of_diamonds.png",
+    "KC" => "king_of_hearts.png",
+    "KD" => "king_of_spades.png",
+    "QH" => "queen_of_clubs.png",
+    "QS" => "queen_of_diamonds.png",
+    "QC" => "queen_of_hearts.png",
+    "QD" => "queen_of_spades.png"
+  }
 
 
 end
