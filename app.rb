@@ -18,7 +18,7 @@ get '/blackjack' do
   # if game.over?
   #   erb :blackjack_finish, locals: { conditions:conditions }
   # else
-    erb :blackjack, locals: { player_hand: get_player_hand, dealer_hand: get_dealer_hand }
+    erb :blackjack, locals: { player_hand: get_player_hand, dealer_hand: get_dealer_hand}
   # end
 end
 
@@ -27,13 +27,14 @@ post '/blackjack/hit' do
   game.give_card(game.player_hand)
   #check for end
   save_game(game)
-
   # add_card
-  
+
   redirect ('blackjack')
 end
 
 post '/blackjack/stay' do
-
+  game = make_blackjack
+  game.dealer_play
+  save_game(game)
   redirect ('blackjack')
 end

@@ -2,8 +2,8 @@
 
 class Dealer < Hand
 
-  def decide
-    add_card until hand_value > 16
+  def decide_hit?
+    hand_value < 17
   end
 
 end

@@ -3,8 +3,8 @@ require_relative 'hand'
 require_relative 'dealer'
 
 class Blackjack
-  #delete deck!
-  attr_reader :player_hand, :dealer_hand, :deck
+
+  attr_reader :player_hand, :dealer_hand
 
   SUITS = ["H", "S", "C", "D"]
 
@@ -34,8 +34,40 @@ class Blackjack
     start_game if player_hand.empty?
   end
 
+  def give_card(player)
+    face = @deck.keys.sample
+    suit = @deck[face].sample
+    delete(face, suit)
+    player.add_card(face, suit)
+  end
+
+  def dealer_play
+    give_card(@dealer_hand) while @dealer_hand.decide_hit?
+    end_game
+  end
+
+  def end_game
+    return "player" if win?
+    return "tie" if tie?
+    return "dealer" if lose?
+  end
+
+  def over?
+    @player_hand.busted? || @player_hand.value == 21 || @dealer_hand.busted?
+  end
+
+  def save
+    save = {}
+    dealer = @dealer_hand.cards.map { |card| [card.face, card.suit] }
+    player = @player_hand.cards.map { |card| [card.face, card.suit] }
+    save["dealer"] = dealer
+    save["player"] = player
+    save
+  end
+
+
   def start_game
-    2.times do 
+    2.times do
       give_card(@player_hand)
       give_card(@dealer_hand)
     end
@@ -50,36 +82,20 @@ class Blackjack
     @dealer_hand.cards.each {|card| delete(card.face, card.suit)}
   end
 
-
   def delete(face, suit)
     @deck[face].delete(suit)
+    @deck.delete(face) if @deck[face].empty?
   end
 
-  def give_card(player)
-    face = @deck.keys.sample
-    suit = @deck[face].sample
-    delete(face, suit)
-    player.add_card(face, suit)
+  def tie?
+    (@player_hand.busted && @player_hand.busted) || (@player_hand.value && @dealer_hand.value)
   end
 
-  # def finish
-  #   return #dealer wins if @player_hand.busted?
-  #   return #player wins if @dealer_hand.busted?
-  #   return #player if @player_hand.hand_value > @dealer_hand.hand_value
-  #   return #dealer hand
-  # end
-
-# (dealer)[[face, suit][face, suit]],
-# (player)[[face,suit],[face,suit]]
-
-
-  def save
-    save = {}
-    dealer = @dealer_hand.cards.map { |card| [card.face, card.suit] }
-    player = @player_hand.cards.map { |card| [card.face, card.suit] }
-    save["dealer"] = dealer
-    save["player"] = player
-    save
+  def win?
+    (@player_hand.value > @dealer_hand.value) && !@player_hand.busted?
   end
 
+  def lose?
+    (@player_hand.value < @dealer_hand.value) || @player_hand.busted?
+  end
 end

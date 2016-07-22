@@ -42,11 +42,4 @@ class Hand
     hand_value > 21
   end
 
-  # def contains?(face, suit)
-  #   @cards.each do |card|
-  #     return true if card.face == face && card.suit == suit
-  #   end
-  #   false
-  # end
-
 end
