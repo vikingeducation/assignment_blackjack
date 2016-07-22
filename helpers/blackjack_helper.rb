@@ -26,7 +26,7 @@ module BlackjackHelper
   end
 
   def load_dealer_hand
-    DealerHand.new(session["dealer_hand_arr"]).hand_arr
+    Hand.new(session["dealer_hand_arr"]).hand_arr
   end
 
   def save_dealer_hand(dealer_hand)

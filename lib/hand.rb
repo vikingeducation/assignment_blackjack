@@ -19,13 +19,13 @@ class Hand
     ace_count = 0
     return 0 if @hand_arr.empty?
     @hand_arr.each do |card|
-      if card[0].to_i.between?(10..13)
+      if card[0].to_i.between?(10,13)
         score_count += 10
       elsif card[0].to_i == 1
         score_count += 1
         ace_count += 1
       else
-        score_count += card
+        score_count += card[0].to_i
       end
 
     end

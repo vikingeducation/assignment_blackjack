@@ -24,7 +24,7 @@ get '/blackjack' do
   else
     save_deck( Deck.new.deck_arr )
     save_hand( Hand.new.hand_arr )
-    save_dealer_hand( DealerHand.new.hand_arr )
+    save_dealer_hand( Hand.new.hand_arr )
   end
 
   erb :blackjack, locals: { deck: deck,
@@ -39,23 +39,25 @@ post '/blackjack/hit' do
   deck = save_deck(deck.deck_arr)
 
   player_hand = save_hand(Hand.new(load_hand).hit(card))
-  dealer_hand = save_dealer_hand(DealerHand.new.hand_arr)
+  dealer_hand = save_dealer_hand(Hand.new.hand_arr)
 
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand}
 end
 
 post '/blackjack/stay' do
-  deck = Deck.new(session["deck_arr"])
-  card = deck.deal
-  deck = save_deck(deck.deck_arr)
-
   player_hand = Hand.new(load_hand).hand_arr
   save_hand(player_hand)
 
-  dealer_hand_new = DealerHand.new(load_dealer_hand)
-  dealer_hand_new.get_moves
-  dealer_hand = dealer_hand_new.hand_arr
-  save_dealer_hand(dealer_hand)
+  dealer_hand = Hand.new(load_dealer_hand) 
+  deck = Deck.new(session["deck_arr"])
+
+  until dealer_hand.score > 17   
+    card = deck.deal
+    dealer_hand.hit(card)
+  end
+
+  dealer_hand = save_dealer_hand(dealer_hand.hand_arr)
+  deck = save_deck(deck.deck_arr)
 
   erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand}
 end
