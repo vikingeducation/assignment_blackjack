@@ -17,17 +17,15 @@ class Hand
   def score
     score_count = 0
     ace_count = 0
-    return 0 if @hand_arr.empty?
     @hand_arr.each do |card|
-      if card[0].to_i.between?(10,13)
+      if card[0..-2].to_i.between?(10,13)
         score_count += 10
-      elsif card[0].to_i == 1
+      elsif card[0..-2].to_i == 1
         score_count += 1
         ace_count += 1
       else
-        score_count += card[0].to_i
+        score_count += card[0..-2].to_i
       end
-
     end
     include_ace_bonus(score_count, ace_count)
   end
@@ -38,6 +36,10 @@ class Hand
       score_count += 10
     end
     score_count
+  end
+
+  def bust?
+    score > 21
   end
 
 end

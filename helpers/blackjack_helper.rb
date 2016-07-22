@@ -2,7 +2,7 @@
 
 module BlackjackHelper
 
-  def new_game?
+  def not_new_game?
     !!(session["deck_arr"])
   end
 #returns deck_arr (arr) from session
@@ -33,6 +33,22 @@ module BlackjackHelper
     session["dealer_hand_arr"] = dealer_hand
   end
 
+  def get_dealer_moves
+    dealer_hand = Hand.new(load_dealer_hand)
+    deck = Deck.new(session["deck_arr"])
+    dealer_hand.hit(deck.deal) until dealer_hand.score > 17
+    dealer_hand = save_dealer_hand(dealer_hand.hand_arr)
+    deck = save_deck(deck.deck_arr)
+  end
+
+  def deal_two_cards
+    hand = []
+    deck = Deck.new(load_deck)
+    hand << deck.deal
+    hand << deck.deal
+    save_deck(deck.deck_arr)
+    hand
+  end
 
 end
 

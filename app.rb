@@ -17,49 +17,42 @@ end
 
 get '/blackjack' do
   #binding.pry
-  if new_game?
+  if not_new_game?
     deck = load_deck
     player_hand = load_hand
     dealer_hand = load_dealer_hand
   else
+    save_hand(Hand.new(deal_two_cards).hand_arr)
+    save_dealer_hand(Hand.new(deal_two_cards).hand_arr)
     save_deck( Deck.new.deck_arr )
-    save_hand( Hand.new.hand_arr )
-    save_dealer_hand( Hand.new.hand_arr )
   end
 
   erb :blackjack, locals: { deck: deck,
-                            player_hand: player_hand,
-                            dealer_hand: dealer_hand}
+ player_hand: player_hand, dealer_hand: dealer_hand}
 end
 
 
 post '/blackjack/hit' do
-  deck = Deck.new(session["deck_arr"])
+  deck = Deck.new(load_deck)
   card = deck.deal
   deck = save_deck(deck.deck_arr)
 
   player_hand = save_hand(Hand.new(load_hand).hit(card))
-  dealer_hand = save_dealer_hand(Hand.new.hand_arr)
 
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand}
+  redirect to('/blackjack/bust') if Hand.new(load_hand).bust?
+
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: load_dealer_hand}
 end
 
 post '/blackjack/stay' do
-  player_hand = Hand.new(load_hand).hand_arr
-  save_hand(player_hand)
+  get_dealer_moves
+  erb :blackjack, locals: { deck: load_deck, player_hand: load_hand, dealer_hand: load_dealer_hand}
+end
 
-  dealer_hand = Hand.new(load_dealer_hand) 
-  deck = Deck.new(session["deck_arr"])
+get '/blackjack/bust' do
+  get_dealer_moves
 
-  until dealer_hand.score > 17   
-    card = deck.deal
-    dealer_hand.hit(card)
-  end
-
-  dealer_hand = save_dealer_hand(dealer_hand.hand_arr)
-  deck = save_deck(deck.deck_arr)
-
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand}
+  erb :blackjack, locals: { deck: load_deck, player_hand: load_hand, dealer_hand: load_dealer_hand}
 end
 
 
