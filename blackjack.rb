@@ -12,13 +12,14 @@ game resolves hand then moves to blackjack
 =end
 
 
-
+attr_accessor :cards
 
   def initialize(deck=nil)
     if deck
       @cards = deck
     else
-      @cards = create_deck
+      @cards = []
+      create_deck
     end
   end
 

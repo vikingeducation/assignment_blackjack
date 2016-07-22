@@ -1,13 +1,22 @@
 
 <h2>Computer</h2>
-<p> Hand: <%= dealer_hand[0] %>  <%= dealer_hand[1] %></p>
-<p> Total is <%= dealer_hand[0] + dealer_hand[1] %> </p>
-
+<p> Hand:</p>
+<ul>
+  <% dealer_hand.each do |card| %>
+  <li><%=card%></li>
+  <%end%>
+</ul>
+<p> Total is <%= dealer_hand.reduce(:+)%> </p>
 
 
 <h2>Player 1</h2>
-<p>Hand:<%= player_hand[0] %> <%= player_hand[1] %>  </p>
-<p> Total is  <%= player_hand[0] + player_hand[1] %> </p>
+<p>Hand:<p>
+<ul>
+  <%player_hand.each do |card| %>
+  <li><%=card%></li>
+  <%end%>
+</ul>
+<p> Total is  <%= player_hand.reduce(:+)%> </p>
 
 <button type="submit" value="Hit">Hit</button>
 <button type="submit" value="Stand">Stand</button>
