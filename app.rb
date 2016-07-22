@@ -2,9 +2,12 @@ require 'sinatra'
 require 'erb'
 require './blackjack.rb'
 require './hand.rb'
+require './helpers/blackjack_helper.rb'
 require 'sinatra/reloader' if development?
 require 'pry'
 require 'json'
+
+helpers BlackjackHelper
 
 get '/' do
   erb :index
@@ -32,12 +35,12 @@ get '/blackjack' do
   dealer_sum = current_hand.sum_of_cards(dealer_hand)
 
   #check for end of hand
-  binding.pry
-  if request.cookies["player_bust"]
+ 
+  if request.cookies["player_bust"] == "true"
     message = "Player busted"
-  elsif request.cookies["dealer_bust"]
+  elsif request.cookies["dealer_bust"] == "true"
     message = "You won!"
-  elsif request.cookies["hand_complete"] 
+  elsif request.cookies["hand_complete"] == "true"
     #compare sums
     player_sum = current_hand.sum_of_cards(player_hand)
     dealer_sum = current_hand.sum_of_cards(dealer_hand)
@@ -52,10 +55,13 @@ get '/blackjack' do
     message = nil
   end
 
+  player_display = BlackjackHelper.convert_hand(player_hand)
+  dealer_display = BlackjackHelper.convert_hand(dealer_hand)
+
   response.set_cookie("player_hand", player_hand.to_json)
   response.set_cookie("dealer_hand", dealer_hand.to_json)
   response.set_cookie("deck", blackjack.cards.to_json)
-  erb :blackjack, :locals =>{:dealer_hand => dealer_hand, :player_hand => player_hand, :player_sum => player_sum, :dealer_sum => dealer_sum, :message => message}
+  erb :blackjack, :locals =>{:dealer_hand => dealer_display, :player_hand => player_display, :player_sum => player_sum, :dealer_sum => dealer_sum, :message => message}
 
 end
 
@@ -82,11 +88,11 @@ post '/stand' do
   deck = JSON.parse(request.cookies["deck"])
   blackjack = Blackjack.new(deck)
   current_hand = Hand.new(blackjack.cards,player_hand,dealer_hand)
-  until current_hand.sum_of_cards(dealer_hand) > 17
+  until current_hand.sum_of_cards(dealer_hand) >= 17
     current_hand.dealer_hit(dealer_hand)
   end
-  hand_complete = nil
-  dealer_bust = nil 
+  hand_complete = false
+  dealer_bust = false
   if current_hand.sum_of_cards(dealer_hand) > 21
     dealer_bust = true
   else
@@ -97,6 +103,15 @@ post '/stand' do
   response.set_cookie("deck", deck.to_json)
   response.set_cookie("hand_complete", hand_complete)
   response.set_cookie("dealer_bust", dealer_bust)
+  redirect to('/blackjack')
+end
+
+post '/next_hand' do
+  response.delete_cookie("player_hand")
+  response.delete_cookie("dealer_hand")
+  response.delete_cookie("player_bust") if request.cookies["player_bust"]
+  response.delete_cookie("dealer_bust")
+  response.delete_cookie("hand_complete") 
   redirect to('/blackjack')
 end
 

@@ -23,9 +23,12 @@ class Hand
     end
   end
 
+#Aces considered 11 for now
   def sum_of_cards(hand)
     card_values = hand.map do |card|
-      if card >= 11
+      if card == 14
+        card = 11
+      elsif card >= 11
         card = 10
       else
         card

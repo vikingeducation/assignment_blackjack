@@ -1,6 +1,11 @@
 <%if message%>
 <h2><%=message%>
 <% end%>
+<%if message%>
+<form method="post" action="next_hand">
+  <button type="submit" value="next_hand">Next Hand</button>
+</form>
+<%end%>
 
 <h2>Computer</h2>
 <p> Hand:</p>
@@ -29,5 +34,9 @@
 <form method="post" action="stand">
   <button type="submit" value="Stand">Stand</button>
 </form>
+<!--
 <button type="submit" value="Double">Double Down</button>
 <button type="submit" value="Split">Split</button>
+-->
+
+
