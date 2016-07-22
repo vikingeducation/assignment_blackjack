@@ -9,6 +9,18 @@ end
 
 
 get '/blackjack' do
- @deck = Deck.new
 
+  deck = Deck.new if new_game?
+  
+    #show player and dealer hands
+
+
+
+  erb :blackjack, locals: { deck: deck}
 end
+
+# post '/blackjack/pass_deck' do
+
+#   @deck = load_deck
+
+# end
