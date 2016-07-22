@@ -1,7 +1,13 @@
 
-<%= player_hand %>
-<%= deck %>
 
+<%= deck %><br>
+<%= dealer_hand %>
+<%= player_hand %>
 <form method="post" action="/blackjack/hit">
-  <button type="submit" value="Hit me!">Submit</button>
+  <button type="submit">Hit me!</button>
+</form>
+
+
+<form method="post" action="/blackjack/stay">
+  <button type="submit">Stay!</button>
 </form>

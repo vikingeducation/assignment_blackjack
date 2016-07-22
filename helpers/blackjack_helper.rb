@@ -2,9 +2,9 @@
 
 module BlackjackHelper
 
-  def save_deck(board)
+  def new_game?
+    !!(session["deck_arr"])
   end
-
 #returns deck_arr (arr) from session
   def load_deck
     Deck.new(session["deck_arr"]).deck_arr
@@ -26,12 +26,12 @@ module BlackjackHelper
   end
 
   def load_dealer_hand
+    DealerHand.new(session["dealer_hand_arr"]).hand_arr
   end
 
-  def save_dealer_hand
-
+  def save_dealer_hand(dealer_hand)
+    session["dealer_hand_arr"] = dealer_hand
   end
-
 
 
 end

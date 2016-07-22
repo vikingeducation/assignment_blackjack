@@ -17,7 +17,7 @@ class Hand
   def score
     score_count = 0
     ace_count = 0
-
+    return 0 if @hand_arr.empty?
     @hand_arr.each do |card|
       if card[0].to_i.between?(10..13)
         score_count += 10
