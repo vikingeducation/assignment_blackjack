@@ -24,8 +24,15 @@ end
 get '/blackjack/play' do
   erb :blackjack
 end
-# post '/blackjack/pass_deck' do
 
-#   @deck = load_deck
 
-# end
+#get the deck
+#take one card from the deck
+#add the card to the player's hand
+post '/blackjack/hit' do
+  card = Deck.new(session["deck_arr"]).deal
+  
+
+
+  erb :blackjack, loclas: {}
+end
