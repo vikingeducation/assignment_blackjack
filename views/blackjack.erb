@@ -1,0 +1,36 @@
+<h3>
+  Player:<%=  player_hand %><br><br>
+  Total:<%= get_player_score %>
+  <br><br>
+  <% if condition %>
+  Dealer:  <%=  dealer_hand %><br><br>
+  Total:<%= get_dealer_score %><br><br>
+  <% else %>
+  Dealer:  <%=  dealer_hand[1] %><br>
+  <% end %>
+  <br>
+  Bank: <%= get_bank %>
+  Bet: <%= get_bet %>
+</h3>
+
+  <h3>
+    <%= condition %><br>
+  </h3>
+<div class="row">
+<% if condition%>
+
+<form action="blackjack/reset" method="post" >
+  <input class="btn" type="submit" value="Play again?">
+</form>
+
+<% else %>
+
+<form class="form-inline" action="blackjack/hit" method="post" >
+  <input class="btn btn-success" type="submit" value="Hit" name="choice">
+</form>
+<br>
+<form class="form-inline" action="blackjack/stay" method="post">
+  <input class="btn btn-danger" type="submit" value="Stay" name="choice">
+</form>
+<% end %>
+</div>

@@ -1,0 +1,13 @@
+<h2>What's your bet?</h2>
+<form action="bet" method="post">
+  <input type="text" placeholder="100" name="bet">
+  <input type="submit" value="Place Bet">
+</form>
+
+You have $<%= get_bank %>
+
+<%unless enough_money?(get_bet)%>
+
+  <p>Not enough money!</p>
+
+<%end%>
