@@ -7,8 +7,7 @@
 <h2> The Dealer's hand is <%= show_dealer_hand(dealer_hand,outcome) %><h2>
 
 <% if outcome %>
-  <h1 class="bg-danger"><%= show_outcome(outcome) if !(outcome == "Dealer busts. Player wins.")%></h1>
-  <h1 class="bg-success"><%= show_outcome(outcome) if outcome == "Dealer busts. Player wins."%></h1>
+  <h1 class="bg-success"><%= outcome %></h1>
   <form action="/blackjack" method="get">
     <input style="padding:2em 4.5em 2em 4.5em" class="btn btn-success btn-lg center-block" type="submit" name="Reset" value="RESET">
   </form>
