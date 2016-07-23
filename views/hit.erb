@@ -1,0 +1,19 @@
+<h1>Make your move</h1>
+<div class="dealer">
+  <%= dealer_hand[0][0] %> <%= dealer_hand[0][1] %>
+  Blank Card
+</div>
+<div class="player" >
+  <% player_hand.each do |card| %>
+    <%= card[0] %> <%= card[1] %>
+  <% end %>
+</div>
+
+<form action="/blackjack/hit" method="post">
+  <button name="hit" type="submit" value="HIT">HIT</button>
+</form>
+
+<form action="/blackjack/stay" method="post">
+  <button name="stay" type="submit" value="STAY">STAY</button>
+</form>
+

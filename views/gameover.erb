@@ -1,0 +1,20 @@
+<h1>Game Outcome</h1>
+<div class="dealer">
+  <% dealer_hand.each do |card| %>
+    <%= card[0] %> <%= card[1] %>
+  <% end %>
+</div>
+
+<div class="player" >
+  <% player_hand.each do |card| %>
+    <%= card[0] %> <%= card[1] %>
+  <% end %>
+</div>
+
+<div>
+  <% if winner_flag == "tie" %>
+    It's a tie!
+  <% else %>
+    The winner is: <%= winner_flag %>
+  <% end %>
+</div>
