@@ -23,7 +23,8 @@ class Hand
     end
   end
 
-  def is_blackjack?
+  def is_blackjack?(hand)
+    ace_changer(hand) == 21
   end
 
 #Aces considered 11 for now

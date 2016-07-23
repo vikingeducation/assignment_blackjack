@@ -1,16 +1,5 @@
 class Blackjack
 
-=begin
-
-blackjack is main game, creates the deck
-and sends cards to individual games
-
-hand hold hit methods
-
-game resolves hand then moves to blackjack
-
-=end
-
 
 attr_accessor :cards
 
