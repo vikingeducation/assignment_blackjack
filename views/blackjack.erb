@@ -1,0 +1,13 @@
+<h1>Dealer Hand</h1>
+<%= session['dealer_hand'][0] %>
+<span>  [X, X]</span>
+
+<h1>Player Hand</h1>
+<%= session['player_hand'] %>
+
+
+<h2>Hit or stay?</h2>
+<form action="/turn" method="post">
+  <input type="submit" name="hit" value="Hit">
+  <input type="submit" name="stay" value="Stay">
+</form>

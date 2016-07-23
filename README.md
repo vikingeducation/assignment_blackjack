@@ -1,3 +1,5 @@
+a gambling ring by Luke and Matt
+
 # assignment_blackjack
 Hit me baby one more time?
 
