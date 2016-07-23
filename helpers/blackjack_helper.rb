@@ -34,7 +34,6 @@ module BlackjackHelper
   end
 
   def enough_money?(bet)
-    binding.pry
     bet ||= 0
     session["bank"].to_i >= bet.to_i
   end

@@ -4,6 +4,8 @@ What's your bet?
   <input type="submit" value="Place Bet">
 </form>
 
+You have $<%= get_bank %>
+
 <%unless enough_money?(get_bet)%>
 
   <p>Not enough money!</p>

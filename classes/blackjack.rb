@@ -32,6 +32,7 @@ class Blackjack
     @dealer_hand = Dealer.new(dealer_hand)
     build_deck()
     start_game if player_hand.empty?
+    #@over = false
   end
 
   def give_card(player)
@@ -41,20 +42,26 @@ class Blackjack
     player.add_card(face, suit)
   end
 
-  def dealer_play(bet)
+  def dealer_play
     give_card(@dealer_hand) while @dealer_hand.decide_hit?
-    end_game(bet)
+    end_game
   end
 
-  def end_game(bet)
+  def end_game
     if win?
-      @player_hand.make_bank(bet)
       return "player"
     elsif tie?
       return "tie"
     elsif lose?
-       @player_hand.lose_bank(bet)
        return "dealer"
+    end
+  end
+
+  def update_bank(bet)
+     if win?
+      @player_hand.make_bank(bet)
+      elsif lose?
+       @player_hand.lose_bank(bet)
     end
   end
 
