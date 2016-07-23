@@ -23,6 +23,9 @@ class Hand
     end
   end
 
+  def is_blackjack?
+  end
+
 #Aces considered 11 for now
   def sum_of_cards(hand)
     card_values = hand.map do |card|
