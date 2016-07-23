@@ -11,15 +11,15 @@
 <h2> SHUFFLING! </h2>
 <% end %>
 
-<h2>Computer</h2>
+<h2>Dealer</h2>
 <p> Hand:</p>
 <ul>
   <%if message%>
     <% dealer_hand.each do |card| %>
-    <li><%=card%></li>
+    <li><img width=150px height=200px src = "/Classic/<%=card[1]%><%=card[0]%>.png"></li>
     <%end%>
   <%else%>
-    <li><%=dealer_hand[0]%></li>
+    <li><img width=150px height=200px src="/Classic/<%= dealer_hand[0][1] %><%= dealer_hand[0][0] %>.png"></li>
   <%end%>
 </ul>
 <% if message %>
@@ -30,7 +30,7 @@
 <p>Hand:<p>
 <ul>
   <%player_hand.each do |card| %>
-  <li><%=card%></li>
+  <li><img width=150px height=200px src = "/Classic/<%=card[1]%><%=card[0]%>.png"></li>
   <%end%>
 </ul>
 <p> Total is  <%= player_sum%> </p>

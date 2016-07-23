@@ -1,5 +1,7 @@
 class Blackjack
 
+CARDS = [1,2,3,4,5,6,7,8,9,10,11,12,13]
+SUITS = ["c","d","h","s"]
 
 attr_accessor :cards
 
@@ -12,14 +14,16 @@ attr_accessor :cards
     end
   end
 
+  #cards is an array of arrays ie [5, "c"]
   def create_deck
-    4.times do
-      (1..13).each do |n|
-      @cards << n
-      end
-    end
-    @cards.shuffle!
-    @cards
+    @cards = CARDS.product(SUITS).shuffle
+    # 4.times do
+    #   (1..13).each do |n|
+    #   @cards << n
+    #   end
+    # end
+    # @cards.shuffle!
+    # @cards
   end
 
 
