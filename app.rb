@@ -14,7 +14,6 @@ get '/' do
 end
 
 get '/blackjack' do
-  shuffling = nil
   message = nil
   is_blackjack = false
   set_hand_counter
@@ -50,7 +49,7 @@ get '/blackjack' do
    dealer_display = convert_hand(dealer_hand)
 
 
-  erb :blackjack, :locals =>{:dealer_hand => dealer_display, :player_hand => player_display, :player_sum => player_sum, :dealer_sum => dealer_sum, :message => message, :shuffling => shuffling}
+  erb :blackjack, :locals =>{:dealer_hand => dealer_display, :player_hand => player_display, :player_sum => player_sum, :dealer_sum => dealer_sum, :message => message}
 
 end
 
