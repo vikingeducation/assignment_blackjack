@@ -1,24 +1,24 @@
-  <% bet = params[:bet] unless bet %>
-  <h3>Bank: $<%= bank %>   Bet: $<%= bet %></h3>
+  <% bet = params[:bet].to_i unless bet %>
+
 
   <div class="container-fluid">
-
+<h3 style="color: white">Your Bank: $<%= bank %> | Your Bet: $<%= bet %></h3>
     <div class="row">
-      <% unless game_over %>
-        <h3 class="text-center">Dealer Hand</h3>
+      <% if  player_score > 21 || !game_over %>
+        <h5 class="text-center" style="color: white">Dealer Hand</h5>
 
         <div class="col-xs-12">
-          <img src="/images/playing_cards/card_back.jpg" style="width: 150px;">
-          <img src="/images/playing_cards/<%= dealer_hand[0] %>.svg" style="width: 130px;">
+          <img src="/images/playing_cards/card_back.jpg" style="width: 137px;">
+           <%= erb :'shared/display_cards', locals: { hand: [dealer_hand[0]] } %>
         </div>
 
       <% else %>
-        <h3 class="text-center">Dealer Hand (Score: <%= dealer_score %>)</h3>
+        <h5 class="text-center" style="color: white">Dealer Hand (Score: <%= dealer_score %>)</h5>
         <%= erb :'shared/display_cards', locals: { hand: dealer_hand } %>
 
       <% end %>
 
-      <div class="row"><h3 class="text-center">Your Hand (Score: <%= player_score %>)</h3></div>
+      <div class="row"><h5 class="text-center" style="color: white">Your Hand (Score: <%= player_score %>)</h5></div>
 
       <div class="col-xs-12 ">
         <%= erb :'shared/display_cards', locals: { hand: player_hand } %>
@@ -27,24 +27,37 @@
 
 
       <% if player_score > 21 %>
-        <h3> Game over, you busted! </h3>
-        <%= erb :'shared/game_over', locals: { bet: bet, bank: bank, dealer_score: dealer_score, player_score: player_score } %>
+        <h4 style="color: white"> Game over. You busted! </h4>
+        <% winner = "Dealer" %>
+        <%= erb :'shared/game_over', locals: { bet: bet,
+                                               bank: calculate_bank(bank, bet, winner),
+                                               winner: winner } %>
 
       <% elsif !game_over %>
-        <form method="post" action="/blackjack/hit/<%= bet %>" class="form">
-          <input class="btn btn-success" style="display:inline-block" type = "submit" value = "Hit!" >
+      <p class = "tpbutton btn-toolbar text-center">
+
+        <form method="post" action="/blackjack/hit/<%= bet %>" class="form" style="display: inline-block">
+          <input class="btn btn-success"  type = "submit" value = "Hit!" >
 
         </form>
 
-        <form class="form" method="get" action="/blackjack/dealer/<%= bet %>">
-          <input class="btn btn-default" style="display:inline-block" type = "submit" value = "Stay" >
+        <form class="form" method="get" action="/blackjack/dealer/<%= bet %>" style="display: inline-block">
+          <input class="btn btn-default"  type = "submit" value = "Stay" >
         </form>
-
+      </p>
       <% else %>
+        <% winner = who_won(dealer_score, player_score) %>
 
-        <h2>Game over. <%= who_won(dealer_score, player_score) %> won! </h2>
+            <% if winner == "Tie" %>
+              <h4 style="color: white">Tie game! </h4>
 
-        <%= erb :'shared/game_over', locals: { bet: bet, bank: bank, dealer_score: dealer_score, player_score: player_score } %>
+            <% else %>
+              <h4 style="color: white">Game over. <%= winner %> won! </h4>
+            <% end %>
+
+        <%= erb :'shared/game_over', locals: { bet: bet,
+                                               bank: calculate_bank(bank, bet, winner),
+                                               winner: winner } %>
 
       <% end %>
 

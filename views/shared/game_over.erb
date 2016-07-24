@@ -1,5 +1,17 @@
-  <% winner = who_won(dealer_score, player_score) %>
-  <h3>You now have <%= calculate_bank(bank, bet, winner) %> in the bank!</h3>
+<h4 style="color: white;">You now have $<%= bank %> in the bank.</h4>
+
+<% if bank > 0 %>
+
   <form class="form" method="get" action="/">
-    <input class="btn btn-success" style="display:inline-block" type = "submit" value = "Another Round!" >
+    <input class="btn btn-success" style="display:inline-block" type = "submit" value = "Play another round!" >
   </form>
+
+<% else %>
+
+  <h4 style="color: white;">You gambled away all your savings.<i class="em em-cry"></i></h4>
+
+  <form class="form" method="get" action="/reset">
+    <input class="btn btn-success" style="display:inline-block" type = "submit" value = "Gamble some more!" >
+  </form>
+
+<% end %>

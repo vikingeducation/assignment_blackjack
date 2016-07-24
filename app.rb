@@ -15,34 +15,47 @@ enable :sessions
 get '/' do
   bank = session["bank"] ? load_bank : Bank.new.bank
   session.clear
-  save_bank(bank)
+  bank = save_bank(bank)
 
   erb :home, locals: { bank: bank }
 end
 
+get '/reset' do
+  session.clear
+  redirect to('/')
+end
+
 get '/blackjack' do
-  new_round? ? initialize_round : load_round
+  if new_round?
+    initialize_round
+    game_over = true if Hand.new(load_player_hand).blackjack?
+  else
+    game_over = false
+    load_round
+  end
 
   erb :blackjack, locals: { deck: load_deck,
                             player_hand: load_player_hand,
                             dealer_hand: load_dealer_hand,
                             player_score: load_player_score,
                             dealer_score: load_dealer_score,
-                            game_over: false,
+                            game_over: game_over,
                             bank: load_bank }
 end
 
 
 post '/blackjack/hit/:bet' do |bet|
   hit_player
-  redirect to("/blackjack/dealer/#{bet}") if Hand.new(load_player_hand).bust?
+
+  game_over = false
+  game_over = true if Hand.new(load_player_hand).bust?
 
   erb :blackjack, locals: { deck: load_deck,
                             player_hand: load_player_hand,
                             dealer_hand: load_dealer_hand,
                             player_score: load_player_score,
                             dealer_score: load_dealer_score,
-                            game_over: false,
+                            game_over: game_over,
                             bank: load_bank,
                             bet: bet.to_i }
 end
@@ -59,5 +72,7 @@ get '/blackjack/dealer/:bet' do |bet|
                             bank: load_bank,
                             bet: bet.to_i }
 end
+
+
 
 
