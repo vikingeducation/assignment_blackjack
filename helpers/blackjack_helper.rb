@@ -62,7 +62,6 @@ module BlackjackHelper
 
   def calculate_bank(bank, bet, who_won)
     if Hand.new(load_player_hand).blackjack?
-      binding.pry
       save_bank(bank.to_f + (1.5 * bet.to_f))
 
     elsif who_won == "You"
