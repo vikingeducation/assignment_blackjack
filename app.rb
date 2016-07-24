@@ -1,57 +1,63 @@
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require './lib/deck'
-require './lib/dealer_hand'
 require './lib/hand'
+require './lib/bank'
 require './helpers/blackjack_helper'
+require './helpers/sessions_helper'
 require 'pry'
 require 'json'
 
-helpers BlackjackHelper
+helpers BlackjackHelper, SessionsHelper
 
 enable :sessions
 
 get '/' do
-  erb :home
+  bank = session["bank"] ? load_bank : Bank.new.bank
+  session.clear
+  save_bank(bank)
+
+  erb :home, locals: { bank: bank }
 end
 
 get '/blackjack' do
-  #binding.pry
-  if not_new_game?
-    deck = load_deck
-    player_hand = load_hand
-    dealer_hand = load_dealer_hand
-  else
-    save_hand(Hand.new(deal_two_cards).hand_arr)
-    save_dealer_hand(Hand.new(deal_two_cards).hand_arr)
-    save_deck( Deck.new.deck_arr )
-  end
+  new_round? ? initialize_round : load_round
 
   erb :blackjack, locals: { deck: load_deck,
- player_hand: load_hand, dealer_hand: load_dealer_hand}
+                            player_hand: load_player_hand,
+                            dealer_hand: load_dealer_hand,
+                            player_score: load_player_score,
+                            dealer_score: load_dealer_score,
+                            game_over: false,
+                            bank: load_bank }
 end
 
 
-post '/blackjack/hit' do
-  deck = Deck.new(load_deck)
-  card = deck.deal
-  deck = save_deck(deck.deck_arr)
+post '/blackjack/hit/:bet' do |bet|
+  hit_player
+  redirect to("/blackjack/dealer/#{bet}") if Hand.new(load_player_hand).bust?
 
-  player_hand = save_hand(Hand.new(load_hand).hit(card))
-
-  redirect to('bust') if Hand.new(load_hand).bust?
-
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: load_dealer_hand}
+  erb :blackjack, locals: { deck: load_deck,
+                            player_hand: load_player_hand,
+                            dealer_hand: load_dealer_hand,
+                            player_score: load_player_score,
+                            dealer_score: load_dealer_score,
+                            game_over: false,
+                            bank: load_bank,
+                            bet: bet.to_i }
 end
 
-post '/blackjack/stay' do
+
+get '/blackjack/dealer/:bet' do |bet|
   get_dealer_moves
-  erb :blackjack, locals: { deck: load_deck, player_hand: load_hand, dealer_hand: load_dealer_hand}
-end
-
-get '/bust' do
-  get_dealer_moves
-  erb :blackjack, locals: { deck: load_deck, player_hand: load_hand, dealer_hand: load_dealer_hand}
+  erb :blackjack, locals: { deck: load_deck,
+                            player_hand: load_player_hand,
+                            dealer_hand: load_dealer_hand,
+                            player_score: load_player_score,
+                            dealer_score: load_dealer_score,
+                            game_over: true,
+                            bank: load_bank,
+                            bet: bet.to_i }
 end
 
 

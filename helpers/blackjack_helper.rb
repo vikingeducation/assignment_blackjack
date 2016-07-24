@@ -1,36 +1,12 @@
 # ./helpers/checkers_helper.rb
 
 module BlackjackHelper
-
-  def not_new_game?
-    !!(session["deck_arr"])
-  end
-#returns deck_arr (arr) from session
-  def load_deck
-    Deck.new(session["deck_arr"]).deck_arr
+  def new_game?
+    !session["bank"]
   end
 
-#takes deck_arr and saves it to session hash
-  def save_deck(deck_arr)
-    session["deck_arr"] = deck_arr
-  end
-
-#returns player_hand (arr) from session
-  def load_hand
-    Hand.new(session["player_hand_arr"]).hand_arr
-  end
-
-#takes player_hand and saves it to session hash
-  def save_hand(player_hand)
-    session["player_hand_arr"] = player_hand
-  end
-
-  def load_dealer_hand
-    Hand.new(session["dealer_hand_arr"]).hand_arr
-  end
-
-  def save_dealer_hand(dealer_hand)
-    session["dealer_hand_arr"] = dealer_hand
+  def new_round?
+    !(session["deck_arr"])
   end
 
   def get_dealer_moves
@@ -48,6 +24,55 @@ module BlackjackHelper
     hand << deck.deal
     save_deck(deck.deck_arr)
     hand
+  end
+
+  def hit_player
+    deck = Deck.new(load_deck)
+    card = deck.deal
+    deck = save_deck(deck.deck_arr)
+    player_hand = save_player_hand(Hand.new(load_player_hand).hit(card))
+  end
+
+  def initialize_round
+    save_player_hand(Hand.new(deal_two_cards).hand_arr)
+    save_dealer_hand(Hand.new(deal_two_cards).hand_arr)
+    save_deck( Deck.new.deck_arr )
+    save_dealer_score(Hand.new(load_dealer_hand).score)
+    save_player_score(Hand.new(load_player_hand).score)
+  end
+
+  def load_round
+    deck = load_deck
+    player_hand = load_player_hand
+    dealer_hand = load_dealer_hand
+    player_score = load_player_score
+    dealer_score = load_dealer_score
+  end
+
+
+  def who_won(dealer_score, player_score)
+    if dealer_score == player_score
+      "Tie"
+    elsif dealer_score > 21 || player_score > dealer_score
+      "You"
+    else
+      "Dealer"
+    end
+  end
+
+  def calculate_bank(bank, bet, who_won)
+    if Hand.new(load_player_hand).blackjack
+      save_bank(bank + 1.5 * bet)
+
+    elsif who_won == "You"
+      save_bank(bank + bet)
+
+    elsif who_won == "Dealer"
+      save_bank(bank - bet)
+    else who_won == "Tie"
+      save_bank(bank)
+    end
+
   end
 
 end

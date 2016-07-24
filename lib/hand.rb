@@ -42,4 +42,7 @@ class Hand
     score > 21
   end
 
+  def blackjack
+    hand_arr.length == 2 && score == 21
+  end
 end
