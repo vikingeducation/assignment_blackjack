@@ -9,6 +9,8 @@ require 'json'
 enable :sessions
 helpers BlackjackHelper
 
+SHUFFLE_POINT = 26
+
 get '/' do
   erb :index
 end
@@ -16,7 +18,6 @@ end
 get '/blackjack' do
   message = nil
   is_blackjack = false
-  set_hand_counter
 
   if session["deck"] && session["player_hand"]
     current_hand = Hand.new(JSON.parse(session["deck"]), JSON.parse(session["player_hand"]), JSON.parse(session["dealer_hand"]))
@@ -94,10 +95,9 @@ post '/stand' do
 end
 
 post '/next_hand' do
-  counter = session["hand_counter"].to_i
-  if counter+1 == 6
+  deck = JSON.parse(session["deck"])
+  if deck.length<SHUFFLE_POINT
     session["deck"] = nil
-    sesssion["hand_counter"] = 1
   end
   delete_cookies
   redirect to('/bet')

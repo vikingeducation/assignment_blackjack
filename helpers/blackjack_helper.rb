@@ -71,7 +71,7 @@ def check_hand_end(player_sum, dealer_sum)
   bet = session["bet_amount"].to_i
   bankroll = session["bankroll"].to_i
   if session["player_bust"] == true
-    message = "Player busted"
+    message = "You busted"
     session["bankroll"] = bankroll-bet
   elsif session["dealer_bust"] == true
     message = "You won!"

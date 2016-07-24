@@ -1,15 +1,18 @@
 <%if message%>
-<h2><%=message%>
+<h2 class="title"><%=message%>
 <% end%>
 <%if message%>
 <form method="post" action="next_hand">
-  <button type="submit" value="next_hand">Next Hand</button>
+  <button class="btn btn-primary btn-lg" type="submit" value="next_hand">Next Hand</button>
 </form>
 <%end%>
 
-<h2>Dealer</h2>
-<p> Hand:</p>
-<ul>
+<%if message%>
+<h2 class="title">Dealer: <%= dealer_sum%></h2>
+<%else%>
+<h2 class="title">Dealer</h2>
+<%end%>
+<ul class="title">
   <%if message%>
     <% dealer_hand.each do |card| %>
     <li><img width=150px height=200px src = "/Classic/<%=card[1]%><%=card[0]%>.png"></li>
@@ -18,27 +21,27 @@
     <li><img width=150px height=200px src="/Classic/<%= dealer_hand[0][1] %><%= dealer_hand[0][0] %>.png"></li>
   <%end%>
 </ul>
-<% if message %>
-<p> Total is <%= dealer_sum%> </p>
-<% end %>
 
-<h2>Player 1</h2>
-<p>Hand:<p>
-<ul>
+<h2 class="title">Player: <%= player_sum%></h2>
+<ul class="title">
   <%player_hand.each do |card| %>
   <li><img width=150px height=200px src = "/Classic/<%=card[1]%><%=card[0]%>.png"></li>
   <%end%>
 </ul>
-<p> Total is  <%= player_sum%> </p>
 
 <% unless message %>
-  <form method="post" action="hit">
-    <button type="submit" value="hit">Hit</button>
-  </form>
-
-  <form method="post" action="stand">
-    <button type="submit" value="Stand">Stand</button>
-  </form>
+<ul class="title">
+  <li>
+    <form method="post" action="hit">
+      <button class="btn btn-primary btn-lg" type="submit" value="hit">Hit</button>
+    </form>
+  </li>
+  <li>
+    <form method="post" action="stand">
+      <button class="btn btn-primary btn-lg" type="submit" value="Stand">Stand</button>
+    </form>
+  </li>
+</ul>
 <% end %>  
 
 <!--
