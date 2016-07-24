@@ -94,18 +94,38 @@ class Deck
 
   #Getting points.
   def get_total_points(hand)
-    hand.reduce(0) do |m,card|
+    array = []
+    new_hand = hand.each do |card| 
       if card.value.is_a? Array
+        array << card.value[0]
+      else
+        array << card.value
+      end
+    end
+    array.sort.reverse.reduce(0) do |m, card|
+      if card == 1
         if m + 11 > 21
           m + 1
         else
           m + 11
         end
       else
-        m + card.value
+        m + card
       end
     end
   end
+  #   hand.reduce(0) do |m,card|
+  #     if card.value.is_a? Array
+  #       if m + 11 > 21
+  #         m + 1
+  #       else
+  #         m + 11
+  #       end
+  #     else
+  #       m + card.value
+  #     end
+  #   end
+  # end
 
   def get_dealer_points
     @dealer_hand.map do |card|
