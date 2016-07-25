@@ -15,7 +15,9 @@ Card = Struct.new(:rank, :value, :suit)
 class Deck
   attr_reader :deck
   attr_accessor :player_hand, 
-                :dealer_hand
+                :dealer_hand,
+                :player_money,
+                :wager
 
   SUITS = ["Clubs", "Hearts", "Spades", "Diamonds"]
   RANK = ["A", "K", "Q", "J"].concat((2..10).to_a)
@@ -31,7 +33,23 @@ class Deck
       @dealer_hand = []
       @deck = get_deck.shuffle
       deal
+      @player_money = 1000
+      @wager = 0
     end
+  end
+
+  def bet(wager)
+    @player_money -= wager
+    @wager = wager
+    @player_money
+  end
+
+  def increase_player_money
+    @player_money += (@wager * 2)
+  end
+
+  def increase_player_money_blackjack
+    @player_money += (@wager + (@wager * 1.5))
   end
 
   def get_deck
@@ -80,52 +98,57 @@ class Deck
     get_total_points(get_player_points) > 21 ? "Player busts. Dealer wins."  : nil
   end
 
+  def blackjack_tie?
+    if @pblackjack && @dblackjack
+      @player_money += @wager
+      return :tie
+    end
+  end
+
   def tie?
-    return :tie if @pblackjack && @dblackjack
+    if get_total_points(get_dealer_points) == get_total_points(get_player_points)
+      @player_money += @wager
+      return "Push"
+    end
   end
 
   #When the player busts or stays
   def end_game
     dealer_hit while dealer_should_hit?
-    return "Dealer busts. Player wins." if get_total_points(get_dealer_points) > 21
+    if get_total_points(get_dealer_points) > 21
+      increase_player_money
+      return "Dealer busts. Player wins."
+    end
     return "Tie" if tie?
-    compare_hands ? "Player wins." : "Dealer wins."
+    if compare_hands
+      increase_player_money
+      return "Player wins." 
+    else
+     return "Dealer wins."
+    end
   end
 
   #Getting points.
   def get_total_points(hand)
+    aces = 0
     array = []
-    new_hand = hand.each do |card| 
+    hand.each do |card| 
       if card.value.is_a? Array
-        array << card.value[0]
+        array << card.value[1]
+        aces += 1
       else
         array << card.value
       end
     end
     array.sort.reverse.reduce(0) do |m, card|
-      if card == 1
-        if m + 11 > 21
-          m + 1
-        else
-          m + 11
-        end
+      if m + card > 21 && aces > 0
+        m + 1
+        aces -= 1
       else
         m + card
       end
     end
   end
-  #   hand.reduce(0) do |m,card|
-  #     if card.value.is_a? Array
-  #       if m + 11 > 21
-  #         m + 1
-  #       else
-  #         m + 11
-  #       end
-  #     else
-  #       m + card.value
-  #     end
-  #   end
-  # end
 
   def get_dealer_points
     @dealer_hand.map do |card|
@@ -158,8 +181,11 @@ class Deck
   end
 
   def blackjack_outcome
-    return "Both players have blackjack" if tie?
-    return "Player blackjack" if blackjack?(@player_hand)
+    return "Both players have blackjack" if blackjack_tie?
+    if blackjack?(@player_hand)
+      increase_player_money_blackjack
+      return "Player blackjack"  
+    end
     return "Dealer blackjack" if blackjack?(@dealer_hand)
   end
 
@@ -171,52 +197,69 @@ class Deck
 
 end
 
-get "/blackjack" do 
+get "/" do
+  erb :bets
+end
+
+post "/blackjack" do
 
   deck = Deck.new(session['cards'])
+  deck.player_money = session["player_money"] if session["player_money"]
   player_hand = nil; dealer_hand = nil
   #Check if hands are already present in the session.
   hands = check_hands(deck, player_hand,dealer_hand)
-  outcome = deck.bust_player
+  wager = params[:bet].to_i
+  player_money = session["player_money"] || deck.player_money
+  player_money -= wager
+  session["player_money"] = player_money
+  session["bet"] = wager
   session['cards'] = to_array(deck)
   session['player_hand'] = hands[0]
   session['dealer_hand'] = hands[1]
-  if outcome = deck.blackjack_outcome
-    redirect ("blackjack/stay?outcome=#{outcome}")
-  else
-    erb :blackjack, locals: { deck: deck, player_hand: hands[0], dealer_hand: hands[1], outcome: outcome }
-  end
+    erb :blackjack, locals: { deck: deck, player_hand: hands[0], dealer_hand: hands[1], outcome: nil, bet: wager, player_money: player_money }
 
 end
 
 post "/blackjack/hit" do
 
   deck = Deck.new(session['cards'])
+  deck.wager = session['bet']
+  deck.player_money = session["player_money"]
   store_player_hand(deck, session["player_hand"])
   store_dealer_hand(deck, session["dealer_hand"])
   deck.player_hit
   player_hand = deck.show_rank_suit(deck.get_player_points)
   dealer_hand = deck.show_rank_suit(deck.get_dealer_points)
-  outcome = deck.bust_player || deck.tie?
+  outcome = deck.bust_player || nil
+  wager = session['bet']
+  player_money = session["player_money"]
   if outcome
     session.clear
+    session["player_money"] = deck.player_money
+    session["bet"] = deck.wager
   else
-    store_session(player_hand,dealer_hand,deck)
+    store_session(player_hand,dealer_hand,deck, player_money, wager)
   end
 
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: outcome }
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: outcome, bet: wager, player_money: player_money }
 
 end
 
 
 get "/blackjack/stay" do
   deck = Deck.new(session['cards'])
+  deck.wager = session['bet']
+  deck.player_money = session["player_money"]
+  player_money = session["player_money"]
   store_player_hand(deck, session["player_hand"])
   store_dealer_hand(deck, session["dealer_hand"])
-  outcome = params['outcome'] || deck.end_game
+  outcome =  deck.end_game || deck.tie?
+  wager = session['bet']
   session.clear
+  session["player_money"] = deck.player_money
+  session["bet"] = deck.wager
   player_hand = deck.show_rank_suit(deck.player_hand)
   dealer_hand = deck.show_rank_suit(deck.dealer_hand)
 
-  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: outcome }
+  erb :blackjack, locals: { deck: deck, player_hand: player_hand, dealer_hand: dealer_hand, outcome: outcome, bet: wager, player_money: player_money }
 end

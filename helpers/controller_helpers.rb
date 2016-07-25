@@ -30,10 +30,11 @@ module ControllerHelpers
     deck.dealer_hand = card_array_to_structs(hand)
   end
 
-  def store_session(player_hand,dealer_hand,deck)
+  def store_session(player_hand, dealer_hand,deck, player_money, wager)
     session['player_hand'] = player_hand
     session['dealer_hand'] = dealer_hand
-    session['cards'] = to_array(deck)
+    session["player_money"] = player_money
+    session["bet"] = wager
   end
 
 end
