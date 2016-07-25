@@ -3,7 +3,8 @@
 <h2>Player's hand</h2>
   <%=@phand%>
 <h2>Dealer's hand</h2>
-  <%=@dhand%>
+  <%=@done ? @dhand : "X, #{@dhand[1]}" %>
+  
 
 <% unless @done%>
   <form method="post" action="/blackjack/hit">
