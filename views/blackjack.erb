@@ -1,0 +1,24 @@
+<div class="jumbotron">
+  <h1 class="text-center"><span style="color:red">Hello</span>, <span style="color:#DAA520">Blackjack!</span></h1>
+</div>
+<h2> Your current bet: <%= bet %></h2>
+<h2> Your current bankroll is: <%=player_money %></h2>
+<h2> The player's hand is: <%= player_hand %></h2>
+
+<h2> The Dealer's hand is <%= show_dealer_hand(dealer_hand,outcome) %><h2>
+
+<% if outcome %>
+  <h1 class="bg-success"><%= outcome %></h1>
+  <form action="/" method="get">
+    <input style="padding:2em 4.5em 2em 4.5em" class="btn btn-success btn-lg center-block" type="submit" name="Reset" value="RESET">
+  </form>
+
+<% else %>
+  <form action="/blackjack/hit" method="post">
+    <input style="padding:2em 4.5em 2em 4.5em; margin-bottom:20px" class="btn btn-primary btn-lg center-block" type="submit" name="Hit" value="Hit!">
+  </form>
+  <form action="/blackjack/stay" method="get">
+    <input style="padding:2em 4.5em 2em 4.5em" class="btn btn-default btn-lg center-block" type="submit" name="Stay" value="Stay">
+  </form>
+<% end %>
+
