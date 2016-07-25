@@ -1,0 +1,53 @@
+<%if message%>
+<h2><%=message%>
+<% end%>
+<%if message%>
+<form method="post" action="next_hand">
+  <button type="submit" value="next_hand">Next Hand</button>
+</form>
+<%end%>
+
+<%if shuffling%>
+<h1> SHUFFLING! </h1>
+<% end %>
+
+<h2>Computer</h2>
+<p> Hand:</p>
+<ul>
+  <%if message%>
+    <% dealer_hand.each do |card| %>
+    <li><%=card%></li>
+    <%end%>
+  <%else%>
+    <li><%=dealer_hand[0]%></li>
+  <%end%>
+</ul>
+<% if message %>
+<p> Total is <%= dealer_sum%> </p>
+<% end %>
+
+<h2>Player 1</h2>
+<p>Hand:<p>
+<ul>
+  <%player_hand.each do |card| %>
+  <li><%=card%></li>
+  <%end%>
+</ul>
+<p> Total is  <%= player_sum%> </p>
+
+<% unless message %>
+  <form method="post" action="hit">
+    <button type="submit" value="hit">Hit</button>
+  </form>
+
+  <form method="post" action="stand">
+    <button type="submit" value="Stand">Stand</button>
+  </form>
+<% end %>  
+
+<!--
+<button type="submit" value="Double">Double Down</button>
+<button type="submit" value="Split">Split</button>
+-->
+
+
