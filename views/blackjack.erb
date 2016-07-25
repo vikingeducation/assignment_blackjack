@@ -1,0 +1,14 @@
+
+
+<h2>Player's hand</h2>
+  <%=@phand%>
+<h2>Dealer's hand</h2>
+  <%=@dhand%>
+
+  <form method="post" action="/blackjack/hit">
+    <input type="submit" value="Hit">
+  </form>
+
+  <form method="get" action="/blackjack/stay">
+    <input type="submit" value="Stay">
+  </form>
