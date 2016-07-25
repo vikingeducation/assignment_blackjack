@@ -2,7 +2,14 @@
 
 
   <div class="container-fluid">
-<h3 style="color: white">Your Bank: $<%= bank %> | Your Bet: $<%= bet %></h3>
+    <% unless game_over %>
+     <h3 style="color: white">Your Bank: $<%= bank %> | Your Bet: $<%= bet %></h3>
+
+    <% else %>
+      <% winner = who_won(dealer_score, player_score) %>
+    <h3  style="color: white">Your Bank: $<%= calculate_bank(bank, bet, winner) %></h3>
+    <% end %>
+
     <div class="row">
       <% if  player_score > 21 || !game_over %>
         <h5 class="text-center" style="color: white">Dealer Hand</h5>

@@ -1,0 +1,37 @@
+body {
+  margin-top: 60px;
+  background: url('/images/cover.jpeg') no-repeat center 100% fixed;
+
+}
+
+.navbar {
+  height: 60px;
+
+}
+
+.navbar-brand {
+  font-size: 40px;
+  color: white
+}
+
+.navbar-brand img {
+  height:40px;
+  display:inline-block;
+  margin-right: 10px;
+}
+
+h3 h5 {
+  color: white;
+}
+
+.footer {
+
+  position:absolute;
+  background-color: #efefef;
+  text-align: center;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 40px;
+  line-height:40px;"
+}

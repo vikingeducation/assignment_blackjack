@@ -1,28 +1,26 @@
 <!DOCTYPE html>
 <html >
-<head>
-  <title>Blackjack</title>
-  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <!-- Latest compiled and minified JavaScript -->
+  <head>
+    <title>Blackjack</title>
+    <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="/styles.css" >
+  </head>
 
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+  <body >
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="/"><img src="/images/cards.png">Blackjack</a>
+        </div>
 
-</head>
-<body style="margin-top:60px; background: url('/images/cover.jpeg') no-repeat center 100% fixed; background_size: cover; ">
+      </div>
+    </nav>
 
-<nav class="navbar navbar-inverse navbar-fixed-top" style="height: 60px;">
-  <div class="container">
-    <div class="navbar-header">
-      <a class="navbar-brand" href="/" style="font-size: 40px; color: white"><img src="/images/cards.png" style="height:40px; display:inline-block; margin-right: 10px;">Blackjack</a>
+    <div class="text-center">
+      <%= yield %>
     </div>
-
-  </div>
-</nav>
-
-  <div class="text-center">
-    <%= yield %>
-  </div>
-<div class="footer" style="position:absolute; background-color: #efefef; text-align: center; right: 0; bottom: 0; left: 0; height: 40px; line-height:40px;">Made with <span class="glyphicon glyphicon-heart-empty"></span> by <a href="http://www.hannahsquier.com">Hannah.</div>
-</body>
+    <div class="footer">Made with <span class="glyphicon glyphicon-heart-empty"></span> by <a href="http://www.hannahsquier.com">Hannah.</div>
+  </body>
 </html>
