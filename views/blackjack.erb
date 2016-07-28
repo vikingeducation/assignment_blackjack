@@ -1,1 +1,8 @@
 <h4>Welcome to Blackjack!</h4>
+<p>Dealers's hand : <%= dealer_hand %></p>
+<p>Player's hand : <%= player_hand %> </p>
+<form action="/blackjack/hit" method="post">
+  Player's Action
+  <button name="action" type="submit" value="hit">Hit</button>
+  <button name="action" type="submit" value="stay">Stay</button>
+</form>
