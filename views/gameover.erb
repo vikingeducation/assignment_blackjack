@@ -1,0 +1,18 @@
+<h4>Thankyou for playing blackjack!</h4>
+<p>Dealers's hand : <%= dealer_hand %></p>
+<p>Dealers's current count : <%= dealer_count %> </p>
+<p>Player's hand : <%= player_hand %> </p>
+<p>Player's current count : <%= player_count %> </p>
+<% if @busted %>
+<h4><%= @busted.to_s %> got busted </h4>
+<% end %>
+<% unless @winner.nil? %>
+  <% if @winner == "Player" %>
+  <h4>Congratulations you won this round!</h4>
+  <% else %>
+  <h4>Sorry Dealer won this round!</h4>
+  <% end %>
+<% else %>
+  <h4> This round is a tie!</h4>
+<% end %>
+
