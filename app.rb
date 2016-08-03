@@ -2,6 +2,8 @@ require 'sinatra'
 require 'erb'
 require 'pry-byebug'
 require './helpers/deck_helpers.rb'
+require './player.rb'
+require './deck.rb'
 helpers DeckHelper
 enable :sessions
 
