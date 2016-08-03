@@ -1,9 +1,14 @@
 require 'pry'
 class Player
-  attr_accessor :name, :hand
+  attr_accessor :name, :hand, :bankroll
   def initialize(name, hand)
     @name = name
     @hand = hand
+    @bankroll = 1000
+  end
+
+  def bet(amount)
+    @bet = amount
   end
 
   def deal(deck)

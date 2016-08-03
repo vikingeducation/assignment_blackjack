@@ -8,13 +8,29 @@ helpers DeckHelper
 enable :sessions
 
 get '/' do
+  reset_bankroll
   erb :home
 end
 
-get '/blackjack' do
-  create_deck
-  erb :blackjack
+get '/bet' do
+  erb :bet
 end
+
+post '/bet' do
+  if valid_bet(params[:bet].to_i)
+    set_player_bet(params[:bet].to_i)
+    create_deck(reset_bankroll: false)
+    erb :blackjack
+  else
+    @error = "INSUFFICIENT_AMOUNT"
+    erb :bet
+  end
+end
+
+# get '/blackjack' do
+#   create_deck
+#   erb :blackjack
+# end
 
 post '/blackjack/hit' do
   deal_player

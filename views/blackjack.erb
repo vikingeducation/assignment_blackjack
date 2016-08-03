@@ -1,8 +1,9 @@
-<h4>Welcome to Blackjack!</h4>
 <p>Dealers's hand : <%= dealer_hand %></p>
 <p>Dealers's current count : <%= dealer_count %> </p>
 <p>Player's hand : <%= player_hand %> </p>
 <p>Player's current count : <%= player_count %> </p>
+<p>Player's bankroll : <%= player_bankroll %> </p>
+<p>Player's bet : <%= get_player_bet %> </p>
 Player's Action
 <form action="/blackjack/hit" method="post">
   <button name="action" type="submit" value="hit">Hit</button>
