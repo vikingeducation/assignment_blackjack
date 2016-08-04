@@ -3,9 +3,7 @@
 <p>Dealers's current count : <%= dealer_count %> </p>
 <p>Player's hand : <%= player_hand %> </p>
 <p>Player's current count : <%= player_count %> </p>
-<% if @busted %>
-<h4><%= @busted.to_s %> got busted </h4>
-<% end %>
+<%= erb :"shared/busted" %>
 <% unless @winner.nil? %>
   <% if @winner == "Player" %>
   <h4>Congratulations you won this round!</h4>
@@ -15,6 +13,5 @@
 <% else %>
   <h4> This round is a tie!</h4>
 <% end %>
-<p>Player's bankroll : <%= player_bankroll %> </p>
-<p>Player's bet : <%= get_player_bet %> </p>
+<%= erb :"shared/player_amount" %>
 

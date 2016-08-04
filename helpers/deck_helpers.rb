@@ -9,6 +9,7 @@ module DeckHelper
     session[:dealer_cards] = @dealer.hand
     session[:player_cards] = @player.hand
     session[:player_bankroll] = @player.bankroll if params[:reset_bankroll]
+    session[:blackjack_cards] = [['S', 'J'], ['S', 'A']]
     2.times { deal_dealer ; deal_player }
   end
 
@@ -56,6 +57,14 @@ module DeckHelper
     Player.new("Dealer", session[:dealer_cards]).calculate_total
   end
 
+  def player_blackjack
+    Player.new("Player", session[:player_cards]).calculate_total == 21
+  end
+
+  def dealer_blackjack
+    Player.new("Player", session[:dealer_cards]).calculate_total == 21
+  end
+
   def busted_player
     return "Player" if player_busted?
     return "Dealer" if dealer_busted?
@@ -82,7 +91,6 @@ module DeckHelper
     pl_cnt = player_count
     dl_cnt = dealer_count
     if pl_cnt > 21
-      session[:player_bankroll] -= session[:player_bet]
       "Dealer"
     elsif dl_cnt > 21
       session[:player_bankroll] += 2*session[:player_bet]
@@ -91,9 +99,9 @@ module DeckHelper
       session[:player_bankroll] += 2*session[:player_bet]
       "Player"
     elsif pl_cnt <  dl_cnt
-      session[:player_bankroll] -= session[:player_bet]
       "Dealer"
     else
+      session[:player_bankroll] += session[:player_bet]
       nil
     end
   end

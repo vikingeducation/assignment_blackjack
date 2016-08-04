@@ -4,10 +4,12 @@
 <p>Player's current count : <%= player_count %> </p>
 <p>Player's bankroll : <%= player_bankroll %> </p>
 <p>Player's bet : <%= get_player_bet %> </p>
-Player's Action
-<form action="/blackjack/hit" method="post">
-  <button name="action" type="submit" value="hit">Hit</button>
-</form>
-<form action="/blackjack/stay" method="post">
-  <button name="action" type="submit" value="stay">Stay</button>
-</form>
+<% if !player_blackjack && !dealer_blackjack %>
+  Player's Action
+  <form action="/blackjack/hit" method="post">
+    <button name="action" type="submit" value="hit">Hit</button>
+  </form>
+  <form action="/blackjack/stay" method="post">
+    <button name="action" type="submit" value="stay">Stay</button>
+  </form>
+<% end %>

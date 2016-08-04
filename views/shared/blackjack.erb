@@ -1,0 +1,6 @@
+<% if (!player_blackjack && dealer_blackjack) &&
+      (player_blackjack && dealer_blackjack) %>
+      <h1>player stays</h1>
+<% elsif player_blackjack && !dealer_blackjack %>
+      <h1>Player hit blackjack</h1>
+<% end %>

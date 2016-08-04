@@ -20,17 +20,16 @@ post '/bet' do
   if valid_bet(params[:bet].to_i)
     set_player_bet(params[:bet].to_i)
     create_deck(reset_bankroll: false)
-    erb :blackjack
+    if !player_blackjack && !dealer_blackjack
+      erb :blackjack
+    else
+      redirect "/blackjack/stay"
+    end
   else
     @error = "INSUFFICIENT_AMOUNT"
     erb :bet
   end
 end
-
-# get '/blackjack' do
-#   create_deck
-#   erb :blackjack
-# end
 
 post '/blackjack/hit' do
   deal_player
