@@ -1,0 +1,33 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <h4>Dealer's hand</h4>
+      <% dealer_hand.each do |card| %>
+        <%= card_image(card) %>
+      <% end %>
+      <p>Dealer's current count : <%= dealer_count %> </p>
+      <h4>Player's hand</h4>
+      <% player_hand.each do |card| %>
+        <%= card_image(card) %>
+      <% end %>
+      <p>Player's current count : <%= player_count %> </p>
+    </div>
+    <div class="col-sm-4">
+      <%= erb :"shared/busted" %>
+      <% unless @winner.nil? %>
+        <% if @winner == "Player" %>
+        <h4>Congratulations you won this round!</h4>
+        <% else %>
+        <h4>Sorry Dealer won this round!</h4>
+        <% end %>
+      <% else %>
+        <h4> This round is a tie!</h4>
+      <% end %>
+      <%= erb :"shared/player_amount" %>
+    </div>
+  </div>
+</div>
+
+
+
+
