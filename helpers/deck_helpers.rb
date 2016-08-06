@@ -97,6 +97,7 @@ module DeckHelper
       "Player"
     elsif pl_cnt > dl_cnt
       session[:player_bankroll] += 2*session[:player_bet]
+      session[:player_bankroll] += session[:player_bet] if player_blackjack
       "Player"
     elsif pl_cnt <  dl_cnt
       "Dealer"
@@ -104,6 +105,26 @@ module DeckHelper
       session[:player_bankroll] += session[:player_bet]
       nil
     end
+  end
+
+    def card_image(card)
+    suit = case card[0]
+      when 'H' then 'hearts'
+      when 'D' then 'diamonds'
+      when 'S' then 'spades'
+      when 'C' then 'clubs'
+    end
+
+    value = card[1]
+    if ['J', 'Q', 'K', 'A'].include?(value)
+      value = case value
+        when 'J' then 'jack'
+        when 'Q' then 'queen'
+        when 'K' then 'king'
+        when 'A' then 'ace'
+      end
+    end
+    "<img src='/images/cards/#{suit}_#{value}.jpg' class=card_image/>"
   end
 
 end

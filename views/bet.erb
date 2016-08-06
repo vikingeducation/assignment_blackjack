@@ -1,9 +1,22 @@
-<p>Player's bankroll : <%= player_bankroll %> </p>
-<% if @error == "INSUFFICIENT_AMOUNT" %>
-  <p>Bet amount must be less than or equal to the bankroll </p>
-<% end %>
-<form action="bet" method = "post">
-  Enter Bet Amount<br>
-  <input type="text" name="bet">
-  <input type="submit" value="Submit">
-</form>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-4">
+      <h2>Player's bankroll : $<%= player_bankroll %> </h2>
+      <% if @error == "INSUFFICIENT_AMOUNT" %>
+        <p>Bet amount must be less than or equal to the bankroll </p>
+      <% end %>
+      <form action="bet" method = "post">
+        <h4>Enter Bet Amount</h4><br>
+        <div class="input-group">
+          <span class="input-group-addon">$</span>
+          <input type="text" class="form-control" name="bet" value="10" aria-label="Bet Amount">
+          <span class="input-group-addon">.00</span>
+        </div>
+        <div class="row">
+          <input class="bet-button btn btn-primary col-sm-4 col-sm-offset-4" type="submit" value="Submit">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+

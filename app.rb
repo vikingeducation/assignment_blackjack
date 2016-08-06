@@ -22,6 +22,10 @@ post '/bet' do
     create_deck(reset_bankroll: false)
     if !player_blackjack && !dealer_blackjack
       erb :blackjack
+    elsif player_blackjack && !dealer_blackjack
+      @blackjack = true
+      binding.pry
+      redirect "/blackjack/stay"
     else
       redirect "/blackjack/stay"
     end
@@ -33,7 +37,7 @@ end
 
 post '/blackjack/hit' do
   deal_player
-  if player_busted?
+  if player_busted? || player_blackjack
     redirect "/blackjack/stay"
   else
     erb :blackjack

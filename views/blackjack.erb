@@ -1,15 +1,28 @@
-<p>Dealers's hand : <%= dealer_hand %></p>
-<p>Dealers's current count : <%= dealer_count %> </p>
-<p>Player's hand : <%= player_hand %> </p>
-<p>Player's current count : <%= player_count %> </p>
-<p>Player's bankroll : <%= player_bankroll %> </p>
-<p>Player's bet : <%= get_player_bet %> </p>
-<% if !player_blackjack && !dealer_blackjack %>
-  Player's Action
-  <form action="/blackjack/hit" method="post">
-    <button name="action" type="submit" value="hit">Hit</button>
-  </form>
-  <form action="/blackjack/stay" method="post">
-    <button name="action" type="submit" value="stay">Stay</button>
-  </form>
-<% end %>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-8">
+      <h4>Dealer's hand</h4>
+      <% dealer_hand.each do |card| %>
+        <%= card_image(card) %>
+      <% end %>
+      <p>Dealer's current count : <%= dealer_count %> </p>
+      <h4>Player's hand</h4>
+      <% player_hand.each do |card| %>
+        <%= card_image(card) %>
+      <% end %>
+      <p>Player's current count : <%= player_count %> </p>
+    </div>
+    <div class="col-sm-4">
+      <% if !player_blackjack && !dealer_blackjack %>
+        <h4>Player's Action</h4>
+        <form action="/blackjack/hit" method="post">
+          <button name="action" type="submit" value="hit" class="btn btn-success col-sm-4">Hit</button>
+        </form>
+        <form action="/blackjack/stay" method="post">
+          <button name="action" type="submit" value="stay" class="btn btn-danger col-sm-4 col-sm-offset-2">Stay</button>
+        </form>
+      <% end %>
+    </div>
+  </div>
+</div>
+
