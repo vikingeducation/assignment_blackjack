@@ -1,0 +1,12 @@
+<h1>Dealer cards</h1>
+<h1><%= read_dealer_cards[0] %></h1>
+<h1>Player cards</h1>
+<h1><%= read_player_cards %></h1>
+
+<form action="/blackjack/hit" method="post">
+  <input type="submit" value="HIT">
+</form>
+
+<form action="/blackjack/stay" method="get">
+  <input type="submit" value="STAY">
+</form>
