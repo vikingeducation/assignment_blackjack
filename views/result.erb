@@ -1,0 +1,15 @@
+<% if player_win? @dealer, @player %>
+  <h1>You win! Mother fucker!</h1>
+<% elsif dealer_win? @dealer, @player %>
+  <h1>You lose! Mother fucker!</h1>
+<% else %>
+  <h1>Even! Mother fucker!</h1>
+<% end %>
+<h1>Dealer cards</h1>
+<h1><%= read_dealer_cards %></h1>
+<h1>Player cards</h1>
+<h1><%= read_player_cards %></h1>
+
+<form action="/new_game" method="post">
+  <input type="submit" value="NEW GAME">
+</form>

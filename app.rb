@@ -60,10 +60,20 @@ get '/blackjack/stay' do
 
   save_deck @deck.cards
   save_dealer_cards @dealer.cards
-  redirect to("blackjack")
+  redirect to("result")
 end
 
 get '/result' do
+  @deck = Deck.new( read_deck )
+  @player = Player.new( read_player_cards )
+  @dealer = Dealer.new( read_dealer_cards )
+  erb :result
+end
 
-  erb :results
+post '/new_game' do
+  session[:deck] = [].to_json
+  session[:player_cards] = [].to_json
+  session[:dealer_cards] = [].to_json
+
+  redirect to('blackjack')
 end

@@ -50,4 +50,14 @@ module GameHelper
     2.times { deck.deal_card player }
   end
 
+  def player_win? dealer, player
+    dealer.bust ||
+    (player.cards_sum > dealer.cards_sum && !player.bust)
+  end
+
+  def dealer_win? dealer, player
+    player.bust ||
+    (player.cards_sum < dealer.cards_sum && !dealer.bust)
+  end
+
 end
