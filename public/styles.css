@@ -1,0 +1,8 @@
+.title{
+  text-align: center;
+}
+
+li{
+  list-style-type: none;
+  display: inline-block;
+}

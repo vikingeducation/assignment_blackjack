@@ -1,0 +1,19 @@
+<h2 class = "title">Bankroll remaining: $<%= bankroll%> </h2>
+<%unless game_over%>
+<form class = "form-inline title" action="bet" method="post">
+  <div class="form-group">
+    <label for="bet">Enter your bet:</label>
+    <input type="text" class="form-control" name="bet" id="bet">
+  </div>
+  <button type = "submit" class="btn btn-default">Place bet</button>
+</form>
+<%end %>
+
+<% if low_funds %>
+  <p> You don't have enough money! </p>
+<%end%>
+<%if game_over %>
+  <form class="title" action = "/reset" method = "get">
+    <input type = "submit" value = "Play again">
+  </form>
+<%end%>
