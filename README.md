@@ -2,7 +2,7 @@
 
  In this simple but elegant blackjack app, you can wager your bets and try to beat the odds! Blackjack by Hannah is built on Sinatra and was built in the style of clean, modular, object oriented programming.
 
-[Check it out!](https://mysterious-hollows-19482.herokuapp.com)
+[Check it out!](http://blackjackbyhannah.herokuapp.com/)
 
 # Preview
 
