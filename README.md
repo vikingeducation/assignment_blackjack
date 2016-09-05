@@ -11,7 +11,7 @@
 
 ## 2. Hit or Stay
 
-![Screenshot](screenshots/screenshot2.png)
+![Screenshot](screenshots/screenshot4.png)
 
 ## 3. Play Out Hand
 ![Screenshot](screenshots/screenshot1.png)
