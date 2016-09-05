@@ -1,0 +1,22 @@
+
+<div class= "container-fluid" style="margin-top:60px; background: url('/images/cover.jpeg') no-repeat center 100% fixed; background_size: cover; ">
+  <h1 style="font-size:60px; margin-top:230px; color: white;">Welcome to Blackjack!</h1>
+
+    <h2 style=" color: white;">You have $<%= bank %> in the bank.</h2>
+
+
+    <form class="form-inline" action = "/blackjack" method = "get" style="font-size: 20px; margin-top:20px; color: white;">
+
+      <span style="font-size: 30px;">Bet: </span>
+        <div class="input-group">
+        <div class="input-group-addon">$</div><input class="form-control" type = "number" name = "bet" placeholder="Place your bet!" min="1" max="<%= bank %>"  style="width:200px;"required></div>
+      <input class="btn btn-success" type = "submit" value = "Play!" >
+    </form>
+
+    <form class="form btn" action="/reset" method="get" style="margin-top:20px;">
+
+      <input class="btn btn-primary" type = "submit" value = "Reset Game" >
+
+
+    </form>
+</div>
