@@ -14,7 +14,7 @@
 ![Screenshot](screenshots/screenshot2.png)
 
 ## 3. Play Out Hand
-![Screenshot](screenshots/screenshot2.png)
+![Screenshot](screenshots/screenshot1.png)
 
 ## Built With
 
