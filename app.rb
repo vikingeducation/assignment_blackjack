@@ -1,7 +1,11 @@
 require 'sinatra'
 require 'erb'
+require './deck.rb'
+require 'json'
 
 require 'pry-byebug'
+
+
 
 #enable :sessions
 
@@ -12,8 +16,16 @@ get '/' do
 end
 
 post '/blackjack' do
+binding.pry
+# when the page is loaded the cards should be dealt to the player and dealer
+# a deck class could be implemented to handle the shuffling of the cards
+  @deck = Deck.new( JSON.parse( session[:deck] ) ) # cant parse nil
+# the cards are then distributed to the player and dealer when the page loads
+	# the deck has 52 cards (A-K)
+	# the cards could be an array that is shuffled
+	# using product method, those cards could be distributed in that manner
 
-	erb :blackjack
+	#erb :blackjack, locals: { dealer: move, player: move }
 
 end
 
@@ -35,12 +47,7 @@ end
 	# Player - bankroll
 
 # blackjack page handles the functionality for the game
-# when the page is loaded the cards should be dealt to the player and dealer
-# a deck class could be implemented to handle the shuffling of the cards
-# the cards are then distributed to the player and dealer when the page loads
-	# the deck has 52 cards (A-K)
-	# the cards could be an array that is shuffled
-	# using product method, those cards could be distributed in that manner
+
 # the dealer's and player's cards are evaluated for blackjack - bets paid 3:2 if player win
 	# else the player forfeits bet
 # when the player hits

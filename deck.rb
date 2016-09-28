@@ -2,9 +2,9 @@ require 'pry-byebug'
 
 class Deck
 
-	def initialize
-
-		@deck = [ "A", "A", "A", "A",
+	def initialize( deck )
+binding.pry
+		deck ? @deck = deck : @deck = [ "A", "A", "A", "A",
 							"2", "2", "2", "2",
 							"3", "3", "3", "3",
 							"4", "4", "4", "4",
