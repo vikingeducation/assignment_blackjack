@@ -1,6 +1,6 @@
 class CardDeck
-  def initialize
-    @deck = create_deck
+  def initialize(options = {:created => []})
+    @deck = create_deck if options[:created].nil?
   end
 
   def empty_deck?

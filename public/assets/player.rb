@@ -1,7 +1,7 @@
 class Human
   attr_reader :hand
-  def initialize
-    @hand = []
+  def initialize(options = {:created => []})
+    @hand = [] if options[:created].nil?
   end
 
   def hand_sum
