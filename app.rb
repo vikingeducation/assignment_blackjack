@@ -18,6 +18,8 @@ post '/blackjack' do
 end
 
 
+
+
 # cookies / sessions
 # the player cards and dealer cards will need to be persisted with each load of the blackjack page
 # each 'hit' or 'stay' sends new request
@@ -27,7 +29,7 @@ end
 	# the bet amount
 	# player bankroll
 
-# CLASSES
+# CLASSES for refactoring
 	# Deck
 	# Computer AI
 	# Player - bankroll
