@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Blackjack
+    </title>
+  </head>
+
+  <body>
+    <h4>Dealer's Hand</h4>
+    <% session[:dealer_hand].each do |card| %>
+      <%= card %>
+    <% end %>
+    <p>Dealer's current total: <%= dealer_total %></p>
+    <br>
+    <h4>Your Hand</h4>
+    <% session[:player_hand].each do |card| %>
+      <%= card %>
+    <% end %>
+    <p>Your current total: <%= player_total %></p>
+    <br>
+    <h4>What will you do?</h4>
+    <form action='/blackjack/hit' method='post'>
+      <button name='action' type='submit' value='hit'>Hit</button>
+    </form>
+    <form action='/blackjack/stay' method='post'>
+      <button name='action' type='submit' value='stay'>Stay</button>
+    </form>
+
+
+  </body>
+
+</html>

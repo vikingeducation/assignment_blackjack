@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Blackjack
+    </title>
+  </head>
+
+  <body>
+    <h4>Dealer's Hand</h4>
+    <% session[:dealer_hand].each do |card| %>
+      <%= card %>
+    <% end %>
+    <p>Dealer's current total: <%= dealer_total %></p>
+    <br>
+    <h4>Your Hand</h4>
+    <% session[:player_hand].each do |card| %>
+      <%= card %>
+    <% end %>
+    <p>Your current total: <%= player_total %></p>
+    <br>
+    <% if @winner == "player" %>
+      <h4>Congratulations, you won this round!</h4>
+    <% elsif @winner == "dealer" %>
+      <h4>The dealer won this round!</h4>
+    <% else %>
+      <h4>It was a tie!</h4>
+    <% end %>
+
+    <form action='/blackjack' method='post'>
+      <button name='action' type='submit' value='play'>Play Again?</button>
+    </form>
+
+  </body>
+
+</html>
