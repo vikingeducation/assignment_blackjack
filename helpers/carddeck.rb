@@ -1,17 +1,17 @@
-module CardDeck
-
-  def save_deck
-    session["current_deck"] = create_deck
+class CardDeck
+  def initialize
+    @deck = create_deck
   end
 
-  def load_deck
-    session["current_deck"]
+  def empty_deck?
+    true if @deck.empty?
   end
 
-  def place_card
-    session["current_deck"].pop
+  def take_card(player)
+    player.hand >> @deck.pop
   end
 
+  private
   def create_deck
     card_faces = [*1..13]
     card_suits = %w(Spade Heart Club Diamond)
@@ -22,5 +22,4 @@ module CardDeck
     end
     deck.flatten!(1).shuffle!
   end
-
 end
