@@ -2,7 +2,7 @@ require 'sinatra'
 require 'erb'
 require './deck.rb'
 require 'json'
-
+require 'sinatra/base'
 require 'pry-byebug'
 
 enable :sessions
@@ -26,11 +26,21 @@ binding.pry
 # the cards are then distributed to the player and dealer when the page loads
 	cpu_move = @deck.deal
 	p_move = @deck.deal
+
+	@cpu_move = params[ :cpu_move ]
+	@p_move = params[ :p_move ]
+
+
 	# the deck has 52 cards (A-K)
 	# the cards could be an array that is shuffled
 	# using product method, those cards could be distributed in that manner
+
+
 binding.pry
-	erb :blackjack, locals: { dealer: cpu_move, player: p_move }
+	erb :blackjack #locals: { dealer: cpu_move, player: p_move }
+
+  #erb :show_name, locals: { name: my_name }
+
 
 end
 
