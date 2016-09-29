@@ -2,9 +2,15 @@ require 'pry-byebug'
 
 class Deck
 
-	def initialize( deck )
-binding.pry
-		deck ? @deck = deck : @deck = [ "A", "A", "A", "A",
+	def initialize( deck = nil )
+
+		if deck
+
+			@deck = deck
+
+		else
+
+			@deck = [ "A", "A", "A", "A",
 							"2", "2", "2", "2",
 							"3", "3", "3", "3",
 							"4", "4", "4", "4",
@@ -17,7 +23,12 @@ binding.pry
 							"J", "J", "J", "J",
 							"Q", "Q", "Q", "Q",
 							"K", "K", "K", "K" ]
-binding.pry
+
+			shuffle
+
+		end
+
+# add shuffle internally
 	end
 
 
@@ -30,7 +41,7 @@ binding.pry
 
 	def deal
 
-		@deck.pop(2)
+		@deck.pop( 2 )
 
 	end
 
@@ -38,7 +49,7 @@ binding.pry
 
 	def draw
 
-
+		@deck.pop( 1 )
 
 	end
 

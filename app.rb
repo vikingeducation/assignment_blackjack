@@ -5,9 +5,7 @@ require 'json'
 
 require 'pry-byebug'
 
-
-
-#enable :sessions
+enable :sessions
 
 get '/' do
 
@@ -16,16 +14,23 @@ get '/' do
 end
 
 post '/blackjack' do
-binding.pry
+
 # when the page is loaded the cards should be dealt to the player and dealer
 # a deck class could be implemented to handle the shuffling of the cards
-  @deck = Deck.new( JSON.parse( session[:deck] ) ) # cant parse nil
+	if !session[:deck].nil?
+  	@deck = Deck.new( JSON.parse( session[:deck] ) ) # cant parse nil
+  else
+  	@deck = Deck.new
+  end
+binding.pry
 # the cards are then distributed to the player and dealer when the page loads
+	cpu_move = @deck.deal
+	p_move = @deck.deal
 	# the deck has 52 cards (A-K)
 	# the cards could be an array that is shuffled
 	# using product method, those cards could be distributed in that manner
-
-	#erb :blackjack, locals: { dealer: move, player: move }
+binding.pry
+	erb :blackjack, locals: { dealer: cpu_move, player: p_move }
 
 end
 
