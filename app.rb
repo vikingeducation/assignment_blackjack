@@ -11,6 +11,12 @@ get '/' do
 
 end
 
+get 'blackjack' do
+
+	"hello world"
+
+end
+
 post '/blackjack' do
 
 	if !session[:bj].nil?
@@ -18,14 +24,15 @@ post '/blackjack' do
   	@deck = @game.deck
   else
   	@game = Deck.new
+  	@game.deal
   	@deck = @game.deck
   end
 
 
 
   # if it's a new game then we'll be dealing 2 cards
-	@player = @game.deal
-	@dealer = @game.deal
+	@player = @game.player_cards
+	@dealer = @game.dealer_cards
 	session[:player] = @player.to_json
 	session[:dealer] = @dealer.to_json
   session[:deck] = @deck.to_json
@@ -58,7 +65,7 @@ post '/hit' do
 	# save the player's hand
 
 	#display the blackjack page
-	erb :blackjack
+	redirect('/blackjack')
 
 
 end

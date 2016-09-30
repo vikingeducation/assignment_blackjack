@@ -4,9 +4,9 @@ require 'pry-byebug'
 	# the cards could be an array that is shuffled
 class Deck
 
-	attr_reader :deck
+	attr_reader :deck, :player_cards, :dealer_cards
 
-	def initialize( deck = nil )
+	def initialize( deck = nil, player_cards = [], dealer_cards = [] )
 
 		if deck
 
@@ -31,8 +31,14 @@ class Deck
 			shuffle
 
 		end
+
+		@player_cards = player_cards
+		@dealer_cards = dealer_cards
 # add shuffle internally
 	end
+
+
+
 
 
 	def shuffle
@@ -44,7 +50,8 @@ class Deck
 
 	def deal
 
-		@deck.pop( 2 )
+		@player_cards << @deck.pop( 2 )
+		@dealer_cards << @deck.pop( 2 )
 
 	end
 
