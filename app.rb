@@ -12,9 +12,7 @@ get '/' do
 end
 
 post '/blackjack' do
-binding.pry
-# when the page is loaded the cards should be dealt to the player and dealer
-# a deck class could be implemented to handle the shuffling of the cards
+
 	if !session[:bj].nil?
   	@game = Deck.new( JSON.parse( session[:bj] ) )
   	@deck = @game.deck
@@ -23,31 +21,47 @@ binding.pry
   	@deck = @game.deck
   end
 
-  session[:deck] = @deck.to_json
-# the cards are then distributed to the player and dealer
+
+
+  # if it's a new game then we'll be dealing 2 cards
 	@player = @game.deal
 	@dealer = @game.deal
-
 	session[:player] = @player.to_json
 	session[:dealer] = @dealer.to_json
+  session[:deck] = @deck.to_json
+  session[:bj] = @game.to_json
+
 
 	erb :blackjack
 
 end
 
-get '/blackjack' do
 
-	JSON.parse( session["cpu_move"] )
-	JSON.parse( session["p_move"] )
+post '/hit' do
 
-	# save
+	#grab the deck
+	@game = Deck.new( JSON.parse( session[ :deck ] ) )
+	binding.pry
+	@deck = @game.deck
 
-	session[:deck] = deck.to_json
+	@player = JSON.parse( session[ :player ] )
+	@dealer = JSON.parse( session[ :player ] )
+	#grab the player's hand
+	#grab the dealer's hand
+	@player << @game.hit
+	# save the deck
+	session[ :deck ] = @deck.to_json
+	# save the dealer's hand
+	session[ :player ] = @player.to_json
+	session[ :dealer ] = @dealer.to_json
+	session[ :bj ] = @game.to_json
+	# save the player's hand
 
-	erb :blackjack,locals: { dealer: cpu_move, player: p_move }
+	#display the blackjack page
+	erb :blackjack
+
 
 end
-
 
 # cookies / sessions
 # the player cards and dealer cards will need to be persisted with each load of the blackjack page

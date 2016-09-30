@@ -50,11 +50,12 @@ class Deck
 
 
 
-	def draw
+	def hit
 
 		@deck.pop( 1 )
 
 	end
+
 
 
 end
