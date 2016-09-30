@@ -1,6 +1,10 @@
 require 'pry-byebug'
 
+	# the deck has 52 cards (A-K)
+	# the cards could be an array that is shuffled
 class Deck
+
+	attr_reader :deck
 
 	def initialize( deck = nil )
 
@@ -27,7 +31,6 @@ class Deck
 			shuffle
 
 		end
-
 # add shuffle internally
 	end
 

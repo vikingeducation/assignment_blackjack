@@ -1,50 +1,52 @@
 require 'sinatra'
-require 'erb'
 require './deck.rb'
 require 'json'
-require 'sinatra/base'
 require 'pry-byebug'
 
 enable :sessions
 
 get '/' do
-
+	session.clear
 	erb :home
 
 end
 
 post '/blackjack' do
-
+binding.pry
 # when the page is loaded the cards should be dealt to the player and dealer
 # a deck class could be implemented to handle the shuffling of the cards
-	if !session[:deck].nil?
-  	@deck = Deck.new( JSON.parse( session[:deck] ) ) # cant parse nil
+	if !session[:bj].nil?
+  	@game = Deck.new( JSON.parse( session[:bj] ) )
+  	@deck = @game.deck
   else
-  	@deck = Deck.new
+  	@game = Deck.new
+  	@deck = @game.deck
   end
-binding.pry
-# the cards are then distributed to the player and dealer when the page loads
-	cpu_move = @deck.deal
-	p_move = @deck.deal
 
-	@cpu_move = params[ :cpu_move ]
-	@p_move = params[ :p_move ]
+  session[:deck] = @deck.to_json
+# the cards are then distributed to the player and dealer
+	@player = @game.deal
+	@dealer = @game.deal
 
+	session[:player] = @player.to_json
+	session[:dealer] = @dealer.to_json
 
-	# the deck has 52 cards (A-K)
-	# the cards could be an array that is shuffled
-	# using product method, those cards could be distributed in that manner
-
-
-binding.pry
-	erb :blackjack #locals: { dealer: cpu_move, player: p_move }
-
-  #erb :show_name, locals: { name: my_name }
-
+	erb :blackjack
 
 end
 
+get '/blackjack' do
 
+	JSON.parse( session["cpu_move"] )
+	JSON.parse( session["p_move"] )
+
+	# save
+
+	session[:deck] = deck.to_json
+
+	erb :blackjack,locals: { dealer: cpu_move, player: p_move }
+
+end
 
 
 # cookies / sessions

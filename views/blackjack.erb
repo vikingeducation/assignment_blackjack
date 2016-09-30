@@ -14,12 +14,13 @@
 
     <p>Dealers Hand</p>
 
-    <p name="dealer"><%= cpu_move %></p>
+    <p><%= JSON.parse( session[:player] )
+ %></p>
     <br>
 
     <p>Player's Hand</p>
     <br>
-    <p name="player"><%= p_move %></p>
+    <p><%= JSON.parse( session[:dealer] )%></p>
     <br>
 
 		<form action="/blackjack" method="post">
