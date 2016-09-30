@@ -41,7 +41,7 @@ post '/hit' do
 
 	#grab the deck
 	@game = Deck.new( JSON.parse( session[ :deck ] ) )
-	binding.pry
+
 	@deck = @game.deck
 
 	@player = JSON.parse( session[ :player ] )
