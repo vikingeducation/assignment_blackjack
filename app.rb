@@ -27,8 +27,9 @@ post '/blackjack' do
   	@deck = @game.deck
   end
 
-	@player = @game.player_cards
-	@dealer = @game.dealer_cards
+  parse_session
+	#@player = @game.player_cards
+	#@dealer = @game.dealer_cards
 
 	save_session
 
