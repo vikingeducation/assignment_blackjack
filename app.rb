@@ -2,12 +2,12 @@ require 'sinatra'
 require './deck.rb'
 require 'json'
 require 'pry-byebug'
-require 'helpers'
+require './helpers.rb'
 
 
 enable :sessions
 
-include Helpers
+include Helper
 
 get '/' do
 	session.clear
@@ -32,17 +32,11 @@ post '/blackjack' do
   	@deck = @game.deck
   end
 
-
-
   # if it's a new game then we'll be dealing 2 cards
 	@player = @game.player_cards
 	@dealer = @game.dealer_cards
 
-	session[:player] = @player.to_json
-	session[:dealer] = @dealer.to_json
-  session[:deck] = @deck.to_json
-  session[:bj] = @game.to_json
-
+	save_session
 
 	erb :blackjack
 
