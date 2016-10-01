@@ -13,6 +13,14 @@ module Helper
 
 
 
+	def parse_session
+
+		@player = JSON.parse( session[ :player ] )
+		@dealer = JSON.parse( session[ :dealer ] )
+		@game = Deck.new( JSON.parse( session[ :deck ] ) )
+
+	end
+
 
 
 

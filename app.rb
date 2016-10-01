@@ -15,16 +15,11 @@ get '/' do
 
 end
 
-get 'blackjack' do
-
-	"hello world"
-
-end
 
 post '/blackjack' do
 
 	if !session[:bj].nil?
-  	@game = Deck.new( JSON.parse( session[:bj] ) )
+  	@game = Deck.new( JSON.parse( session[ :bj ] ) )
   	@deck = @game.deck
   else
   	@game = Deck.new
@@ -45,27 +40,16 @@ end
 
 post '/hit' do
 
-	#grab the deck
-	@game = Deck.new( JSON.parse( session[ :deck ] ) )
+
+	parse_session
 
 	@deck = @game.deck
 
-	@player = JSON.parse( session[ :player ] )
-	@dealer = JSON.parse( session[ :player ] )
-	#grab the player's hand
-	#grab the dealer's hand
 	@player << @game.hit
-	# save the deck
-	session[ :deck ] = @deck.to_json
-	# save the dealer's hand
-	session[ :player ] = @player.to_json
-	session[ :dealer ] = @dealer.to_json
-	session[ :bj ] = @game.to_json
-	# save the player's hand
 
-	#display the blackjack page
-	redirect('/blackjack')
+	save_session
 
+	erb :blackjack
 
 end
 
