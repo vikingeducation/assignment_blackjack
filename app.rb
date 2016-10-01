@@ -27,7 +27,6 @@ post '/blackjack' do
   	@deck = @game.deck
   end
 
-  # if it's a new game then we'll be dealing 2 cards
 	@player = @game.player_cards
 	@dealer = @game.dealer_cards
 
