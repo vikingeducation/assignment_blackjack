@@ -20,14 +20,9 @@ post '/blackjack' do
 
   parse_session
 
-	@game.deal if session[ :deck ].nil?
-
 	assign_variables
 
 	save_session
-
-	binding.pry
-
 
 	erb :blackjack
 
@@ -39,7 +34,7 @@ post '/hit' do
 
 	parse_session
 
-	@deck = @game.deck
+	assign_variables
 
 	@player << @game.hit
 

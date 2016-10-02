@@ -8,6 +8,9 @@ class Deck
 
 	def initialize( deck = nil, player_cards = [], dealer_cards = [] )
 
+		@player_cards = player_cards
+		@dealer_cards = dealer_cards
+
 		if deck
 
 			@deck = deck
@@ -29,11 +32,11 @@ class Deck
 							"K", "K", "K", "K" ]
 
 			shuffle
+			deal
 
 		end
 
-		@player_cards = player_cards
-		@dealer_cards = dealer_cards
+
 # add shuffle internally
 	end
 
