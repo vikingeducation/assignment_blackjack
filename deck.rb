@@ -46,7 +46,12 @@ class Deck
 		# hand should be sorted to get an ace to the front
 		hand.map! { | card | to_int( card ) }
 
-		binding.pry
+		# puts the Ace at the end for final eval if there
+		hand.sort!.reverse!
+
+		add_cards( hand )
+
+
 			# then reversed so the Ace is evaluated last
 		# then each card is checked
 			# if the card is a number it is convered to that number
@@ -56,6 +61,12 @@ class Deck
 					# the Ace value is one
 				# else
 					# the Ace value is 11
+
+	end
+
+
+	def add_cards( hand )
+
 
 	end
 
