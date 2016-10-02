@@ -36,7 +36,7 @@ post '/hit' do
 
 	assign_variables
 
-	@player << @game.hit
+	@player += @game.hit
 
 	save_session
 

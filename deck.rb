@@ -53,8 +53,8 @@ class Deck
 
 	def deal
 
-		@player_cards << @deck.pop( 2 )
-		@dealer_cards << @deck.pop( 1 )
+		@player_cards += @deck.pop( 2 )
+		@dealer_cards += @deck.pop( 1 )
 
 	end
 
