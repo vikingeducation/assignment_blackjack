@@ -18,20 +18,16 @@ end
 
 post '/blackjack' do
 
-	if !session[:bj].nil?
-  	@game = Deck.new( JSON.parse( session[ :bj ] ) )
-  	@deck = @game.deck
-  else
-  	@game = Deck.new
-  	@game.deal
-  	@deck = @game.deck
-  end
-
   parse_session
-	#@player = @game.player_cards
-	#@dealer = @game.dealer_cards
+
+	@game.deal if session[ :deck ].nil?
+
+	assign_variables
 
 	save_session
+
+	binding.pry
+
 
 	erb :blackjack
 

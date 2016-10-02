@@ -4,10 +4,9 @@ module Helper
 
 	def save_session
 
-		session[:player] = @player.to_json
-		session[:dealer] = @dealer.to_json
-	  session[:deck] = @deck.to_json
-	  session[:bj] = @game.to_json
+		session[ :player ] = @player.to_json
+		session[ :dealer ] = @dealer.to_json
+	  session[ :deck   ] = @game.to_json
 
 	end
 
@@ -15,40 +14,48 @@ module Helper
 
 	def parse_session
 
-		if session[ :player ].nil?
-
-			@player = @game.player_cards
-
+		if !session[ :deck ].nil?
+			@game = Deck.new( JSON.parse( session[ :deck   ] ),
+												JSON.parse( session[ :dealer ] ),
+												JSON.parse( session[ :player ] )
+											)
 		else
-
-			@player = JSON.parse( session[ :player ] )
-
-		end
-
-		if session[ :dealer ].nil?
-
-			@dealer = @game.dealer_cards
-
-		else
-
-			@dealer = JSON.parse( session[ :dealer ] )
-
-		end
-
-		if session[ :deck ].nil?
-
 			@game = Deck.new
-
-		else
-
-		  @game = Deck.new( JSON.parse( session[ :deck ] ) )
-
 		end
 
 
 	end
 
 
+	def assign_variables
+
+		@player = @game.player_cards
+		@dealer = @game.dealer_cards
+		@deck   = @game.deck
+
+	end
 
 
-end
+	def evaluate_cards
+
+		# taking the array of each card
+		@player_cards.each do | card |
+
+			if card.to_i == 0
+
+				binding.pry
+
+			end
+		# check the value of each card
+		# assign the number value
+		# if the value is below 21
+		# allow hit or stay
+		# else show 'player has blackjack if 21
+		# else show BUST if over 21
+
+		end
+
+	end
+
+
+end #./Module
