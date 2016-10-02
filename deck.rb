@@ -41,18 +41,13 @@ class Deck
 	end
 
 
-	def get_hand_value( hand )
+	def evaluate_cards( hand )
 
 		# hand should be sorted to get an ace to the front
+		# puts the Ace at the end for final eval if there
 		int_hand = hand.map { | card | to_int( card ) }.sort.reverse
 
-binding.pry
-		# puts the Ace at the end for final eval if there
-
-
 		hand_total = add_cards( int_hand )
-
-		bust?( hand_total )
 
 	end
 
@@ -87,14 +82,6 @@ binding.pry
 
 
 	end
-
-
-	def evaluate_cards( cards )
-
-		get_hand_value( cards )
-
-	end
-
 
 
 	def to_int( card )

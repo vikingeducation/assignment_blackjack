@@ -37,7 +37,7 @@ module Helper
 
 	def start_dealer_turn
 
-		total = @game.evaluate_cards( @dealer )
+		@game.evaluate_cards( @dealer )
 binding.pry
 	end
 
