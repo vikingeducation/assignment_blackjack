@@ -49,8 +49,9 @@ class Deck
 		# puts the Ace at the end for final eval if there
 		hand.sort!.reverse!
 
-		add_cards( hand )
+		hand_total = add_cards( hand )
 
+		bust?( hand_total )
 
 			# then reversed so the Ace is evaluated last
 		# then each card is checked
@@ -65,7 +66,33 @@ class Deck
 	end
 
 
+	def bust?( total )
+
+		total > 21
+
+	end
+
+
 	def add_cards( hand )
+
+		hand.inject do | r, e |
+
+			if e == 1
+
+				if ( r += 11 ) > 21
+
+					r += e
+
+				end
+
+			else
+
+				r += e
+
+			end
+
+		end
+
 
 
 	end
@@ -80,7 +107,7 @@ class Deck
 
 
 	def to_int( card )
-binding.pry
+
 		if ( "10,J,Q,K" ).include?( card )
 
 			card = 10
