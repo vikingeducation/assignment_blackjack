@@ -35,26 +35,7 @@ module Helper
 	end
 
 
-	def evaluate_cards
 
-		# taking the array of each card
-		@player_cards.each do | card |
-
-			if card.to_i == 0
-
-				binding.pry
-
-			end
-		# check the value of each card
-		# assign the number value
-		# if the value is below 21
-		# allow hit or stay
-		# else show 'player has blackjack if 21
-		# else show BUST if over 21
-
-		end
-
-	end
 
 
 end #./Module

@@ -10,6 +10,7 @@ enable :sessions
 include Helper
 
 get '/' do
+
 	session.clear
 	erb :home
 
@@ -37,6 +38,9 @@ post '/hit' do
 	assign_variables
 
 	@player += @game.hit
+
+	# first check of the cards after the player hits
+	@game.evaluate_cards
 
 	save_session
 

@@ -41,7 +41,51 @@ class Deck
 	end
 
 
+	def get_hand_value( hand )
 
+		# hand should be sorted to get an ace to the front
+		hand.map! { | card | to_int( card ) }
+
+		binding.pry
+			# then reversed so the Ace is evaluated last
+		# then each card is checked
+			# if the card is a number it is convered to that number
+			# if it is a face card, it is converted to a 10
+			# the last card should be an Ace
+				# if 11 + current total is > 21
+					# the Ace value is one
+				# else
+					# the Ace value is 11
+
+	end
+
+
+	def evaluate_cards
+
+		get_hand_value( @player_cards )
+
+	end
+
+
+
+	def to_int( card )
+binding.pry
+		if ( "10,J,Q,K" ).include?( card )
+
+			card = 10
+
+		elsif ( "2,3,4,5,6,7,8,9" ).include?( card )
+
+			card.to_i
+
+		elsif card == "A"
+
+			card = 1
+
+		end
+
+
+	end
 
 
 	def shuffle
