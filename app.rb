@@ -24,7 +24,7 @@ post '/blackjack' do
 
 	save_session
 
-	erb :blackjack
+	erb :blackjack, locals: { dealer: @dealer, player: @player }
 
 end
 
@@ -40,7 +40,7 @@ post '/hit' do
 
 	save_session
 
-	erb :blackjack
+	erb :blackjack, locals: { dealer: @dealer, player: @player }
 
 end
 

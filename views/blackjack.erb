@@ -14,13 +14,12 @@
 
     <p>Dealers Hand</p>
 
-    <p><%= JSON.parse( session[:dealer] )
- %></p>
+    <p><%= dealer %></p>
     <br>
 
     <p>Player's Hand</p>
     <br>
-    <p><%= JSON.parse( session[:player] )%></p>
+    <p><%= player %></p>
     <br>
 
 		<form action="/hit" method="post">
