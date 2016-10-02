@@ -39,8 +39,27 @@ post '/hit' do
 
 	@player += @game.hit
 
-	# first check of the cards after the player hits
-	@game.evaluate_cards
+	# check total of the cards after the player hits
+	@game.evaluate_cards( @player )
+
+	save_session
+
+	erb :blackjack, locals: { dealer: @dealer, player: @player }
+
+end
+
+
+post '/stay' do
+
+	parse_session
+
+	assign_variables
+
+	# when staying, the dealer will commence hand
+	start_dealer_turn
+
+	# check total of the cards after the player hits
+	@game.evaluate_cards( @dealer )
 
 	save_session
 

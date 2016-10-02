@@ -35,6 +35,12 @@ module Helper
 	end
 
 
+	def start_dealer_turn
+
+		total = @game.evaluate_cards( @dealer )
+binding.pry
+	end
+
 
 
 

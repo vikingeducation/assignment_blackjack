@@ -50,7 +50,7 @@ class Deck
 		hand.sort!.reverse!
 
 		hand_total = add_cards( hand )
-
+binding.pry
 		bust?( hand_total )
 
 			# then reversed so the Ace is evaluated last
@@ -98,9 +98,9 @@ class Deck
 	end
 
 
-	def evaluate_cards
+	def evaluate_cards( cards )
 
-		get_hand_value( @player_cards )
+		get_hand_value( cards )
 
 	end
 
