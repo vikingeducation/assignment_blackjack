@@ -44,24 +44,15 @@ class Deck
 	def get_hand_value( hand )
 
 		# hand should be sorted to get an ace to the front
-		hand.map! { | card | to_int( card ) }
+		int_hand = hand.map { | card | to_int( card ) }.sort.reverse
 
-		# puts the Ace at the end for final eval if there
-		hand.sort!.reverse!
-
-		hand_total = add_cards( hand )
 binding.pry
-		bust?( hand_total )
+		# puts the Ace at the end for final eval if there
 
-			# then reversed so the Ace is evaluated last
-		# then each card is checked
-			# if the card is a number it is convered to that number
-			# if it is a face card, it is converted to a 10
-			# the last card should be an Ace
-				# if 11 + current total is > 21
-					# the Ace value is one
-				# else
-					# the Ace value is 11
+
+		hand_total = add_cards( int_hand )
+
+		bust?( hand_total )
 
 	end
 
@@ -136,7 +127,7 @@ binding.pry
 	def deal
 
 		@player_cards += @deck.pop( 2 )
-		@dealer_cards += @deck.pop( 1 )
+		@dealer_cards += @deck.pop( 2 )
 
 	end
 

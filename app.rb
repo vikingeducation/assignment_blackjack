@@ -59,7 +59,7 @@ post '/stay' do
 	start_dealer_turn
 
 	# check total of the cards after the player hits
-	@game.evaluate_cards( @dealer )
+
 
 	save_session
 
