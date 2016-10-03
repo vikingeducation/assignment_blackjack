@@ -40,7 +40,6 @@ post '/hit' do
 	@player += @game.hit
 
 	# check total of the cards after the player hits
-	@total = @game.evaluate_cards( @player )
 
 	save_session
 
@@ -48,6 +47,11 @@ post '/hit' do
 
 end
 
+get 'blackjack/bust' do
+
+
+
+end
 
 post '/stay' do
 

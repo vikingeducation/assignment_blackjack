@@ -21,7 +21,9 @@
     <br>
     <p><%= player %></p>
     <br>
-    <p><%= total %></p>
+    <%  if bust?( @game.evaluate_cards( player )) %>
+    <p>You Busted</p>
+    <% end %>
 
 		<form action="/hit" method="post">
 		  <br>
