@@ -4,9 +4,9 @@ require 'pry-byebug'
 	# the cards could be an array that is shuffled
 class Deck
 
-	attr_reader :deck, :player_cards, :dealer_cards
+	attr_reader :deck, :player_cards, :dealer_cards, :total
 
-	def initialize( deck = nil, player_cards = [], dealer_cards = [] )
+	def initialize( deck = nil, player_cards = [], dealer_cards = [], total = 0 )
 
 		@player_cards = player_cards
 		@dealer_cards = dealer_cards
