@@ -56,10 +56,11 @@ post '/stay' do
 	assign_variables
 
 	# when staying, the dealer will commence hand
-	start_dealer_turn
+	dealer_total = start_dealer_turn( @dealer )
 
-	# check total of the cards after the player hits
+	dealer_ai( dealer_total )
 
+	# evaluate both hands and issue response
 
 	save_session
 

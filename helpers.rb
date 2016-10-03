@@ -35,13 +35,21 @@ module Helper
 	end
 
 
-	def start_dealer_turn
+	def start_dealer_turn( dealer )
 
-		@game.evaluate_cards( @dealer )
-binding.pry
+		@game.evaluate_cards( dealer )
+
 	end
 
+	def dealer_ai( dealer_total )
 
+		return if dealer_total >= 17
+
+			@dealer += @game.hit
+			dealer_total = start_dealer_turn( @dealer )
+			dealer_ai( dealer_total )
+
+	end
 
 
 end #./Module
