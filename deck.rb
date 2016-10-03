@@ -2,12 +2,13 @@ require 'pry-byebug'
 
 class Deck
 
-	attr_reader :deck, :player_cards, :dealer_cards
+	attr_reader :deck, :player_cards, :dealer_cards, :bankroll
 
 	def initialize( deck = nil, player_cards = [], dealer_cards = [] )
 
 		@player_cards = player_cards
 		@dealer_cards = dealer_cards
+		@bankroll = 1000
 
 		if deck
 
