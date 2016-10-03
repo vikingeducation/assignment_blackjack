@@ -36,6 +36,15 @@
       <input type="submit" name="move" value="Stay">
 		</form>
 
+    <%  if bust?( @game.evaluate_cards( player )) || bust?( @game.evaluate_cards( dealer ))%>
+    <br>
+    <form action="/" method="get">
+      <input type="submit" name="new_game" value="New Game">
+    </form>
+
+    <% end %>
+
+
 
   </body>
 
