@@ -28,23 +28,12 @@
     <p>Busted</p>
     <% end %>
 
-    <% if !bust?( @game.evaluate_cards( player )) %>
-		<form action="/hit" method="post">
-		  <br>
-		  <input type="submit" name="move" value="Hit">
-    </form>
-    <form action="/stay" method="post">
-      <input type="submit" name="move" value="Stay">
-		</form>
-    <% end %>
-
-    <%  if bust?( @game.evaluate_cards( player ) )%>
     <br>
     <form action="/" method="get">
       <input type="submit" name="new_game" value="New Game">
     </form>
 
-    <% end %>
+
 
 
 

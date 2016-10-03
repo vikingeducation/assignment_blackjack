@@ -48,6 +48,38 @@ module Helper
 
 	end
 
+	def evaluate_hands
+
+		dealer_hand = @game.evaluate_cards( @dealer )
+		player_hand = @game.evaluate_cards( @player )
+
+		if player_hand == 21 && @player.count == 2
+
+			# blackjack and player gets paid 3:2
+			# goes to player bankroll
+
+		elsif dealer_hand > player_hand
+
+			# dealer wins and bet is removed
+			# new game is prompted
+			# new bets are made
+
+		elsif dealer_hand == player_hand
+
+			# tie and bet goes back into player's bankroll
+			# new game is prompted
+			# new bets are made
+
+		elsif dealer_hand < player_hand
+
+			# player wins and players bet is multiplied by 2 and added to player bankroll
+			# new game is prompted
+			# new bets are made
+
+		 end
+
+	end
+
 
 	def start_dealer_turn
 		# pass total of dealer cards to dealer AI

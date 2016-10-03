@@ -49,8 +49,10 @@ post '/stay' do
 	# when staying, the dealer will commence hand
 	start_dealer_turn
 
+	evaluate_hands
+
 	save_session
 
-	erb :blackjack, locals: { dealer: @dealer, player: @player }
+	erb :stay, locals: { dealer: @dealer, player: @player }
 
 end
