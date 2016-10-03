@@ -53,7 +53,7 @@ class Deck
 
 
 	def add_cards( hand )
-binding.pry
+
 		hand.inject( 0 ) do | r, e |
 
 			if e == 1
