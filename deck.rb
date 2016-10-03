@@ -1,7 +1,5 @@
 require 'pry-byebug'
 
-	# the deck has 52 cards (A-K)
-	# the cards could be an array that is shuffled
 class Deck
 
 	attr_reader :deck, :player_cards, :dealer_cards
@@ -36,15 +34,13 @@ class Deck
 
 		end
 
-
-# add shuffle internally
 	end
 
 
 	def evaluate_cards( hand )
 
-		# hand should be sorted to get an ace to the front
-		# puts the Ace at the end for final eval if there
+		# hand is sorted then reversed to put the Ace last
+		# then the Ace is evaluated to be 1 or 11 based on result
 		int_hand = hand.map { | card | to_int( card ) }.sort.reverse
 
 		hand_total = add_cards( int_hand )
@@ -56,6 +52,7 @@ class Deck
 
 		hand.inject( 0 ) do | r, e |
 
+		  # main logic for dealing with Aces
 			if e == 1
 
 				if ( r + 11 ) > 21
@@ -69,7 +66,7 @@ class Deck
 				end
 
 			else
-
+				# if not an Ace it is added to total
 				r += e
 
 			end
