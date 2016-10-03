@@ -25,7 +25,7 @@ post '/blackjack' do
 
 	save_session
 
-	erb :blackjack, locals: { dealer: @dealer, player: @player, total: @total }
+	erb :blackjack, locals: { dealer: @dealer, player: @player }
 
 end
 
@@ -39,19 +39,12 @@ post '/hit' do
 
 	@player += @game.hit
 
-	# check total of the cards after the player hits
-
 	save_session
 
-	erb :blackjack, locals: { dealer: @dealer, player: @player, total: @total }
+	erb :blackjack, locals: { dealer: @dealer, player: @player }
 
 end
 
-get 'blackjack/bust' do
-
-
-
-end
 
 post '/stay' do
 
@@ -68,7 +61,7 @@ post '/stay' do
 
 	save_session
 
-	erb :blackjack, locals: { dealer: @dealer, player: @player, total: @total }
+	erb :blackjack, locals: { dealer: @dealer, player: @player }
 
 end
 

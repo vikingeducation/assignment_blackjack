@@ -7,7 +7,6 @@ module Helper
 		session[ :player ] = @player.to_json
 		session[ :dealer ] = @dealer.to_json
 	  session[ :deck   ] = @deck.to_json
-	  session[ :total  ] = @total.to_json
 
 	end
 
@@ -23,8 +22,8 @@ module Helper
 		if !session[ :deck ].nil?
 			@game = Deck.new( JSON.parse( session[ :deck   ] ),
 												JSON.parse( session[ :player ] ),
-												JSON.parse( session[ :dealer ] ),
-												JSON.parse( session[ :total  ] )
+												JSON.parse( session[ :dealer ] )
+
 											)
 		else
 			@game = Deck.new
@@ -38,7 +37,6 @@ module Helper
 		@player = @game.player_cards
 		@dealer = @game.dealer_cards
 		@deck   = @game.deck
-		@total  = @game.total
 
 	end
 

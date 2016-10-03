@@ -16,13 +16,16 @@
 
     <p><%= dealer %></p>
     <br>
+    <%  if bust?( @game.evaluate_cards( @dealer )) %>
+    <p>Busted</p>
+    <% end %>
 
     <p>Player's Hand</p>
     <br>
     <p><%= player %></p>
     <br>
     <%  if bust?( @game.evaluate_cards( player )) %>
-    <p>You Busted</p>
+    <p>Busted</p>
     <% end %>
 
 		<form action="/hit" method="post">
