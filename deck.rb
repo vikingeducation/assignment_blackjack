@@ -52,22 +52,19 @@ class Deck
 	end
 
 
-	def bust?( total )
-
-		total > 21
-
-	end
-
-
 	def add_cards( hand )
-
-		hand.inject do | r, e |
+binding.pry
+		hand.inject( 0 ) do | r, e |
 
 			if e == 1
 
-				if ( r += 11 ) > 21
+				if ( r + 11 ) > 21
 
 					r += e
+
+				else
+
+					r += 11
 
 				end
 

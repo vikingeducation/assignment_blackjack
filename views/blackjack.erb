@@ -16,7 +16,7 @@
 
     <p><%= dealer %></p>
     <br>
-    <%  if bust?( @game.evaluate_cards( @dealer )) %>
+    <%  if bust?( @game.evaluate_cards( dealer )) %>
     <p>Busted</p>
     <% end %>
 
@@ -35,6 +35,7 @@
     <form action="/stay" method="post">
       <input type="submit" name="move" value="Stay">
 		</form>
+
 
   </body>
 
