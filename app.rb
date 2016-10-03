@@ -19,9 +19,7 @@ end
 
 post '/blackjack' do
 
-  parse_session
-
-	assign_variables
+  parse_and_assign_variables
 
 	save_session
 
@@ -33,9 +31,7 @@ end
 post '/hit' do
 
 
-	parse_session
-
-	assign_variables
+  parse_and_assign_variables
 
 	@player += @game.hit
 
@@ -48,14 +44,10 @@ end
 
 post '/stay' do
 
-	parse_session
-
-	assign_variables
+ 	parse_and_assign_variables
 
 	# when staying, the dealer will commence hand
-	dealer_total = start_dealer_turn( @dealer )
-
-	dealer_ai( dealer_total )
+	start_dealer_turn
 
 	save_session
 

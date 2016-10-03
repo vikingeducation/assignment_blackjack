@@ -2,6 +2,14 @@
 
 module Helper
 
+	def parse_and_assign_variables
+
+		parse_session
+		assign_variables
+
+	end
+
+
 	def save_session
 
 		session[ :player ] = @player.to_json
@@ -41,19 +49,18 @@ module Helper
 	end
 
 
-	def start_dealer_turn( dealer )
-
-		@game.evaluate_cards( dealer )
+	def start_dealer_turn
+		# pass total of dealer cards to dealer AI
+		dealer_ai( @game.evaluate_cards( @dealer ) )
 
 	end
 
 	def dealer_ai( dealer_total )
-
+		# dealer will hit until 17
 		return if dealer_total >= 17
 
 			@dealer += @game.hit
-			dealer_total = start_dealer_turn( @dealer )
-			dealer_ai( dealer_total )
+			start_dealer_turn
 
 	end
 
