@@ -10,6 +10,43 @@ module Helper
 	end
 
 
+
+	def parse_and_assign_bankroll
+
+		parse_bankroll
+		assign_bankroll
+
+	end
+
+	def parse_bankroll
+
+		if !session[ :bankroll ].nil?
+			@bank = Bankroll.new( JSON.parse( session[ :bankroll   ] ),
+												JSON.parse( session[ :bet ] )
+											)
+		else
+			@bank = Bankroll.new
+		end
+
+	end
+
+	def assign_bankroll
+
+		@bankroll = @bank.bankroll
+		@bet = @bank.bet
+
+	end
+
+
+
+	def clear_plyr_dlr_deck
+
+		session[ :player ] = nil
+		session[ :dealer ] = nil
+	  session[ :deck   ] = nil
+
+	end
+
 	def save_session
 
 		session[ :player ] = @player.to_json
@@ -17,6 +54,14 @@ module Helper
 	  session[ :deck   ] = @deck.to_json
 
 	end
+
+	def save_bank
+
+	  session[ :bankroll ] = @bankroll.to_json
+	  session[ :bet      ] = @bet.to_json
+
+	end
+
 
 	def bust?( total )
 

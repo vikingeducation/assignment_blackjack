@@ -3,6 +3,7 @@ require './deck.rb'
 require 'json'
 require 'pry-byebug'
 require './helpers.rb'
+require './bankroll.rb'
 
 
 enable :sessions
@@ -11,11 +12,26 @@ include Helper
 
 get '/' do
 
-	session.clear
+	clear_plyr_dlr_deck
+
+	parse_and_assign_bankroll
+
+	save_bank
+
 	erb :home
 
 end
 
+
+get '/blackjack/bet' do
+
+	parse_and_assign_bankroll
+
+	save_bank
+
+	erb :bet
+
+end
 
 post '/blackjack' do
 

@@ -6,7 +6,7 @@ class Bankroll
 	attr_accessor :bankroll, :bet
 
 
-	def initialize( bankroll = 1000, bet = 20 )
+	def initialize( bankroll = 1000, bet = 0 )
 
 		@bankroll = bankroll
 		@bet = bet
@@ -20,7 +20,7 @@ class Bankroll
 	end
 
 
-	
+
 
 
 end #./Bankroll
