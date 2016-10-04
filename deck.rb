@@ -108,11 +108,23 @@ class Deck
 
 	def deal
 
+		new_deck?
+
 		@player_cards += @deck.pop( 2 )
 		@dealer_cards += @deck.pop( 2 )
 
 	end
 
+
+	def new_deck?
+
+		if @deck.count == 1
+
+			self.new( nil, @player_cards, @dealer_cards )
+
+		end
+
+	end
 
 
 	def hit
