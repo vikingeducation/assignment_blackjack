@@ -8,12 +8,12 @@ class Bankroll
 
 	def initialize( bankroll = 1000, bet = 0 )
 
-		@bankroll = bankroll
-		@bet = bet
+		@bankroll = bankroll.to_i
+		@bet = bet.to_i
 
 	end
 
-	def enough_money?
+	def valid_bet?
 
 		!!( @bankroll - @bet > 0 )
 

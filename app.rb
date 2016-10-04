@@ -34,9 +34,11 @@ get '/blackjack/bet' do
 end
 
 post '/blackjack' do
-
+binding.pry
   parse_and_assign_variables
+	parse_and_assign_bankroll
 
+	save_bank
 	save_session
 
 	erb :blackjack, locals: { dealer: @dealer, player: @player }
@@ -47,16 +49,20 @@ post '/blackjack/bet/validate' do
 
 	parse_and_assign_bankroll
 
-	@bank.bet = params[ :bet ]
-
-binding.pry
+	@bet = params[ :bet ].to_i
 
 	save_bank
-
 binding.pry
 
+	if @bank.valid_bet?
 
+		parse_and_assign_variables
+		save_session
+		erb :blackjack, locals: { dealer: @dealer, player: @player }
 
+	else
+		redirect('/blackjack/bet/validate')
+	end
 
 end
 
