@@ -25,15 +25,19 @@ get '/' do
 end
 
 
-get '/blackjack/bet' do
+get '/bet' do
 
 	parse_and_assign_bankroll
+
+	clear_plyr_dlr_deck
 
 	save_bank
 
 	erb :bet, locals: { bankroll: @bankroll }
 
 end
+
+
 
 post '/blackjack' do
 
@@ -55,12 +59,11 @@ post '/blackjack/bet/validate' do
 
 	save_bank
 
-binding.pry
 	if @bank.valid_bet?
 
 		parse_and_assign_variables
 		save_session
-		erb :blackjack, locals: { dealer: @dealer, player: @player }
+		erb :blackjack, locals: { dealer: @dealer, player: @player, bankroll: @bankroll }
 
 	else
 		erb :bet, locals: { bankroll: @bankroll }
