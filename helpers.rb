@@ -103,6 +103,24 @@ module Helper
 		dealer_hand = @game.evaluate_cards( @dealer )
 		player_hand = @game.evaluate_cards( @player )
 
+		if dealer_hand <= 21
+
+			if dealer_hand > player_hand
+
+			end
+
+		end
+
+		if player_hand <= 21
+
+			if player_hand > dealer_hand
+
+
+
+			end
+
+		end
+
 		if player_hand == 21 && @player.count == 2
 
 			# blackjack and player gets paid 3:2
