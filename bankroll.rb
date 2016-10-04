@@ -14,7 +14,7 @@ class Bankroll
 	end
 
 	def valid_bet?
-
+binding.pry
 		if ( @bankroll - @bet > 0 )
 
 			@bankroll -= @bet

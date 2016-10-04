@@ -30,7 +30,7 @@ get '/bet' do
 	parse_and_assign_bankroll
 	parse_and_assign_variables
 
-
+binding.pry
 	save_bank
 	save_session
 
@@ -73,12 +73,14 @@ post '/blackjack/bet/validate' do
 
 	@bank.bet = params[ :bet ].to_i
 
-	save_bank
+
 
 	parse_and_assign_variables
 	save_session
 
 	if @bank.valid_bet?
+
+		save_bank
 
 		erb :blackjack, locals: { dealer: @dealer, player: @player, bankroll: @bankroll }
 
