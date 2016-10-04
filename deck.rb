@@ -2,7 +2,9 @@ require 'pry-byebug'
 
 class Deck
 
-	attr_reader :deck, :player_cards, :dealer_cards
+	attr_reader :deck
+	attr_accessor :player_cards, :dealer_cards
+
 
 	def initialize( deck = nil, player_cards = [], dealer_cards = [] )
 
@@ -14,7 +16,7 @@ class Deck
 
 			@deck = deck
 
-		else
+		elsif !deck
 
 			@deck = [ "A", "A", "A", "A",
 							"2", "2", "2", "2",
@@ -33,7 +35,15 @@ class Deck
 			shuffle
 			deal
 
+
 		end
+
+		if player_cards == [] && deck
+
+			deal
+
+		end
+
 
 	end
 
@@ -117,7 +127,7 @@ class Deck
 
 
 	def new_deck?
-
+binding.pry
 		if @deck.count == 1
 
 			self.new( nil, @player_cards, @dealer_cards )

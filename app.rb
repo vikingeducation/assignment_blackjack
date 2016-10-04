@@ -28,16 +28,32 @@ end
 get '/bet' do
 
 	parse_and_assign_bankroll
+	parse_and_assign_variables
 
-	clear_plyr_dlr_deck
 
 	save_bank
+	save_session
 
 	erb :bet, locals: { bankroll: @bankroll }
 
 end
 
+get '/new_game' do
 
+	parse_session
+
+	new_game
+
+	assign_variables
+
+	parse_and_assign_bankroll
+
+	save_session
+	save_bank
+
+	redirect('/bet')
+
+end
 
 post '/blackjack' do
 
@@ -59,10 +75,11 @@ post '/blackjack/bet/validate' do
 
 	save_bank
 
+	parse_and_assign_variables
+	save_session
+
 	if @bank.valid_bet?
 
-		parse_and_assign_variables
-		save_session
 		erb :blackjack, locals: { dealer: @dealer, player: @player, bankroll: @bankroll }
 
 	else
@@ -77,7 +94,11 @@ post '/hit' do
 
   parse_and_assign_variables
 
+
 	@player += @game.hit
+
+  parse_and_assign_bankroll
+  save_bank
 
 	save_session
 
@@ -94,6 +115,9 @@ post '/stay' do
 	start_dealer_turn
 
 	evaluate_hands
+
+  parse_and_assign_bankroll
+  save_bank
 
 	save_session
 

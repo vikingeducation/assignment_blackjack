@@ -10,6 +10,12 @@ module Helper
 	end
 
 
+	def new_game
+
+		@game = Deck.new( JSON.parse( session[ :deck ] ) )
+
+	end
+
 
 	def parse_and_assign_bankroll
 
@@ -20,7 +26,7 @@ module Helper
 
 	def parse_bankroll
 
-		if !session[ :bankroll ].nil?
+		if !session[ 'bankroll' ].nil?
 			@bank = Bankroll.new( JSON.parse( session[ :bankroll   ] ),
 												JSON.parse( session[ :bet ] )
 											)
@@ -38,12 +44,11 @@ module Helper
 	end
 
 
-
-	def clear_plyr_dlr_deck
+	def clear_plyr_dlr
 
 		session[ :player ] = nil
 		session[ :dealer ] = nil
-	  session[ :deck   ] = nil
+	  #session[ :deck   ] = nil
 
 	end
 
