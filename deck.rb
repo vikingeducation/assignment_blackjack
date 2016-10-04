@@ -127,7 +127,7 @@ class Deck
 
 
 	def new_deck?
-binding.pry
+
 		if @deck.count == 1
 
 			self.new( nil, @player_cards, @dealer_cards )
