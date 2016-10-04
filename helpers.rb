@@ -57,8 +57,8 @@ module Helper
 
 	def save_bank
 
-	  session[ :bankroll ] = @bankroll.to_i.to_json
-	  session[ :bet      ] = @bet.to_i.to_json
+	  session[ :bankroll ] = @bank.bankroll.to_i.to_json
+	  session[ :bet      ] = @bank.bet.to_i.to_json
 
 	end
 

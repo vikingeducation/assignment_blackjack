@@ -12,7 +12,9 @@ include Helper
 
 get '/' do
 
-	clear_plyr_dlr_deck
+	#clear_plyr_dlr_deck
+
+	session.clear
 
 	parse_and_assign_bankroll
 
@@ -34,7 +36,7 @@ get '/blackjack/bet' do
 end
 
 post '/blackjack' do
-binding.pry
+
   parse_and_assign_variables
 	parse_and_assign_bankroll
 
@@ -49,11 +51,11 @@ post '/blackjack/bet/validate' do
 
 	parse_and_assign_bankroll
 
-	@bet = params[ :bet ].to_i
+	@bank.bet = params[ :bet ].to_i
 
 	save_bank
-binding.pry
 
+binding.pry
 	if @bank.valid_bet?
 
 		parse_and_assign_variables
@@ -61,7 +63,7 @@ binding.pry
 		erb :blackjack, locals: { dealer: @dealer, player: @player }
 
 	else
-		redirect('/blackjack/bet/validate')
+		erb :bet, locals: { bankroll: @bankroll }
 	end
 
 end
