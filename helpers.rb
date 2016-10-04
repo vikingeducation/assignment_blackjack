@@ -25,7 +25,7 @@ module Helper
 	end
 
 	def parse_bankroll
-binding.pry
+
 		if !session[ 'bankroll' ].nil?
 			@bank = Bankroll.new( JSON.parse( session[ :bankroll   ] ),
 												JSON.parse( session[ :bet ] )

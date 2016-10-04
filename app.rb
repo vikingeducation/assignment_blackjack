@@ -30,7 +30,7 @@ get '/bet' do
 	parse_and_assign_bankroll
 	parse_and_assign_variables
 
-binding.pry
+
 	save_bank
 	save_session
 
