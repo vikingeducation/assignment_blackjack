@@ -1,9 +1,9 @@
 <h1>Please enter your bet</h1>
 <h2>Bankroll: <%= bankroll %></h2>
 
-<form action="/validate" method="post">
+<form action="/blackjack/bet/validate" method="post">
 
-	<input type="text" value="Bet Amount" placeholder="Enter Bet">
+	<input type="text" name="bet" placeholder="Enter Bet">
 
 	<input type="submit" value="Place Bet">
 

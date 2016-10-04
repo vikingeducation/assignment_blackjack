@@ -29,7 +29,7 @@ get '/blackjack/bet' do
 
 	save_bank
 
-	erb :bet
+	erb :bet, locals: { bankroll: @bankroll }
 
 end
 
@@ -40,6 +40,23 @@ post '/blackjack' do
 	save_session
 
 	erb :blackjack, locals: { dealer: @dealer, player: @player }
+
+end
+
+post '/blackjack/bet/validate' do
+
+	parse_and_assign_bankroll
+
+	@bank.bet = params[ :bet ]
+
+binding.pry
+
+	save_bank
+
+binding.pry
+
+
+
 
 end
 
