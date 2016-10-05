@@ -33,7 +33,7 @@ class Bankroll
 
 		dealer_hand = game.evaluate_cards( dealer )
 		player_hand = game.evaluate_cards( player )
-binding.pry
+
 
 		# first we check if the dealer busts && player <= 21
 		if dealer_hand > 21 && player_hand <= 21

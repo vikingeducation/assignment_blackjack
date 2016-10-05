@@ -58,9 +58,47 @@ class Deck
 
 	end
 
+	def pull_aces( hand )
+
+		aces   = []
+		others = []
+
+		hand.each do | card |
+
+			if card == 1 || card == 11
+
+				aces << card
+
+			else
+
+				others << card
+
+			end
+
+		end
+
+		return aces, others
+
+	end
+
 
 	def add_cards( hand )
+binding.pry
+		# for dealing with multiple Aces
+		# if the hand has more than one Ace we utilize this method
+		# example [ 11,5,2,1 ]
+		# we should pull out the Aces (1's or 11's)
+		aces, others = pull_aces( hand )
+		binding.pry
+		# take that non-aces and store in variable
+			# for each ace (1 or 11)
+				# if number plus 11 <= 21
+					# we assign that ace as 11
+				# else
+					# we assign that number as one
+				# end
 
+		# this deals with one Ace
 		hand.inject( 0 ) do | r, e |
 
 		  # main logic for dealing with Aces

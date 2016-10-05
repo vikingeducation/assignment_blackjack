@@ -96,7 +96,6 @@ post '/hit' do
 
   parse_and_assign_variables
 
-
 	@player += @game.hit
 
   parse_and_assign_bankroll
@@ -118,7 +117,6 @@ post '/stay' do
 
 	@bank.evaluate_hands( @game, @dealer, @player )
 
-binding.pry
   save_bank
 
 	save_session
