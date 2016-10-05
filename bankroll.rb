@@ -30,52 +30,36 @@ class Bankroll
 	end
 
 	def evaluate_hands( game, dealer, player )
-binding.pry
+
 		dealer_hand = game.evaluate_cards( dealer )
 		player_hand = game.evaluate_cards( player )
+
+		# @bankroll or bankroll
+		# @bet or bet
+
+		# tie for blackjack
+		if dealer_hand == 21 && player_hand == 21
+
+			@bankroll += @bet
+
+		# if player has 21 and two cards its a blackjack paid 3:2
+		elsif player_hand == 21 && player.count == 2
+
+			@bankroll += ( ( ( @bet * 3 ) / 2 ) + @bet )
+
+		elsif dealer_hand < 21 && player_hand < 21
+
+			# eval for player winning without blackjack
+			if dealer_hand < player_hand
+
+				@bankroll += ( @bet * 2 )
+
+			end
+
+		end
+
+
 binding.pry
-		if dealer_hand <= 21
-
-			if dealer_hand > player_hand
-
-			end
-
-		end
-
-		if player_hand <= 21
-
-			if player_hand > dealer_hand
-
-
-
-			end
-
-		end
-
-		if player_hand == 21 && player.count == 2
-
-			# blackjack and player gets paid 3:2
-			# goes to player bankroll
-
-		elsif dealer_hand > player_hand
-
-			# dealer wins and bet is removed
-			# new game is prompted
-			# new bets are made
-
-		elsif dealer_hand == player_hand
-
-			# tie and bet goes back into player's bankroll
-			# new game is prompted
-			# new bets are made
-
-		elsif dealer_hand < player_hand
-
-			# player wins and players bet is multiplied by 2 and added to player bankroll
-			# new game is prompted
-			# new bets are made
-
-		 end
 
 	end
 

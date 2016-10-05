@@ -115,10 +115,10 @@ post '/stay' do
   parse_and_assign_bankroll
 	# when staying, the dealer will commence hand
 	start_dealer_turn
-binding.pry
+
 	@bank.evaluate_hands( @game, @dealer, @player )
 
-
+binding.pry
   save_bank
 
 	save_session
