@@ -12,11 +12,11 @@ class Deck
 		@dealer_cards = dealer_cards
 
 
-		if deck
+		if deck && deck.count > 10
 
 			@deck = deck
 
-		elsif !deck
+		elsif !deck || deck.count < 10
 
 			@deck = [ "A", "A", "A", "A",
 							"2", "2", "2", "2",
@@ -67,6 +67,7 @@ class Deck
 
 			if card == 1 || card == 11
 
+				card = 1
 				aces << card
 
 			else
@@ -83,22 +84,14 @@ class Deck
 
 
 	def add_cards( hand )
-binding.pry
 		# for dealing with multiple Aces
 		# if the hand has more than one Ace we utilize this method
 		# example [ 11,5,2,1 ]
-		# we should pull out the Aces (1's or 11's)
+		# this resets the aces to one to check again for best combo
 		aces, others = pull_aces( hand )
-		binding.pry
-		# take that non-aces and store in variable
-			# for each ace (1 or 11)
-				# if number plus 11 <= 21
-					# we assign that ace as 11
-				# else
-					# we assign that number as one
-				# end
 
-		# this deals with one Ace
+		hand = others + aces
+
 		hand.inject( 0 ) do | r, e |
 
 		  # main logic for dealing with Aces
@@ -156,23 +149,11 @@ binding.pry
 
 	def deal
 
-		new_deck?
-
 		@player_cards += @deck.pop( 2 )
 		@dealer_cards += @deck.pop( 2 )
 
 	end
 
-
-	def new_deck?
-
-		if @deck.count == 1
-
-			self.new( nil, @player_cards, @dealer_cards )
-
-		end
-
-	end
 
 
 	def hit

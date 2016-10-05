@@ -115,6 +115,7 @@ post '/stay' do
 	# when staying, the dealer will commence hand
 	start_dealer_turn
 
+	# change to eval_wins
 	@bank.evaluate_hands( @game, @dealer, @player )
 
   save_bank
