@@ -14,20 +14,18 @@
 
     <p>Dealers Hand</p>
 
-    <p><%= dealer %></p>
+    <p><%= dealer.join("   ") %></p>
     <br>
     <%  if bust?( @game.evaluate_cards( dealer )) %>
     <p>Busted</p>
     <% end %>
-
     <p>Player's Hand</p>
     <br>
-    <p><%= player %></p>
+    <p><%= player.join("   ") %></p>
     <br>
     <%  if bust?( @game.evaluate_cards( player )) %>
     <p>Busted</p>
     <% end %>
-
     <% if !bust?( @game.evaluate_cards( player )) %>
 		<form action="/hit" method="post">
 		  <br>
