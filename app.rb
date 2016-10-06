@@ -70,8 +70,6 @@ post '/blackjack/bet/validate' do
 
 	@bank.bet = params[ :bet ].to_i
 
-
-
 	parse_and_assign_decks_hands
 	save_session
 
@@ -113,7 +111,7 @@ post '/stay' do
 	start_dealer_turn
 
 	# change to eval_wins
-	@bank.evaluate_hands( @game, @dealer, @player )
+	@bank.evaluate_payouts( @game, @dealer, @player )
 
   save_bank
 

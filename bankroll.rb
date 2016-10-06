@@ -29,7 +29,7 @@ class Bankroll
 
 	end
 
-	def evaluate_hands( game, dealer, player )
+	def evaluate_payouts( game, dealer, player )
 
 		dealer_hand = game.evaluate_cards( dealer )
 		player_hand = game.evaluate_cards( player )
