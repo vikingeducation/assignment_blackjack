@@ -14,7 +14,14 @@
 
     <p>Dealers Hand</p>
 
+    <% if dealer.count == 2 %>
+
+    <p><%= dealer.join("   ")[0] %></p>
+
+    <% else %>
     <p><%= dealer.join("   ") %></p>
+
+    <% end %>
     <br>
     <%  if bust?( @game.evaluate_cards( dealer )) %>
     <p>Busted</p>
