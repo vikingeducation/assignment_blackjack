@@ -2,7 +2,7 @@
 
 module Helper
 
-	def parse_and_assign_variables
+	def parse_and_assign_decks_hands
 
 		parse_session
 		assign_variables

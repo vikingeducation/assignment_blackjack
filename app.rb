@@ -12,8 +12,6 @@ include Helper
 
 get '/' do
 
-	#clear_plyr_dlr_deck
-
 	session.clear
 
 	parse_and_assign_bankroll
@@ -28,8 +26,7 @@ end
 get '/bet' do
 
 	parse_and_assign_bankroll
-	parse_and_assign_variables
-
+	parse_and_assign_decks_hands
 
 	save_bank
 	save_session
@@ -57,7 +54,7 @@ end
 
 post '/blackjack' do
 
-  parse_and_assign_variables
+  parse_and_assign_decks_hands
 	parse_and_assign_bankroll
 
 	save_bank
@@ -75,7 +72,7 @@ post '/blackjack/bet/validate' do
 
 
 
-	parse_and_assign_variables
+	parse_and_assign_decks_hands
 	save_session
 
 	if @bank.valid_bet?
@@ -94,7 +91,7 @@ end
 post '/hit' do
 
 
-  parse_and_assign_variables
+  parse_and_assign_decks_hands
 
 	@player += @game.hit
 
@@ -110,7 +107,7 @@ end
 
 post '/stay' do
 
- 	parse_and_assign_variables
+ 	parse_and_assign_decks_hands
   parse_and_assign_bankroll
 	# when staying, the dealer will commence hand
 	start_dealer_turn
