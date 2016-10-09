@@ -1,0 +1,41 @@
+
+
+<!doctype html>
+<html>
+  <head>
+    <title>
+      Black Jack
+    </title>
+  </head>
+
+  <body>
+
+  	<h1>Black Jack</h1>
+
+    <p>Dealers Hand</p>
+
+    <p><%= dealer.join("    ") %></p>
+    <br>
+    <%  if bust?( @game.evaluate_cards( dealer )) %>
+    <p>Busted</p>
+    <% end %>
+    <p>Player's Hand</p>
+    <br>
+    <p><%= player.join("    ") %></p>
+    <br>
+    <%  if bust?( @game.evaluate_cards( player )) %>
+    <p>Busted</p>
+    <% end %>
+
+    <br>
+    <form action="/new_game" method="get">
+      <input type="submit" name="new_game" value="New Game">
+    </form>
+
+
+
+
+
+  </body>
+
+</html>
