@@ -85,7 +85,6 @@ class Deck
 
 	def add_cards( hand )
 		# for dealing with multiple Aces
-		# if the hand has more than one Ace we utilize this method
 		# example [ 11,5,2,1 ]
 		# this resets the aces to one to check again for best combo
 		aces, others = pull_aces( hand )
