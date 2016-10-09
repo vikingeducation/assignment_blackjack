@@ -1,7 +1,6 @@
 require 'sinatra'
 require './deck.rb'
 require 'json'
-require 'pry-byebug'
 require './helpers.rb'
 require './bankroll.rb'
 
@@ -107,9 +106,9 @@ post '/stay' do
 
  	parse_and_assign_decks_hands
   parse_and_assign_bankroll
-	# when staying, the dealer will commence hand
+
 	start_dealer_turn
-	# change to eval_wins
+
 	@bank.evaluate_payouts( @game, @dealer, @player )
 
   save_bank

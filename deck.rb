@@ -1,5 +1,3 @@
-require 'pry-byebug'
-
 class Deck
 
 	attr_reader :deck
@@ -84,16 +82,13 @@ class Deck
 
 
 	def add_cards( hand )
-		# for dealing with multiple Aces
-		# example [ 11,5,2,1 ]
-		# this resets the aces to one to check again for best combo
+
 		aces, others = pull_aces( hand )
 
 		hand = others + aces
 
 		hand.inject( 0 ) do | r, e |
 
-		  # main logic for dealing with Aces
 			if e == 1
 
 				if ( r + 11 ) > 21
@@ -107,7 +102,7 @@ class Deck
 				end
 
 			else
-				# if not an Ace it is added to total
+
 				r += e
 
 			end

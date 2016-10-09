@@ -16,7 +16,7 @@ module Helper
 
 	end
 
-	# refactor to bankroll
+
 	def parse_and_assign_bankroll
 
 		parse_bankroll
@@ -24,7 +24,6 @@ module Helper
 
 	end
 
-	# refactor to bankroll
 	def parse_bankroll
 
 		if !session[ 'bankroll' ].nil?
@@ -37,7 +36,6 @@ module Helper
 
 	end
 
-	# refactor to bankroll class
 	def assign_bankroll
 
 		@bankroll = @bank.bankroll
@@ -101,13 +99,13 @@ module Helper
 
 
 	def start_dealer_turn
-		# pass total of dealer cards to dealer AI
+
 		dealer_ai( @game.evaluate_cards( @dealer ) )
 
 	end
 
 	def dealer_ai( dealer_total )
-		# dealer will hit until 17
+
 		return if dealer_total >= 17
 
 			@dealer += @game.hit
@@ -116,4 +114,4 @@ module Helper
 	end
 
 
-end #./Module
+end
