@@ -17,12 +17,16 @@ module CardsHelper
   def draw_from_deck
     session["deck"] ||= load_deck
     value = session["deck"].keys.sample
-    suit = session["deck"][value].shuffle.pop
-    [value,suit]
+    suit = session["deck"][value].shuffle!.pop
+
+    session['deck'].delete(value) if session["deck"][value].empty?
+    session['deck'] = nil if session['deck'].empty?
+
+    [value, suit]
   end
 
   def save_cards(player_cards, dealer_cards)
-    session["player_cards"] = player_cards 
+    session["player_cards"] = player_cards
     session["dealer_cards"] = dealer_cards
   end
 end
