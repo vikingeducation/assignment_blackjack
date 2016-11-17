@@ -15,9 +15,18 @@ end
 
 get '/blackjack' do
 
-  player = Blackjack::User.new(session[:user_hand])
-  dealer = Blackjack::Dealer.new(session[:dealer_hand])
+  deck = Blackjack::Deck.new
 
-  erb :blackjack, locals: { player: player,
-                            dealer: dealer }
+  user_hand = session['user_hand'] || []
+  dealer_hand = session['dealer_hand'] || []
+
+  # user = Blackjack::User.new(hand: user_hand)
+  # dealer = Blackjack::Dealer.new(hand: dealer_hand)
+
+  user = ""
+  dealer = ""
+
+  erb :blackjack, locals: { user: user,
+                            dealer: dealer,
+                            deck: deck }
 end

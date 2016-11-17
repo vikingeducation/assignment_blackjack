@@ -1,6 +1,9 @@
+require 'forwardable'
 
 module Blackjack
+
   class Card
+
     attr_reader :front, :rank, :suit, :value
 
     def initialize(args = {})
@@ -14,25 +17,34 @@ module Blackjack
 
   class Deck
 
+    attr_reader :cards
+
+    extend Forwardable
+
+    def_delegator :cards, :each
+
     CARD_FACTORY = Card
 
-    def initialize(args = {})
-      @cards        = Deck.generate_cards
+    def initialize
+      @cards = Deck.generate_cards
     end
 
     protected
 
       def self.generate_cards
+        cards = []
         suits.each do |suit|
           ranks.each do |rank|
-            CARD_FACTORY.new(rank: rank,
-                             suit: suit,
-                             value: rank_values[rank])
+            cards << CARD_FACTORY.new(rank: rank,
+                                      suit: suit,
+                                      value: value(rank))
           end
         end
+        cards
       end
 
     private
+
       def self.rank_values
         { 2 => 2, 3 => 3, 4 => 4, 5 => 5, 6 => 6, 7 =>7,
           8 => 8, 9 => 9, 10 => 10, "Jack" => 10,
