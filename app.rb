@@ -3,9 +3,10 @@ require 'sinatra'
 require 'sinatra/reloader'
 require_relative "./helpers/bet_helper"
 require_relative "./helpers/cards_helper"
+require_relative "./helpers/blackjack_helper"
 
 enable :sessions
-helpers BetHelper, CardsHelper
+helpers BetHelper, CardsHelper, BlackjackHelper
 
 get '/' do
   bankroll = load_bankroll
@@ -16,25 +17,19 @@ get '/blackjack' do
   place_bet( params[:bet] ) unless params[:bet].nil?
   bet_placed = load_bet
 
-  p bet_placed.nil?
-  p session['player_cards'].nil?
-
   if bet_placed.nil? && session["player_cards"].nil?
-    p "Loop is ran!"
-    player_cards = [draw_from_deck,draw_from_deck]
-    dealer_cards = [draw_from_deck,draw_from_deck]
-    save_cards(player_cards, dealer_cards)
+    card_array = game_start
+    redirect to('game_over') if has_won? 
   end
 
   if params[:hit]
-    session["player_cards"] << draw_from_deck
-  elsif params[:stay] # or if bust
-    # go in to dealers turn
+    card_array = hit_player
+    redirect to('game_over') if busted?(session["player_cards"])   
   end
 
   erb :blackjack, locals: {
                           bet_placed: bet_placed,
-                          player_cards: player_cards,
-                          dealer_cards: dealer_cards
+                          player_cards: card_array[0],
+                          dealer_cards: card_array[1],
                           }
 end
