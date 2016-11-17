@@ -22,3 +22,22 @@
                       # if dealer is 17 or above then game over,
                       # check player and dealer hands, higher hand wins unless
                         #bust
+
+module BlackjackHelper
+  def load_bankroll
+    session['bankroll'] ||= "1000"
+  end
+
+  def place_bet(number)
+    return nil if number.to_i > session['bankroll'].to_i
+    session['bet'] = number
+  end
+
+  def load_bet
+    session['bet'] 
+  end
+
+  def bet_reset
+    session['bet'] = nil
+  end
+end
