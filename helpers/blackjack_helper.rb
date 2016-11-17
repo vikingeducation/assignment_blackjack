@@ -71,4 +71,5 @@ module BlackjackHelper
     sum_points(session['player_cards']) ==
     sum_points(session['dealer_cards'])
   end
+
 end

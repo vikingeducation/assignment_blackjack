@@ -33,13 +33,17 @@ get '/blackjack' do
   end
 
   if params[:double]
-
+    double_bet
+    hit_me(session['player_cards'])
+    redirect to('game_over')
   end
+
 
   erb :blackjack, locals: {
                             bet_placed: bet_placed,
                             player_cards: session['player_cards'],
                             dealer_cards: session['dealer_cards'],
+
                           }
 end
 

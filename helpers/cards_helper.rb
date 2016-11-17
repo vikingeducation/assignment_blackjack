@@ -21,7 +21,7 @@ module CardsHelper
 
     session['deck'].delete(value) if session["deck"][value].empty?
     session['deck'] = nil if session['deck'].empty?
-
+    p session['deck'] 
     [value, suit]
   end
 

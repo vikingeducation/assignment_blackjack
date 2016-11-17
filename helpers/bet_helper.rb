@@ -51,6 +51,19 @@ module BetHelper
       else
         session['bankroll'] = (session['bankroll'].to_i + session['bet'].to_i*2).to_s
       end
+    elsif draw?
+      session['bankroll'] = (session['bankroll'].to_i + session['bet'].to_i).to_s
+    end
+  end
+
+  def double_bet
+    bet = session["bet"].to_i
+    if bet > session["bankroll"].to_i
+      place_bet(session["bankroll"])
+      session["bet"] = session["bet"].to_i + bet
+    else  
+      place_bet(bet)
+      session['bet'] = (bet*2).to_s 
     end
   end
 end

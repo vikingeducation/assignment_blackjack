@@ -20,10 +20,15 @@
   <form action="game_over" method="get">
     <input type="submit" name="stay" value="Stay!">
   </form>
-
-  <form action="game_over" method="get">
+  <% unless player_cards.to_a.length > 2 %>
+  <form action="blackjack" method="get">
     <input type="submit" name="double" value="Double!">
   </form>
-
+  <% if player_cards[0][0] == player_cards[1][0] %>
+   <form action="blackjack" method="get">
+    <input type="submit" name="split" value="Split!">
+  </form>
+  <% end %>
+  <% end %>
 
 <% end %>
