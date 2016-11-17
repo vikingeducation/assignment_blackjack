@@ -9,8 +9,13 @@
   </form>
 <% else %>
   <h2> Current bet: <%= bet_placed %> </h2>
-
-
+  <h3> Hands dealt!</h3>
+  <h4>Your hand is <%= player_cards %></h4>
+  <h4>The dealer's visible card is <%= dealer_cards[0] if dealer_cards %></h4>
+  <form action="blackjack" method="get">
+    <input type="submit" name="hit" value="Hit!">
+    <input type="submit" name="stay" value="Stay!">
+  </form>
 
 
 <% end %>
