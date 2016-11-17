@@ -20,21 +20,27 @@ get '/blackjack' do
   user_hand   = session['user_hand'] || deck.draw(2)
   dealer_hand = session['dealer_hand'] || deck.draw(2)
 
+  # updat user initialization to include betting pool
   user = Blackjack::User.new(hand: user_hand)
-  dealer = Blackjack::Dealer.new(hand: dealer_hand)
+  dealer = Blackjack::Dealer.new(hand: dealer_hand,
+                                 deck: deck,
+                                 opponent: user)
 
-  # updating game state
+  # update game state
   session['deck'] = deck.cards
-  session['user_hand'] = user_hand
   session['dealer_hand'] = dealer_hand
+  session['user_bet'] = session['user_bet'] || 0
+  session['user_cash'] =
+  session['user_hand'] = user_hand
 
-  # if stay
+  # if user stays
   if session['stay']
-    # dealer game logic
+    dealer.hit
+    session['stay'] = false
   end
 
-  # check for user bust
-  if user.bust?
+  # check for bust
+  if user.bust? || dealer.bust?
     session['user_hand'] = nil
     session['dealer_hand'] = nil
     session['deck'] = nil

@@ -17,13 +17,14 @@
   </div>
 </div>
 
-<% unless user.bust? || dealer.bust? %>
+<% if !(user.bust? || dealer.bust?) %>
   <%= erb :'shared/_user_interaction_form' %>
-<% end %>
-
-
-<% if user.bust? %>
-  <%= erb :'shared/_play_again' %>
+<% elsif user.bust? %>
+  <%= erb :'shared/_play_again', locals: { user: user,
+                                           dealer: dealer } %>
+<% elsif dealer.bust? %>
+  <%= erb :'shared/_play_again', locals: { user: user,
+                                           dealer: dealer } %>
 <% end %>
 
 <!--
