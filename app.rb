@@ -11,8 +11,8 @@ get '/blackjack' do
 
   deck = Deck.new
 
-  @player_hand = deck.deal_card
-  dealer_hand = []
+  player_hand = [ deck.deal_card.to_s, deck.deal_card.to_s ]
+  dealer_hand = [ deck.deal_card.to_s, deck.deal_card.to_s ]
 
-  erb :blackjack, :locals => { :player_hand => @player_hand }
+  erb :blackjack, :locals => { :player_hand => player_hand, :dealer_hand => dealer_hand }
 end
