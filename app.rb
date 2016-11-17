@@ -18,18 +18,25 @@ get '/blackjack' do
   bet_placed = load_bet
 
   if bet_placed.nil? && session["player_cards"].nil?
-    card_array = game_start
-    redirect to('game_over') if has_won? 
+    game_start
+
+    redirect to('game_over') if blackjack?(session['player_cards'])
+    redirect to('game_over') if blackjack?(session['dealer_cards'])
   end
 
   if params[:hit]
-    card_array = hit_player
-    redirect to('game_over') if busted?(session["player_cards"])   
+    hit_player
+
+    redirect to('game_over') if busted?(session['player_cards'])
   end
 
   erb :blackjack, locals: {
-                          bet_placed: bet_placed,
-                          player_cards: card_array[0],
-                          dealer_cards: card_array[1],
+                            bet_placed: bet_placed,
+                            player_cards: session['player_cards'],
+                            dealer_cards: session['dealer_cards'],
                           }
+end
+
+get '/game_over' do
+  <h1>GAME OVER</h1>
 end

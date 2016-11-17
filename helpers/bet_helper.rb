@@ -30,6 +30,7 @@ module BetHelper
 
   def place_bet(number)
     return nil if number.to_i > session['bankroll'].to_i
+    return nil if number.to_i <= 0 
 
     session['bankroll'] = (session['bankroll'].to_i - number.to_i).to_s
     session['bet'] = number
