@@ -28,6 +28,17 @@ get '/' do
   erb :index
 end
 
+get '/bet' do
+  bankroll = 1000
+  erb :bet, :locals => { :bankroll => bankroll }
+end
+
+post '/bet' do
+  session['bet'] = params[:bet]
+  p params
+  redirect to('/bet')
+end
+
 get '/blackjack' do
   erb :blackjack, :locals => { :player_hand => session["player_hand"], :dealer_hand => session["dealer_hand"] }
 end
