@@ -11,5 +11,10 @@ get '/' do
 end
 
 get '/blackjack' do
-  erb :blackjack
+
+# create player and dealer
+
+  erb :blackjack, locals: { player: player, 
+                            dealer: dealer
+                          }
 end
