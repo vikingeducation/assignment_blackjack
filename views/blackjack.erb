@@ -1,7 +1,22 @@
-<p>Player hand: <%= player_hand.to_s %></p>
-<p>Dealer hand: <%= dealer_hand.to_s %></p>
+<p>Player hand:</p>
+<ul>
+  <% player_hand.cards.each do |card| %>
+  <li><%= card.to_s %></li>
+  <% end %>
+</ul>
+Value: <%= player_hand.value %>
 
 <form>
   <button formaction="hit">Hit</button>
   <button formaction="stay">Stay</button>
 </form>
+
+<p>Dealer hand:</p>
+<ul>
+  <% dealer_hand.cards.each do |card| %>
+  <li><%= card.to_s %></li>
+  <% end %>
+</ul>
+<p>Value: <%= dealer_hand.value %></p>
+
+<a href="/">Start a new game</a>
