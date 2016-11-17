@@ -7,5 +7,9 @@ require 'sinatra/reloader' if development?
 enable :sessions
 
 get '/' do
-  "<h1>Hello World</h1>"
+  erb :index
+end
+
+get '/blackjack' do
+  erb :blackjack
 end
