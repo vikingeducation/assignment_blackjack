@@ -24,9 +24,8 @@ module BlackjackHelpers
     session[:turn] = "dealer_hand"
     total = hand_total(session[:dealer_hand])
     until total >= 17
-      hit(session[:turn])
+      total += hit(session[:turn])
     end
-    puts "STAAAAAAAAAY"
   end
 
   def bet
