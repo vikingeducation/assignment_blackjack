@@ -1,19 +1,9 @@
 <p>Player hand:</p>
-<ul>
-  <% player_hand.cards.each do |card| %>
-  <li><%= card.to_s %></li>
-  <% end %>
-</ul>
-Value: <%= player_hand.value %>
+<%= erb :hand, :locals => { :hand => session["player_hand"] } %>
 
 <p>Dealer hand:</p>
-<ul>
-  <% dealer_hand.cards.each do |card| %>
-  <li><%= card.to_s %></li>
-  <% end %>
-</ul>
-<p>Value: <%= dealer_hand.value %></p>
+<%= erb :hand, :locals => { :hand => session["dealer_hand"] } %>
 
-<strong><%= winning_message %></strong>
+<p><strong><%= winning_message %></strong></p>
 
 <a href="/">Start a new game</a>
