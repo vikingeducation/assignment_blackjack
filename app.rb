@@ -15,7 +15,7 @@ end
 
 get '/blackjack' do
 
-  # helper method?
+  # set up game and read game state
   deck = Blackjack::Deck.new(cards: session['deck'])
   user_hand   = session['user_hand'] || deck.draw(2)
   dealer_hand = session['dealer_hand'] || deck.draw(2)
@@ -23,14 +23,25 @@ get '/blackjack' do
   user = Blackjack::User.new(hand: user_hand)
   dealer = Blackjack::Dealer.new(hand: dealer_hand)
 
-  # helper method?
+  # updating game state
   session['deck'] = deck.cards
   session['user_hand'] = user_hand
   session['dealer_hand'] = dealer_hand
 
+  # if stay
+  if session['stay']
+    # dealer game logic
+  end
+
+  # check for user bust
+  if user.bust?
+    session['user_hand'] = nil
+    session['dealer_hand'] = nil
+    session['deck'] = nil
+  end
+
   erb :blackjack, locals: { user: user,
-                            dealer: dealer,
-                            params: params }
+                            dealer: dealer }
 end
 
 post '/blackjack' do

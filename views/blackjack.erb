@@ -17,10 +17,14 @@
   </div>
 </div>
 
-<form action="/blackjack" method="post">
-  <button class="btn btn-primary" type="submit" name="hit">Hit</button>
-  <button class="btn btn-primary" type="submit" name="stay">Stay</button>
-</form>
+<% unless user.bust? || dealer.bust? %>
+  <%= erb :'shared/_user_interaction_form' %>
+<% end %>
+
+
+<% if user.bust? %>
+  <%= erb :'shared/_play_again' %>
+<% end %>
 
 <!--
 # button to stay
