@@ -16,3 +16,22 @@
 
     # check hands
       # 21 - player's hand / 21 - d
+
+
+def play
+  deal
+    player_hand = 11, 11
+    dealer_hand = 11, 11
+  current_turn = player
+  unless win_condition
+    player can hit
+    player can stay
+      current_turn = dealer
+
+    dealer hit
+    dealer stay
+  end
+end
+
+def win_condition
+end

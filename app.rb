@@ -23,12 +23,14 @@ get '/blackjack' do
   }
 
 
-  erb :blackjack, locals: { player_hand: session[:player_hand], bank_roll: session[:bank_roll], dealer_hand: session[:dealer_hand], message: session[:message] }
+  erb :blackjack, locals: { player_hand: session[:player_hand],
+                            bank_roll: session[:bank_roll],
+                            dealer_hand: session[:dealer_hand],
+                            message: session[:message] }
 end
 
 post '/blackjack' do
-  session[:player_hand] = deal
-  session[:dealer_hand] = deal
+  reset_hands
   session[:bank_roll] = reset_bank
   session[:message] = nil
   redirect to('blackjack')
@@ -38,7 +40,14 @@ post "/hit" do
   session[:turn] = "player_hand"
   current_turn = session[:turn]
   hit(current_turn)
-  status_message(Messages::BUST) if bust?(current_turn)
+  if bust?(current_turn)
+    reset_hands
+    status_message(Messages::BUST)
+  end
+  if twenty_one?(current_turn)
+    reset_hands
+    status_message(Messages::WON)
+  end
   redirect to('blackjack')
 end
 
