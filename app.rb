@@ -11,7 +11,7 @@ get '/' do
 
   session["player_hand"] = [ deck.deal_card.to_s, deck.deal_card.to_s ]
   session["dealer_hand"] = [ deck.deal_card.to_s, deck.deal_card.to_s ]
-
+  session["deck"] = deck
   erb :index
 end
 
@@ -20,7 +20,7 @@ get '/blackjack' do
 end
 
 get '/hit' do
-
+  session["player_hand"] << session["deck"].deal_card.to_s
   redirect to('/blackjack')
 end
 
