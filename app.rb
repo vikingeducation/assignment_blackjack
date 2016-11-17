@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 require 'sinatra'
-require 'sinatra/reloader'
+require 'rerun'
 require './lib/deck.rb'
 
 enable :sessions
