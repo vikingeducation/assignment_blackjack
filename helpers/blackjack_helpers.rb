@@ -1,3 +1,5 @@
+require 'sinatra/reloader'
+
 module BlackjackHelpers
 
   def add_card
@@ -8,7 +10,7 @@ module BlackjackHelpers
 
   def deal
     hand = []
-    2.times do 
+    2.times do
       hand << add_card
     end
     hand
@@ -19,7 +21,7 @@ module BlackjackHelpers
   end
 
   def stay
-    #
+    session[:turn] = "dealer_hand"
   end
 
   def bet
@@ -38,10 +40,8 @@ module BlackjackHelpers
     hand.inject { |total, card| total += card }
   end
 
-  def render(message)
-    session[:message] = message 
+  def status_message(message)
+    session[:message] = message
   end
-
-
 
 end

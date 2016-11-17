@@ -2,11 +2,12 @@
 require 'sinatra'
 require 'sinatra/reloader'
 require './helpers/blackjack_helpers.rb'
+require './helpers/messages.rb'
 
 helpers BlackjackHelpers
+helpers Messages
 
 enable :sessions
-
 
 get '/' do
   erb :index
@@ -29,14 +30,22 @@ post '/blackjack' do
   session[:player_hand] = deal
   session[:dealer_hand] = deal
   session[:bank_roll] = reset_bank
-
+  session[:message] = nil
   redirect to('blackjack')
 end
 
-post "/hit" do 
+post "/hit" do
   session[:turn] = "player_hand"
   current_turn = session[:turn]
   hit(current_turn)
-  # render("Ya blew it") if bust?(current_turn)
+  status_message(Messages::BUST) if bust?(current_turn)
+  redirect to('blackjack')
+end
+
+post '/stay' do
+  session[:turn] = "player_hand"
+  current_turn = session[:turn]
+  stay
+  status_message(Messages::BUST) if bust?(current_turn)
   redirect to('blackjack')
 end
