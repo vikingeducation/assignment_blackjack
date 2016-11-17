@@ -1,2 +1,7 @@
-<p>Player hand: <%= player_hand %></p>
-<p>Dealer hand: <%= dealer_hand %></p>
+<p>Player hand: <%= player_hand.to_s %></p>
+<p>Dealer hand: <%= dealer_hand.to_s %></p>
+
+<form>
+  <button formaction="hit">Hit</button>
+  <button formaction="stay">Stay</button>
+</form>

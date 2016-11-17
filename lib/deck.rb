@@ -16,7 +16,6 @@ class Deck < Card
 
   attr_accessor :cards
 
-
   def initialize
     @cards = []
     suits = ["spades", "hearts", "clubs", "diamonds"]
@@ -34,5 +33,9 @@ class Deck < Card
 
   def show_deck
     p @cards
+  end
+
+  def shuffle!
+    @cards.shuffle!
   end
 end
