@@ -1,11 +1,16 @@
+
+
 <h1>Welcome to the game!</h1>
 
 <% unless bet_placed %>
   <form action="blackjack" method="get">
-    <input type="number" name="bet" placeholder="How much would you like to bet?"> 
-    <input type="submit" name="Bet!">
+    <input type="number" name="bet" placeholder="How much would you like to bet?">
+    <input type="submit" value="Bet!">
   </form>
 <% else %>
+  <h2> Current bet: <%= bet_placed %> </h2>
+
+
 
 
 <% end %>

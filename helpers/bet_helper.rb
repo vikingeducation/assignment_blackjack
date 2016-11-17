@@ -23,18 +23,20 @@
                       # check player and dealer hands, higher hand wins unless
                         #bust
 
-module BlackjackHelper
+module BetHelper
   def load_bankroll
     session['bankroll'] ||= "1000"
   end
 
   def place_bet(number)
     return nil if number.to_i > session['bankroll'].to_i
+
+    session['bankroll'] = (session['bankroll'].to_i - number.to_i).to_s
     session['bet'] = number
   end
 
   def load_bet
-    session['bet'] 
+    session['bet']
   end
 
   def bet_reset
