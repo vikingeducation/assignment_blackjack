@@ -3,30 +3,37 @@ require 'forwardable'
 module Blackjack
 
   class Card
-
     attr_reader :front, :rank, :suit, :value
 
     def initialize(args = {})
       @rank   = args.fetch(:rank)
       @suit   = args.fetch(:suit)
-      @front  = "#{ rank } of #{ suit }s"
+      @front  = "#{ rank } of #{ suit }"
       @value  = args.fetch(:value)
     end
 
   end
 
   class Deck
-
     attr_reader :cards
 
     extend Forwardable
-
-    def_delegator :cards, :each
+    def_delegators :cards, :each
 
     CARD_FACTORY = Card
 
-    def initialize
-      @cards = Deck.generate_cards
+    def initialize(args = {})
+      @cards = args[:cards] || Deck.generate_cards
+      shuffle
+    end
+
+    def draw(n)
+      raise "n must be greater than 0" if n < 1
+      cards.pop(n)
+    end
+
+    def shuffle
+      cards.shuffle!
     end
 
     protected
