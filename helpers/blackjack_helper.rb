@@ -7,10 +7,9 @@ module BlackjackHelper
     save_cards(player_cards,dealer_cards)
   end
 
-  def hit_player
-    player_cards = (session["player_cards"] << draw_from_deck)
-    dealer_cards = session["dealer_cards"]
-    save_cards(player_cards,dealer_cards)
+  def hit_me(cards)
+    cards << draw_from_deck
+    save_cards(session["player_cards"],session["dealer_cards"])
   end
 
   def get_points(cards)
@@ -41,5 +40,24 @@ module BlackjackHelper
     end
 
     points.inject(:+)
+  end
+
+  def premature_win?
+    blackjack?(session['player_cards']) || 
+    blackjack?(session['dealer_cards']) || 
+    busted?(session['player_cards'])
+  end
+
+  def set_outcome
+    return "lost" if busted?(session['player_cards']) ||
+                    sum_points(session['player_cards']) < 
+                    sum_points(session['dealer_cards'])     
+
+    return "won" if busted?(session['dealer_cards']) ||
+                    sum_points(session['player_cards']) > 
+                    sum_points(session['dealer_cards'])
+
+    return "draw" if sum_points(session['player_cards']) == 
+                    sum_points(session['dealer_cards'])
   end
 end

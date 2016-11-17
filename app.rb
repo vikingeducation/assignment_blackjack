@@ -4,9 +4,10 @@ require 'sinatra/reloader'
 require_relative "./helpers/bet_helper"
 require_relative "./helpers/cards_helper"
 require_relative "./helpers/blackjack_helper"
+require_relative "./helpers/dealer_helper"
 
 enable :sessions
-helpers BetHelper, CardsHelper, BlackjackHelper
+helpers BetHelper, CardsHelper, BlackjackHelper, DealerHelper
 
 get '/' do
   bankroll = load_bankroll
@@ -25,8 +26,7 @@ get '/blackjack' do
   end
 
   if params[:hit]
-    hit_player
-
+    hit_me(session['player_cards'])
     redirect to('game_over') if busted?(session['player_cards'])
   end
 
@@ -38,5 +38,17 @@ get '/blackjack' do
 end
 
 get '/game_over' do
-  <h1>GAME OVER</h1>
+  unless premature_win?
+    dealer_play
+  end
+  outcome = set_outcome
+  erb :game_over, locals: {
+                          outcome: outcome,
+                          player_cards: session['player_cards'],
+                          dealer_cards: session['dealer_cards'], 
+                          player_points: sum_points(session['player_cards']),
+                          dealer_points: sum_points(session['dealer_cards']),
+                          bet: "hahaha",
+                          bankroll: "still no"
+                          }
 end
