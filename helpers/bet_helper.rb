@@ -30,7 +30,7 @@ module BetHelper
 
   def place_bet(number)
     return nil if number.to_i > session['bankroll'].to_i
-    return nil if number.to_i <= 0 
+    return nil if number.to_i <= 0
 
     session['bankroll'] = (session['bankroll'].to_i - number.to_i).to_s
     session['bet'] = number
@@ -42,5 +42,15 @@ module BetHelper
 
   def bet_reset
     session['bet'] = nil
+  end
+
+  def payout_bet
+    if won?
+      if blackjack?(session['player_cards'])
+        session['bankroll'] = (session['bankroll'].to_i + session['bet'].to_i*2.5).to_s
+      else
+        session['bankroll'] = (session['bankroll'].to_i + session['bet'].to_i*2).to_s
+      end
+    end
   end
 end

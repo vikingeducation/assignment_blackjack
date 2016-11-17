@@ -43,21 +43,32 @@ module BlackjackHelper
   end
 
   def premature_win?
-    blackjack?(session['player_cards']) || 
-    blackjack?(session['dealer_cards']) || 
+    blackjack?(session['player_cards']) ||
+    blackjack?(session['dealer_cards']) ||
     busted?(session['player_cards'])
   end
 
-  def set_outcome
-    return "lost" if busted?(session['player_cards']) ||
-                    sum_points(session['player_cards']) < 
-                    sum_points(session['dealer_cards'])     
+  def get_outcome
+    return 'lost' if lost?
+    return 'draw' if draw?
+    return 'won' if won?
+  end
 
-    return "won" if busted?(session['dealer_cards']) ||
-                    sum_points(session['player_cards']) > 
-                    sum_points(session['dealer_cards'])
+  def won?
+    return false if busted?(session['player_cards'])
+    busted?(session['dealer_cards']) ||
+    sum_points(session['player_cards']) >
+    sum_points(session['dealer_cards'])
+  end
 
-    return "draw" if sum_points(session['player_cards']) == 
-                    sum_points(session['dealer_cards'])
+  def lost?
+    busted?(session['player_cards']) ||
+    sum_points(session['player_cards']) <
+    sum_points(session['dealer_cards'])
+  end
+
+  def draw?
+    sum_points(session['player_cards']) ==
+    sum_points(session['dealer_cards'])
   end
 end
