@@ -1,4 +1,7 @@
 class Card
+  
+  attr_reader :suit, :rank
+
   def initialize(suit, rank)
     @suit = suit
     @rank = rank
@@ -6,6 +9,10 @@ class Card
 end
 
 class Deck < Card
+
+  attr_accessor :cards
+
+
   def initialize
     @cards = []
     suits = ["spades", "hearts", "clubs", "diamonds"]
@@ -15,5 +22,13 @@ class Deck < Card
         @cards << Card.new(suit, rank)
       end
     end
+  end
+
+  def deal_card
+    @cards.pop
+  end
+
+  def show_deck
+    p @cards
   end
 end
