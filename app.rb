@@ -1,7 +1,9 @@
 #!/usr/bin/env ruby
 require 'sinatra'
 require 'rerun'
+require './lib/card.rb'
 require './lib/deck.rb'
+require './lib/hand.rb'
 require './helpers/get_winner.rb'
 require 'pp'
 
