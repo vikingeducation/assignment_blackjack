@@ -21,31 +21,22 @@ get '/blackjack' do
     J: 10
   }
 
-  # if session[:player_hand]
-    # add up all hands and store it in a 'round' array
-    # round.each
-      # if the player's hand is 21
-        # player wins
-      # if players hand is > 21
-        # player loses
-      # else
-        # continue playing
 
-    # while player_hand < 21
-      # hit
-        # push new card to player's hand
-      # stay
-        # do nothing
-
-    # check hands
-      # 21 - player's hand / 21 - d
-
-  erb :blackjack, locals: { player_hand: session[:player_hand], bank_roll: session[:bank_roll], dealer_hand: session[:dealer_hand] }
+  erb :blackjack, locals: { player_hand: session[:player_hand], bank_roll: session[:bank_roll], dealer_hand: session[:dealer_hand], message: session[:message] }
 end
 
 post '/blackjack' do
   session[:player_hand] = deal
   session[:dealer_hand] = deal
+  session[:bank_roll] = reset_bank
 
+  redirect to('blackjack')
+end
+
+post "/hit" do 
+  session[:turn] = "player_hand"
+  current_turn = session[:turn]
+  hit(current_turn)
+  # render("Ya blew it") if bust?(current_turn)
   redirect to('blackjack')
 end
