@@ -29,8 +29,7 @@ get '/blackjack' do
   session['dealer_hand'] = dealer_hand
 
   erb :blackjack, locals: { user: user,
-                            dealer: dealer,
-                            deck: deck }
+                            dealer: dealer }
 end
 
 # get '/blackjack/hit'

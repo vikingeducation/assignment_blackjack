@@ -1,24 +1,19 @@
-
 <!-- dealer's hand -->
+
 <div class="row">
   <div class="col-xs-12 col-sm-4 col-sm-offset-4">
-
-    <!-- define hand view on player -->
     <p>Dealer's Hand: <%= dealer.hand_view %></p>
-    <%#= dealer.score %>
-    <p>Hand Value: 9</p>
+    <p>Hand Value: <%= dealer.hand_value %></p>
   </div>
 </div>
 
-<!-- player's hand
-# player's score
-# player's bet -->
+
+<!-- # player's bet -->
+
 <div class="row">
   <div class="col-xs-12 col-sm-4 col-sm-offset-4">
-    <%#= player.hand_view %>
-    <p>Player's Hand: 3, 2</p>
-    <%#= player.score %>
-    <p>Hand Value: 5</p>
+    <p>Player's Hand: <%= user.hand_view %></p>
+    <p>Hand Value: <%= user.hand_value %></p>
   </div>
 </div>
 
@@ -26,14 +21,4 @@
 # button to stay
 # button to hit
 # instructions
--->
-
-<!--
-<div class="row">
-  <div class="col-xs-12 col-sm-4 col-sm-offset-4">
-    <% locals[:deck].each do |card| %>
-    <%= card.front %>
-    <% end %>
-  </div>
-</div>
 -->
