@@ -43,7 +43,7 @@ post "/hit" do
 end
 
 post '/stay' do
-  session[:turn] = "player_hand"
+  # session[:turn] = "player_hand"
   current_turn = session[:turn]
   stay
   status_message(Messages::BUST) if bust?(current_turn)

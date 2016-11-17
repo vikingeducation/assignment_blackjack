@@ -22,6 +22,11 @@ module BlackjackHelpers
 
   def stay
     session[:turn] = "dealer_hand"
+    total = hand_total(session[:dealer_hand])
+    until total >= 17
+      hit(session[:turn])
+    end
+    puts "STAAAAAAAAAY"
   end
 
   def bet
@@ -43,5 +48,7 @@ module BlackjackHelpers
   def status_message(message)
     session[:message] = message
   end
+
+
 
 end
