@@ -1,11 +1,15 @@
-<p>Player hand:</p>
-<%= erb :hand, :locals => { :hand => session["player_hand"] } %>
+<div class='panel panel-default'>
+  <div class="panel-body">
+    <p>Player hand:</p>
 
-<p>Dealer hand:</p>
-<%= erb :hand, :locals => { :hand => session["dealer_hand"] } %>
+  <%= erb :hand, :locals => { :hand => session["player_hand"] } %>
+  </div>
+</div>
+  <p>Dealer hand:</p>
+  <%= erb :hand, :locals => { :hand => session["dealer_hand"] } %>
 
-<p><strong><%= winning_message %></strong></p>
+  <p><strong><%= winning_message %></strong></p>
 
-<p>Bankroll: $<%= bankroll %></p>
+  <p>Bankroll: $<%= bankroll %></p>
 
-<a href="/bet">Play again</a> / <a href="/">Reset game</a>
+  <a class='btn btn-success' href="/bet">Play again</a> / <a class='btn btn-danger' href="/">Reset game</a>
