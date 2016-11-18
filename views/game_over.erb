@@ -10,10 +10,21 @@
 <h2> The second player hand was <%= player2_cards  %>.</h2>
 <% end %>
 
- <form class='form-inline' action="/blackjack" method="get">
-   <input type="submit" class='btn btn-primary' value="Play again?">
- </form>
+<div class='container'>
+  <div class='row'>
 
- <form class='form-inline' action="/" method="get">
-   <input type="submit" class='btn btn-primary' value="Home">
- </form>
+    <div class='col-xs-3'>
+     <form class='form-inline' action="/blackjack" method="get">
+       <input type="submit" class='btn btn-primary' value="Play again?">
+     </form>
+    </div>
+
+    <div class='col-xs-3'>
+     <form class='form-inline' action="/" method="get">
+       <input type="submit" class='btn btn-primary' value="Home">
+     </form>
+    </div>
+
+  </div>
+
+</div>
