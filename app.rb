@@ -12,20 +12,8 @@ enable :sessions
 helpers GetWinner
 
 get '/' do
-  deck = Deck.new
-  deck.shuffle!
-
-  player_hand = Hand.new
-  player_hand.cards << deck.deal_card
-  player_hand.cards << deck.deal_card
-  dealer_hand = Hand.new
-  dealer_hand.cards << deck.deal_card
-  dealer_hand.cards << deck.deal_card
   bankroll = 1000
 
-  session["player_hand"] = player_hand
-  session["dealer_hand"] = dealer_hand
-  session["deck"] = deck
   session["bankroll"] = bankroll
   erb :index
 end
@@ -33,6 +21,19 @@ end
 get '/bet' do
   bankroll = session['bankroll']
   insufficient = params[:insufficient]
+
+  deck = Deck.new
+  deck.shuffle!
+  player_hand = Hand.new
+  player_hand.cards << deck.deal_card
+  player_hand.cards << deck.deal_card
+  dealer_hand = Hand.new
+  dealer_hand.cards << deck.deal_card
+  dealer_hand.cards << deck.deal_card
+
+  session["player_hand"] = player_hand
+  session["dealer_hand"] = dealer_hand
+  session["deck"] = deck
   erb :bet, :locals => { :bankroll => bankroll, :insufficient => insufficient }
 end
 
