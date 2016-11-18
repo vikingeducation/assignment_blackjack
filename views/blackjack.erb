@@ -1,0 +1,24 @@
+<div class='panel panel-default'>
+  <div class="panel-heading">
+    <h3 class='panel-title'>Player hand:</h3>
+  </div>
+  <div class="panel-body">
+    <%= erb :hand, :locals => { :hand => session["player_hand"] } %>
+  </div>
+</div>
+
+<form style="padding: 1em">
+  <button formaction="hit" class="btn btn-warning">Hit</button>
+  <button formaction="stay" class="btn btn-primary">Stay</button>
+</form>
+
+<div class='panel panel-default'>
+  <div class="panel-heading">
+    <h3 class='panel-title'>Dealer hand:</h3>
+  </div>
+  <div class="panel-body">
+    <%= erb :hand, :locals => { :hand => session["dealer_hand"] } %>
+  </div>
+</div>
+
+<a href="/">Start a new game</a>

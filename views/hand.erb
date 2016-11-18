@@ -1,0 +1,6 @@
+<ul>
+  <% hand.cards.each do |card| %>
+  <li><%= card.to_s %></li>
+  <% end %>
+</ul>
+Value: <span class='badge'><%= hand.value %></span>
