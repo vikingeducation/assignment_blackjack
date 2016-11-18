@@ -9,7 +9,6 @@ module BlackjackHelper
 
   def hit_me(cards)
     cards << draw_from_deck
-    save_cards(session["player_cards"],session["dealer_cards"])
   end
 
   def get_points(cards)

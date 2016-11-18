@@ -34,6 +34,13 @@ module CardsHelper
     [value, suit]
   end
 
+  def pair_setup
+    session["player2_cards"] = session["player_cards"][1]
+    hit_me(session["player2_cards"])
+    session["player_cards"].pop
+    hit_me(session["player_cards"])
+  end
+
   def save_cards(player_cards, dealer_cards)
     session["player_cards"] = player_cards
     session["dealer_cards"] = dealer_cards

@@ -38,22 +38,30 @@ get '/blackjack' do
     redirect to('game_over')
   end
 
-  if params[:split]
-
-
-  end
-
-
   erb :blackjack, locals: {
                             bet_placed: bet_placed,
-                            player_cards: session['player_cards'],
+                            player_cards: [['8',"nil"],["8", "nil"]],
                             dealer_cards: session['dealer_cards'],
 
                           }
 end
 
-get 'blackjack2' do
-  
+get '/blackjack2' do
+  unless session["player2_cards"]
+    pair_setup
+    redirect to('blackjack') if blackjack?(session['player2_cards'])
+  end
+
+  if params[:hit]
+    hit_me(session['player2_cards'])
+    redirect to('blackjack') if busted?(session['player2_cards'])
+  end
+
+
+  erb :blackjack2,locals: {
+                            player_cards: session['player2_cards'],
+                            dealer_cards: session['dealer_cards'],
+                          }
 end
 
 get '/game_over' do
@@ -68,6 +76,7 @@ get '/game_over' do
   d_cards = session['dealer_cards']
   bet = session['bet']
   bankroll = session['bankroll']
+  p2_cards = session["player2_cards"]
 
   session.clear
   session['bankroll'] = bankroll
@@ -75,6 +84,7 @@ get '/game_over' do
   erb :game_over, locals: {
                             outcome: outcome,
                             player_cards: p_cards,
+                            player2_cards: p2_cards,
                             dealer_cards: d_cards,
                             player_points: sum_points( p_cards ),
                             dealer_points: sum_points( d_cards ),
