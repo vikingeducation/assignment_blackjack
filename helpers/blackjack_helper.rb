@@ -49,8 +49,8 @@ module BlackjackHelper
 
   def get_outcome
     return 'lost' if lost?
-    return 'draw' if draw?
     return 'won' if won?
+    return 'draw'
   end
 
   def won?
@@ -61,6 +61,7 @@ module BlackjackHelper
   end
 
   def lost?
+    return false if busted?(session['dealer_cards'])
     busted?(session['player_cards']) ||
     sum_points(session['player_cards']) <
     sum_points(session['dealer_cards'])

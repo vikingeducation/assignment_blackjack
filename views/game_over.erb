@@ -4,14 +4,16 @@
 
 <h2> The dealer's hand was <%= dealer_cards %>, worth <%= dealer_points %> points.</h2>
 
-<% if player2_hand %>
+<h2> You <%=outcome%> <%= bet %> dollars, for a total remaing pot of <%= bankroll %></h2>
+
+<% if player2_cards %>
 <h2> The second player hand was <%= player2_cards  %>.</h2>
 <% end %>
 
- <form action="/blackjack" method="get">
-   <input type="submit" value="Play again?">
+ <form class='form-inline' action="/blackjack" method="get">
+   <input type="submit" class='btn btn-primary' value="Play again?">
  </form>
 
- <form action="/" method="get">
-   <input type="submit" value="Home">
+ <form class='form-inline' action="/" method="get">
+   <input type="submit" class='btn btn-primary' value="Home">
  </form>

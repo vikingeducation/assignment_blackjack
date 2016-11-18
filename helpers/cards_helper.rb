@@ -35,7 +35,7 @@ module CardsHelper
   end
 
   def pair_setup
-    session["player2_cards"] = session["player_cards"][1]
+    session["player2_cards"] = session["player_cards"][1].dup
     hit_me(session["player2_cards"])
     session["player_cards"].pop
     hit_me(session["player_cards"])

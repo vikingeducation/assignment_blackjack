@@ -40,7 +40,7 @@ get '/blackjack' do
 
   erb :blackjack, locals: {
                             bet_placed: bet_placed,
-                            player_cards: [['8',"nil"],["8", "nil"]],
+                            player_cards: session['player_cards'],
                             dealer_cards: session['dealer_cards'],
 
                           }
@@ -54,6 +54,7 @@ get '/blackjack2' do
 
   if params[:hit]
     hit_me(session['player2_cards'])
+    p busted?(session['player2_cards'])
     redirect to('blackjack') if busted?(session['player2_cards'])
   end
 

@@ -3,9 +3,9 @@
 <h1>Welcome to the game!</h1>
 
 <% unless bet_placed %>
-  <form action="blackjack" method="get">
+  <form class='form-inline' action="blackjack" method="get">
     <input type="number" name="bet" placeholder="How much would you like to bet?">
-    <input type="submit" value="Bet!">
+    <input type="submit" class='btn btn-primary' value="Bet!">
   </form>
 <% else %>
   <h2> Current bet: <%= bet_placed %> </h2>
@@ -13,22 +13,38 @@
   <h4>Your hand is <%= player_cards %></h4>
   <h4>The dealer's visible card is <%= dealer_cards[0] if dealer_cards %></h4>
 
-  <form action="blackjack" method="get">
-    <input type="submit" name="hit" value="Hit!">
-  </form>
+<div class='container'>
+  <div class='row'>
 
-  <form action="game_over" method="get">
-    <input type="submit" name="stay" value="Stay!">
-  </form>
-  <% unless player_cards.to_a.length > 2 %>
-  <form action="blackjack" method="get">
-    <input type="submit" name="double" value="Double!">
-  </form>
-  <% if player_cards[0][0] == player_cards[1][0] %>
-   <form action="blackjack2" method="get">
-    <input type="submit" name="split" value="Split!">
-  </form>
-  <% end %>
-  <% end %>
+      <div class='col-xs-1'>
+      <form action="blackjack" method="get">
+        <input type="submit" class='btn btn-primary' name="hit" value="Hit!">
+      </form>
+      </div>
+
+      <div class='col-xs-1'>
+      <form action="game_over" method="get">
+        <input type="submit" class='btn btn-primary' name="stay" value="Stay!">
+      </form>
+      </div>
+
+      <% unless player_cards.to_a.length > 2 %>
+      <div class='col-xs-1'>
+      <form action="blackjack" method="get">
+        <input type="submit" class='btn btn-primary' name="double" value="Double!">
+      </form>
+      </div>
+
+      <% if player_cards[0][0] == player_cards[1][0] %>
+      <div class='col-xs-1'>
+        <form action="blackjack2" method="get">
+          <input type="submit" class='btn btn-primary' name="split" value="Split!">
+        </form>
+      </div>
+      <% end %>
+      <% end %>
+
+  </div>
+  </div>
 
 <% end %>
