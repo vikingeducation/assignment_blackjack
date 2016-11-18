@@ -1,6 +1,6 @@
 <form action="/blackjack" method="post" class="form-inline">
   <label for="bet">Bet:
-    <input id="bet" class="form-control" type="number" name="bet" value="<%= bet %>" <%= disabled %>>
+    <input id="bet" class="form-control" type="number" name="bet" value="<%= bet %>"<%= locals['disabled'] %>>
   </label>
   <button class="btn btn-primary" type="submit" name="hit">Hit</button>
   <button class="btn btn-primary" type="submit" name="stay">Stay</button>

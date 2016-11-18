@@ -27,11 +27,12 @@ get '/blackjack' do
                                  opponent: user)
 
   # update game state
-  session['deck'] = deck.cards
+  session['deck']        = deck.cards
   session['dealer_hand'] = dealer_hand
-  session['user_bet'] = session['user_bet'].to_i || 500
-  session['user_cash'] = (session['user_cash'].to_i - session['user_bet']) || 9500
-  session['user_hand'] = user_hand
+  session['user_bet']    = session['user_bet'] || 500
+  session['user_cash']   = (user.betting_pool - session['user_bet'].to_i)
+  user.betting_pool      = session['user_cash']
+  session['user_hand']   = user_hand
 
   # if user stays
   if session['stay']
@@ -41,13 +42,17 @@ get '/blackjack' do
 
   # check for bust
   if user.bust? || dealer.bust?
-    session['user_hand'] = nil
+    session['bet']         = nil
     session['dealer_hand'] = nil
-    session['deck'] = nil
+    session['deck']        = nil
+    session['disabled']    = nil
+    session['user_hand']   = nil
   end
 
-  erb :blackjack, locals: { user: user,
-                            dealer: dealer }
+  erb :blackjack, locals: { bet: session['user_bet'].to_i,
+                            user: user,
+                            dealer: dealer,
+                            disabled: session['disabled'] }
 end
 
 post '/blackjack' do
@@ -57,8 +62,11 @@ post '/blackjack' do
     user = Blackjack::User.new(hand: session['user_hand'])
     user.hand.concat(deck.draw(1))
     session['user_hand'] = user.hand
+    session['disabled']  = ' disabled'
+    session['user_bet']  = params[:bet]
   elsif params[:stay]
-    session['stay'] = true
+    session['stay']      = true
+    session['disabled']  = ' disabled'
   end
 
   redirect to '/blackjack'

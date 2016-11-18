@@ -26,7 +26,7 @@
 <!-- # player's bet & move -->
 
 <% if !(user.bust? || dealer.bust?) %>
-  <%= erb :'shared/_user_interaction_form', locals: { disabled: disabled,
+  <%= erb :'shared/_user_interaction_form', locals: { disabled: locals['disabled'],
                                                       bet: bet } %>
 <% elsif user.bust? %>
   <%= erb :'shared/_play_again', locals: { user: user,
