@@ -2,7 +2,7 @@ require 'sinatra/reloader'
 
 module BlackjackHelpers
 
-  def add_card
+ def add_card
     values = (2..11).to_a
     card = values.sample
     card
@@ -30,10 +30,17 @@ module BlackjackHelpers
       hit(session[:turn])
       total = hand_total(session[:dealer_hand])
     end
+    twenty_one?("dealer_hand")
   end
 
-  def bet
-    #
+  def make_bet(bet)
+    puts session[:bank_roll]
+    session[:bank_roll] -= bet
+    puts session[:bank_roll]
+  end
+
+  def valid_bet?(bet)
+    bet < session[:bank_roll]
   end
 
   def reset_bank
@@ -44,7 +51,7 @@ module BlackjackHelpers
     this_hand = session[player]
     sum = hand_total(this_hand)
     this_hand[this_hand.index(11)] = 1 if sum > 21 && this_hand.include?(11)
-    !!(hand_total(this_hand) > 21)
+    hand_total(this_hand) > 21
   end
 
   def hand_total(hand)
@@ -60,7 +67,7 @@ module BlackjackHelpers
   end
 
   def twenty_one?(player)
-    !!(hand_total(session[player.to_sym]) == 21)
+    hand_total(session[player.to_sym]) == 21
   end
 
   def update_bank
