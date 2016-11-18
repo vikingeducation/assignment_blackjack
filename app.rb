@@ -29,8 +29,8 @@ get '/blackjack' do
   # update game state
   session['deck'] = deck.cards
   session['dealer_hand'] = dealer_hand
-  session['user_bet'] = session['user_bet'] || 0
-  session['user_cash'] =
+  session['user_bet'] = session['user_bet'].to_i || 500
+  session['user_cash'] = (session['user_cash'].to_i - session['user_bet']) || 9500
   session['user_hand'] = user_hand
 
   # if user stays
