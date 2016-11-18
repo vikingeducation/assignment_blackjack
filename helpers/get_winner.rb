@@ -1,27 +1,29 @@
 module GetWinner
 
   def winner(dealer_hand, player_hand)
-    dealer_score = prox_twenty_one(dealer_hand)
-    player_score = prox_twenty_one(player_hand)
+    return :tie if player_hand.bust? && dealer_hand.bust?
+    return :tie if player_hand.value == dealer_hand.value
 
-    return "TIE!!!" if player_score < 1 && dealer_score < 1
-    return "TIE!!!" if player_score == dealer_score
+    return :player if dealer_hand.bust?
+    return :dealer if player_hand.bust?
 
-    return "Dealer busts Player wins" if dealer_score < 0
-    return "You bust, I win" if player_score < 0
-
-    if player_score < dealer_score
-      "You Win!!! Congratulations!"
-    else
-      "I Win!! Your money is mine!!"
-    end
+    return :player if player_hand.value > dealer_hand.value
+    return :dealer
   end
 
-  def prox_twenty_one(hand_score)
-    if hand_score > 21
-      -1
-    else
-      21 - hand_score
+  def get_winning_message(winning_player, dealer_hand, player_hand)
+    if winning_player == :player && dealer_hand.bust?
+      "Dealer busted! You win!"
+    elsif winning_player == :player
+      "You win!"
+    elsif winning_player == :tie && player_hand.bust? && dealer_hand.bust?
+      "Both players busted! Tie!"
+    elsif winning_player == :tie
+      "Tie!"
+    elsif winning_player == :dealer && player_hand.bust?
+      "You busted! I win!"
+    elsif winning_player == :dealer
+      "I win! I take your money!"
     end
   end
 

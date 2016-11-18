@@ -1,7 +1,7 @@
-<p>Money: <%= bankroll %></p>
+<p <%= 'style="color: red"' if params['insufficient']=='true' %> >Money: <%= bankroll %></p>
 
-<form action = '' method='get'>
+<form action='/bet' method='post'>
   <p>Enter your bet</p>
-  <input type='text' placeholder="place bet here">
-  <input type='submit' value='submit'>
+  <input type='text' name='bet' placeholder="place bet here">
+  <input type='submit'>
 </form>

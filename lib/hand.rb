@@ -6,10 +6,6 @@ class Hand
     @cards = []
   end
 
-  def sort
-
-  end
-
   def value
     total = 0
     cards.sort! do |a, b|
@@ -39,6 +35,10 @@ class Hand
 
   def numeric_string?(string)
     string == string.to_i.to_s
+  end
+
+  def bust?
+    value > 21
   end
 
 end
