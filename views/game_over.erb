@@ -1,0 +1,30 @@
+<h1>You <%= outcome %>!!</h1>
+
+<h2> Your hand was <%= player_cards %>, worth <%= player_points %> points.</h2>
+
+<h2> The dealer's hand was <%= dealer_cards %>, worth <%= dealer_points %> points.</h2>
+
+<h2> You <%=outcome%> <%= bet %> dollars, for a total remaing pot of <%= bankroll %></h2>
+
+<% if player2_cards %>
+<h2> The second player hand was <%= player2_cards  %>.</h2>
+<% end %>
+
+<div class='container'>
+  <div class='row'>
+
+    <div class='col-xs-3'>
+     <form class='form-inline' action="/blackjack" method="get">
+       <input type="submit" class='btn btn-primary' value="Play again?">
+     </form>
+    </div>
+
+    <div class='col-xs-3'>
+     <form class='form-inline' action="/" method="get">
+       <input type="submit" class='btn btn-primary' value="Home">
+     </form>
+    </div>
+
+  </div>
+
+</div>
