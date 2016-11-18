@@ -38,6 +38,11 @@ get '/blackjack' do
     redirect to('game_over')
   end
 
+  if params[:split]
+
+
+  end
+
 
   erb :blackjack, locals: {
                             bet_placed: bet_placed,
@@ -45,6 +50,10 @@ get '/blackjack' do
                             dealer_cards: session['dealer_cards'],
 
                           }
+end
+
+get 'blackjack2' do
+  
 end
 
 get '/game_over' do

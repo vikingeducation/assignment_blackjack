@@ -11,7 +11,16 @@ module CardsHelper
           }
 
   def load_deck
-    session["deck"] ||= DECK.dup
+    session["deck"] ||= generate_deck
+  end
+
+  def generate_deck
+    deck = DECK.dup
+
+    deck.each do |value, suits|
+        deck[value] = suits.dup
+    end
+    deck
   end
 
   def draw_from_deck
@@ -21,7 +30,7 @@ module CardsHelper
 
     session['deck'].delete(value) if session["deck"][value].empty?
     session['deck'] = nil if session['deck'].empty?
-    p session['deck'] 
+
     [value, suit]
   end
 
