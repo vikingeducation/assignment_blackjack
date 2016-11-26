@@ -1,0 +1,43 @@
+<!-- dealer's hand -->
+
+<div class="row">
+  <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+    <p>Dealer's Hand: <%= dealer.hand_view %></p>
+    <p>Hand Value: <%= dealer.hand_value %></p>
+  </div>
+</div>
+
+<br>
+<br>
+<br>
+
+<!-- # player's hand -->
+
+<div class="row">
+  <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+    <p>Player's Hand: <%= user.hand_view %></p>
+    <p>Hand Value: <%= user.hand_value %></p>
+    <p>Betting Pool: <%= user.betting_view %></p>
+  </div>
+</div>
+
+<br>
+
+<!-- # player's bet & move -->
+
+<% if !(user.bust? || dealer.bust?) %>
+  <%= erb :'shared/_user_interaction_form', locals: { disabled: locals['disabled'],
+                                                      bet: bet } %>
+<% elsif user.bust? %>
+  <%= erb :'shared/_play_again', locals: { user: user,
+                                           dealer: dealer } %>
+<% elsif dealer.bust? %>
+  <%= erb :'shared/_play_again', locals: { user: user,
+                                           dealer: dealer } %>
+<% end %>
+
+<!--
+# button to stay
+# button to hit
+# instructions
+-->
