@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BlackJack</title>
+</head>
+<body>
+  <%= if check_win?(@player,@dealer) %>
+    <h1>Player Wins Hand</h1>
+  <%= elsif check_win?(@dealer,@player) %>
+    <h1>Dealer Wins Hand</h1>
+  <%= else %>
+    <h1>It's a tie!</h1>
+  <%= end %>
+
+  <div>
+    <h1>Dealer</h1>
+    <div><%= JSON.parse(session[:dealer]) %></div>
+  </div>
+  <div>
+    <h1>Player</h1>
+    <div><%= JSON.parse(session[:player]) %></div>
+  </div>
+</body>
+</html>
