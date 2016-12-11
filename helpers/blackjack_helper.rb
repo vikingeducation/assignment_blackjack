@@ -1,14 +1,14 @@
 module BlackjackHelper
   def load_deck
-    CardDeck.new({:created => JSON.parse( session[:deck])})
+    session[:deck] = [].to_json if session[:deck].nil?
   end
 
   def load_player
-    Player.new({:created => JSON.parse( session[:player])})
+    session[:player] = [].to_json if session[:player].nil?
   end
 
   def load_dealer
-    Player.new({:created => JSON.parse( session[:dealer])})
+    session[:dealer] = [].to_json if session[:dealer].nil?
   end
 
   def save_deck(card_deck)
@@ -16,10 +16,14 @@ module BlackjackHelper
   end
 
   def save_player(player_hand)
-    session[:player] = player_hand.deck.to_json
+    session[:player] = player_hand.hand.to_json
   end
 
   def save_dealer(dealer_hand)
-    session[:player] = dealer_hand.deck.to_json
+    session[:dealer] = dealer_hand.hand.to_json
+  end
+
+  def check_win?(person_1,person_2)
+    return true if person_1.hi > person_2.hi & !person_1.bust? & person_1 <= 21
   end
 end

@@ -1,6 +1,7 @@
 class CardDeck
-  def initialize(options = {:created => []})
-    @deck = create_deck if options[:created].nil?
+  attr_reader :deck
+  def initialize(current = [])
+    @deck = current.empty? ? create_deck : current
   end
 
   def empty_deck?
@@ -8,7 +9,8 @@ class CardDeck
   end
 
   def take_card(player)
-    player.hand >> @deck.pop
+    player.hand << @deck.pop
+    player.hand_sum
   end
 
   private

@@ -4,6 +4,14 @@
   <title>BlackJack</title>
 </head>
 <body>
+  <%= if check_win?(@player,@dealer) %>
+    <h1>Player Wins Hand</h1>
+  <%= elsif check_win?(@dealer,@player) %>
+    <h1>Dealer Wins Hand</h1>
+  <%= else %>
+    <h1>It's a tie!</h1>
+  <%= end %>
+
   <div>
     <h1>Dealer</h1>
     <div><%= JSON.parse(session[:dealer]) %></div>
@@ -11,16 +19,6 @@
   <div>
     <h1>Player</h1>
     <div><%= JSON.parse(session[:player]) %></div>
-    <h2>Hi: <%= @player.hi %> Low:<%= @player.low %></h2>
   </div>
-
-  <form action="blackjack/hit" method="POST">
-    <input type="submit" value="Hit Me">
-  </form>
-
-  <form action="blackjack/stay" method="GET">
-    <input type="submit" value="Stay">
-  </form>
-
 </body>
 </html>
