@@ -1,0 +1,22 @@
+<h1>Player's Hand</h1>
+<%= player_hand %>
+<form action="blackjack/stay" method="get">
+  <input type="radio" name="stay" value="stay">Stay<br>
+  <input type="submit" value="Submit!">
+</form>
+
+<form action="blackjack/hit" method="post">
+  <input type="radio" name="hit" value="hit">Hit<br>
+  <input type="submit" name="Submit!">
+</form>
+
+<h1>Dealer's Hand</h1>
+<%= dealer_hand %>
+
+
+<br>
+<% if message %>
+  <h1><%= message %></h1>
+<% end %>
+
+
