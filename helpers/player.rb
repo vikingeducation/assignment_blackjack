@@ -1,10 +1,27 @@
 class Player
 
-  attr_accessor :cards
+  attr_accessor :bankroll, :bet
+  attr_reader :cards
 
-  def initialize(cards)
+  def initialize(cards, bankroll=nil, bet=nil)
     @cards = cards
+    @bankroll = bankroll ? bankroll : 1000
+    @bet = bet
   end
+
+  def valid?(bet)
+    if bet <= @bankroll
+      place_bet(bet)
+      return true
+    else
+      return false
+    end
+  end
+
+  def place_bet(bet)
+      @bankroll -= bet
+      @bet = bet
+    end
 
   def sum
     values = @cards.map { |card| card.value }
@@ -27,5 +44,14 @@ class Player
   def elevent_point_ace?(value, sum)
     value == "A" && sum < 12
   end
+
+  def wins
+    @bankroll += (bet * 2)
+  end
+
+  def ties
+    @bankroll += bet
+  end
+
 
 end

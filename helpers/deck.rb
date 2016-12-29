@@ -4,29 +4,29 @@ class Deck
 
   attr_accessor :cards
 
-  def initialize(deck=nil)
-    @deck = deck ? deck : new_deck
+  def initialize(cards=nil)
+    @cards = cards ? cards : new_deck
   end
 
   def new_deck
     values = %w(A 2 3 4 5 6 7 8 9 10 J Q K)
     suits = %w(spades hearts diamonds clubs)
-    deck = values.product(suits)
-    deck.map { |value, suit| Card.new(value, suit) }.shuffle
+    cards = values.product(suits)
+    cards.map { |value, suit| Card.new(value, suit) }.shuffle
   end
 
   def shuffle
-    @deck.shuffle
+    @cards.shuffle
   end
 
   def deal_hand
     hand = []
-    2.times { hand << @deck.pop }
+    2.times { hand << @cards.pop }
     hand
   end
 
   def hit
-    @deck.pop
+    @cards.pop
   end
 
 end

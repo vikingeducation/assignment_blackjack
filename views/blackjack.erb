@@ -3,29 +3,18 @@
 <%= card.suit %><%= card.value %><br>
 <% end %>
 
-
-<form action="/blackjack/stay" method="get">
-  <input type="submit" value="Stay!">
-</form>
-<form action="/blackjack/hit" method="post">
-  <input type="submit" value="Hit!">
-</form>
+<%= erb :"shared/form" %>
 
 <h1>Dealer's Hand</h1>
 <% dealer_hand.each do |card| %>
 <%= card.suit %><%= card.value %><br>
 <% end %>
 
-
 <br>
-<% if message %>
-  <h1><%= message %></h1>
-<% end %>
+<h1><%= message if message %></h1>
+<h4>Player Sum <%= player_sum if player_sum %></h4>
+<h4>Dealer Sum <%= dealer_sum  if dealer_sum %></h4>
 
-<% if player_sum %>
-  <h4>Player Sum <%= player_sum %></h4>
-<% end %>
-<% if dealer_sum %>
-  <h4>Dealer Sum <%= dealer_sum %></h4>
-<% end %>
+<h3>Bankroll: <%= bankroll %></h3>
 
+<a href="/">New Game</a>
