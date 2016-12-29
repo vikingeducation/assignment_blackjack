@@ -1,6 +1,6 @@
 module BlackjackHelper
 
-  def load_player_hand
+  def load_player_cards
     session[:player_cards]
   end
 
@@ -12,8 +12,8 @@ module BlackjackHelper
     session[:bet]
   end
 
-  def load_dealer_hand
-    session[:dealer_hand]
+  def load_dealer_cards
+    session[:dealer_cards]
   end
 
   def load_deck

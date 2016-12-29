@@ -1,4 +1,10 @@
 <h1>Dealer's Hand</h1>
-<% dealer_hand.cards.each do |card| %>
-<%= card.suit %><%= card.value %><br>
+
+
+<% if message.nil? %>
+  <%= dealer_hand.first.suit %><%= dealer_hand.first.value %>
+<% else %>
+  <% dealer_hand.each do |card| %>
+    <%= card.suit %><%= card.value %><br>
+  <% end %>
 <% end %>
