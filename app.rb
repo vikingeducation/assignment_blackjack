@@ -52,12 +52,9 @@ get '/blackjack' do
                    bet: player_hand.bet, 
                    dealer_cards: dealer_hand.cards } )
 
-  erb :blackjack, locals: { player_hand: player_hand.cards, 
-                            dealer_hand: dealer_hand.cards, 
-                            message: nil, 
-                            player_sum: nil, 
-                            dealer_sum: nil,
-                            bankroll: player_hand.bankroll }
+  erb :blackjack, locals: { player_hand: player_hand, 
+                            dealer_hand: dealer_hand, 
+                            message: nil }
 end
 
 post '/blackjack/hit' do
@@ -74,12 +71,9 @@ post '/blackjack/hit' do
                    dealer_cards: dealer_hand.cards } )
 
   redirect "/blackjack/stay" if player_hand.sum > 21
-  erb :blackjack, locals: { player_hand: player_hand.cards, 
-                            dealer_hand: dealer_hand.cards, 
-                            message: nil, 
-                            player_sum: nil, 
-                            dealer_sum: nil,
-                            bankroll: player_hand.bankroll }
+  erb :blackjack, locals: { player_hand: player_hand, 
+                            dealer_hand: dealer_hand, 
+                            message: nil }
 end
 
 get '/blackjack/stay' do
@@ -96,12 +90,9 @@ get '/blackjack/stay' do
                    bet: player_hand.bet, 
                    dealer_cards: dealer_hand.cards } )
 
-  erb :blackjack, locals: { player_hand: player_hand.cards, 
-                            dealer_hand: dealer_hand.cards, 
-                            message: message,
-                            player_sum: player_hand.sum, 
-                            dealer_sum: dealer_hand.sum,
-                            bankroll: player_hand.bankroll }
+  erb :blackjack, locals: { player_hand: player_hand, 
+                            dealer_hand: dealer_hand, 
+                            message: message }
 end
 
 

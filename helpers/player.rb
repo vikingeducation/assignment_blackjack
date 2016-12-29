@@ -19,9 +19,9 @@ class Player
   end
 
   def place_bet(bet)
-      @bankroll -= bet
-      @bet = bet
-    end
+    @bankroll -= bet
+    @bet = bet
+  end
 
   def sum
     values = @cards.map { |card| card.value }
