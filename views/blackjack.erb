@@ -1,0 +1,15 @@
+<%= erb :"shared/player_hand", locals: { player_hand: player.cards } %>
+
+<%= erb :"shared/form" %>
+
+<%= erb :"shared/dealer_hand", locals: { dealer_hand: dealer.cards,
+                                         message: message } %>
+
+<br>
+<h1><%= message if message %></h1>
+<h4>Player Sum <%= player.sum %></h4>
+<h4>Dealer Sum <%= dealer.sum %></h4>
+
+<h3>Bankroll: <%= player.bankroll %></h3>
+
+<a href="/">New Game</a>
