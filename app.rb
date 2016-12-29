@@ -3,6 +3,7 @@ require 'json'
 require 'pry'
 require './helpers/blackjack_helper.rb'
 require './helpers/deck.rb'
+require './helpers/player.rb'
 
 helpers BlackjackHelper
 
@@ -14,52 +15,53 @@ end
 
 get '/blackjack' do
   deck = Deck.new
-  player_hand = deck.deal_hand
-  dealer_hand = deck.deal_hand
+  player_hand = Player.new(deck.deal_hand)
+  dealer_hand = Player.new(deck.deal_hand)
 
-  save_deck(deck)
-  save_player_hand(player_hand)
-  save_dealer_hand(dealer_hand)
+  save_deck(deck.cards)
+  save_player_hand(player_hand.cards)
+  save_dealer_hand(dealer_hand.cards)
 
-  display_player = player_hand.map {|card| card.value }
-  display_dealer = dealer_hand.map {|card| card.value }
-
-  erb :blackjack, locals: { player_hand: display_player, dealer_hand: display_dealer, message: nil }
+  erb :blackjack, locals: { player_hand: player_hand.cards, 
+                            dealer_hand: dealer_hand.cards, 
+                            message: nil, 
+                            player_sum: nil, 
+                            dealer_sum: nil  }
 end
 
 post '/blackjack/hit' do
-  deck = load_deck
-  player_hand = load_player_hand
-  dealer_hand = load_dealer_hand
 
-  player_hand << deck.hit
+  deck = Deck.new(load_deck)
+  player_hand = Player.new(load_player_hand)
+  dealer_hand = Player.new(load_dealer_hand)
 
-  save_deck(deck)
-  save_player_hand(player_hand)
-  save_dealer_hand(dealer_hand)
+  player_hand.cards << deck.hit
 
-  display_player = player_hand.map {|card| card.value }
-  display_dealer = dealer_hand.map {|card| card.value }
+  save_deck(deck.cards)
+  save_player_hand(player_hand.cards)
+  save_dealer_hand(dealer_hand.cards)
 
-  redirect "/blackjack/stay" if sum(player_hand) > 21
-  erb :blackjack, locals: { player_hand: display_player, dealer_hand: display_dealer, message: nil }
+  redirect "/blackjack/stay" if sum(player_hand.cards) > 21
+  erb :blackjack, locals: { player_hand: player_hand.cards, 
+                            dealer_hand: dealer_hand.cards, 
+                            message: nil, 
+                            player_sum: nil, 
+                            dealer_sum: nil }
 end
 
 get '/blackjack/stay' do
-  binding.pry
-  deck = load_deck
-  player_hand = load_player_hand
-  dealer_hand = load_dealer_hand
+  deck = Deck.new(load_deck)
+  player_hand = Player.new(load_player_hand)
+  dealer_hand = Player.new(load_dealer_hand)
 
-  dealer_hand << deck.hit until sum(dealer_hand) >= 17
+  dealer_hits(dealer_hand, deck)
+  message = determine_results(dealer_hand, player_hand)
 
-  message = sum(dealer_hand) > sum(player_hand) ? "You lost!" : "You won!"
-  message = "Bust!" if sum(player_hand) > 21
-
-  display_player = player_hand.map {|card| card.value }
-  display_dealer = dealer_hand.map {|card| card.value }
-
-  erb :blackjack, locals: { player_hand: display_player, dealer_hand: display_dealer, message: message }
+  erb :blackjack, locals: { player_hand: player_hand.cards, 
+                            dealer_hand: dealer_hand.cards, 
+                            message: message,
+                            player_sum: sum(player_hand.cards), 
+                            dealer_sum: sum(dealer_hand.cards) }
 end
 
 

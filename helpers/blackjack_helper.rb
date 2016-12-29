@@ -24,26 +24,25 @@ module BlackjackHelper
     session[:deck] = deck
   end
 
-  def sum(hand)
-    sum_if_11(hand) <= 21 ? sum_if_11(hand) : sum_if_1(hand)
+  def dealer_hits(dealer_hand, deck)
+    dealer_hand.cards << deck.hit until sum(dealer_hand.cards) >= 17
   end
 
-  def sum_if_11(hand)
-    values = hand.map { |card| card.value }
-    sum = 0
-    values.each do |value|
-      if value == "A"
-        sum += 11
-      elsif value.to_i == 0
-        sum += 10
-      else
-        sum += value.to_i
-      end
+  def determine_results(dealer_hand, player_hand)
+    if sum(player_hand.cards) > 21
+      return "Player bust!"
+    elsif sum(dealer_hand.cards) > 21
+      return "Dealer bust!"
+    elsif sum(player_hand.cards) > sum(dealer_hand.cards)
+      return "Player wins!"
+    elsif sum(dealer_hand.cards) > sum(player_hand.cards)
+      return "Dealer wins!"
+    elsif sum(dealer_hand.cards) == sum(player_hand.cards)
+      return "Tie!"
     end
-    sum
   end
 
-  def sum_if_1(hand)
+  def sum(hand)
     values = hand.map { |card| card.value }
     sum = 0
     values.each do |value|
@@ -55,7 +54,14 @@ module BlackjackHelper
         sum += value.to_i
       end
     end
+    values.each do |value|
+      sum += 10 if elevent_point_ace?(value, sum)
+    end
     sum
+  end
+
+  def elevent_point_ace?(value, sum)
+    value == "A" && sum < 12
   end
 
 end

@@ -2,6 +2,8 @@ Card = Struct.new(:value, :suit)
 
 class Deck
 
+  attr_accessor :cards
+
   def initialize(deck=nil)
     @deck = deck ? deck : new_deck
   end

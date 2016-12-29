@@ -1,17 +1,20 @@
 <h1>Player's Hand</h1>
-<%= player_hand %>
-<form action="blackjack/stay" method="get">
-  <input type="radio" name="stay" value="stay">Stay<br>
-  <input type="submit" value="Submit!">
-</form>
+<% player_hand.each do |card| %>
+<%= card.suit %><%= card.value %><br>
+<% end %>
 
-<form action="blackjack/hit" method="post">
-  <input type="radio" name="hit" value="hit">Hit<br>
-  <input type="submit" name="Submit!">
+
+<form action="/blackjack/stay" method="get">
+  <input type="submit" value="Stay!">
+</form>
+<form action="/blackjack/hit" method="post">
+  <input type="submit" value="Hit!">
 </form>
 
 <h1>Dealer's Hand</h1>
-<%= dealer_hand %>
+<% dealer_hand.each do |card| %>
+<%= card.suit %><%= card.value %><br>
+<% end %>
 
 
 <br>
@@ -19,4 +22,10 @@
   <h1><%= message %></h1>
 <% end %>
 
+<% if player_sum %>
+  <h1>Player Sum <%= player_sum %></h1>
+<% end %>
+<% if dealer_sum %>
+  <h1>Dealer Sum <%= dealer_sum %></h1>
+<% end %>
 
