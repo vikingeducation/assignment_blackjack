@@ -11,57 +11,33 @@ module BlackjackHelper
   def load_deck
     session[:deck]
   end
-   
-  def save_player_hand(hand)  
-    session[:player_hand] = hand
-  end
 
-  def save_dealer_hand(hand)  
-    session[:dealer_hand] = hand
-  end
-
-  def save_deck(deck)
+  def save_sessions(deck, player, dealer)
     session[:deck] = deck
+    session[:player_hand] = player
+    session[:dealer_hand] = dealer
+  end
+   
+  def player_hits(player_hand, deck)
+    player_hand.cards << deck.hit
   end
 
   def dealer_hits(dealer_hand, deck)
-    dealer_hand.cards << deck.hit until sum(dealer_hand.cards) >= 17
+    dealer_hand.cards << deck.hit until dealer_hand.sum >= 17
   end
 
-  def determine_results(dealer_hand, player_hand)
-    if sum(player_hand.cards) > 21
+  def determine_results(dealer_sum, player_sum)
+    if player_sum > 21
       return "Player bust!"
-    elsif sum(dealer_hand.cards) > 21
+    elsif dealer_sum > 21
       return "Dealer bust!"
-    elsif sum(player_hand.cards) > sum(dealer_hand.cards)
+    elsif player_sum > dealer_sum
       return "Player wins!"
-    elsif sum(dealer_hand.cards) > sum(player_hand.cards)
+    elsif dealer_sum > player_sum
       return "Dealer wins!"
-    elsif sum(dealer_hand.cards) == sum(player_hand.cards)
+    elsif dealer_sum == player_sum
       return "Tie!"
     end
-  end
-
-  def sum(hand)
-    values = hand.map { |card| card.value }
-    sum = 0
-    values.each do |value|
-      if value == "A"
-        sum += 1
-      elsif value.to_i == 0
-        sum += 10
-      else
-        sum += value.to_i
-      end
-    end
-    values.each do |value|
-      sum += 10 if elevent_point_ace?(value, sum)
-    end
-    sum
-  end
-
-  def elevent_point_ace?(value, sum)
-    value == "A" && sum < 12
   end
 
 end
