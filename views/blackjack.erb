@@ -1,13 +1,32 @@
 <div class="container">
   <div class="jumbotron">
-    <h1 class="display-3">Hello, world!</h1>
-    <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-    <p><%= @dealer_pts %></p>
-    <p><%= @player_pts %></p>
+    <h1 class="display-3">New game of blackjack</h1>
+    <p class="lead">Your bankroll: $<%= "#{'%.2f' % bankroll}" %></p>
     <hr class="my-4">
-    <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-    <p class="lead">
-      <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-    </p>
+    <% if alert %>
+      <div class="alert alert-danger">
+        <strong>Invalid bet!</strong> Please try again.
+      </div>
+    <% end %>
+    <% if bankroll >= 5 %>
+      <p>Place a bet:</p>
+      <div class="row">
+        <div class="col-sm-6 col-xs-12">
+          <form action="/blackjack/bet" method="post">
+            <div class="form-group">
+              <label for="bet">Your Bet:</label>
+              <input type="number" step="5" name="bet" min="5" max="<%= [bankroll, 500].min %>" class="form-control" id="bet" aria-describedby="betHelp" placeholder="5">
+              <small id="betHelp" class="form-text text-muted">Minimum bet of $5. Maximum bet of $500. Bet must be a multiple of 5. Bet cannot exceed your bankroll.</small>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+      </div>
+    <% else %>
+      <div class="alert alert-danger">
+        <strong>You are bankrupt!</strong>
+      </div>
+    <% end %>
+    </div>
   </div>
 </div>

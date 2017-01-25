@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="jumbotron">
+    <h1 class="display-3">Current game of blackjack</h1>
+    <p class="lead">Your bankroll: $<%= "#{'%.2f' % bankroll}" %></p>
+    <p class="lead">Your bet: $<%= "#{'%.2f' % bet}" %></p>
+    <hr class="my-4">
+    <% if show_cards %>
+      <div class="row">
+        <div class="col-xs-6">
+          <p>Your cards: <%= game.player_cards %> (<%= game.player_pts%>)</p>
+        </div>
+        <div class="col-xs-6">
+          <p>Dealer cards: <%= game.dealer_cards %> (<%= game.dealer_pts%>)</p>
+        </div>
+      </div>
+      <hr class="my-4">
+      <% if game.status == 'ongoing' %>
+        <%= erb :"partials/render_game_actions", locals: { game: game } %>
+      <% else %>
+        <%= erb :"partials/render_game_result", locals: { game: game } %>
+        <form action="/blackjack/play_again" method="post">
+          <button type="submit" class="btn btn-primary">Play again!</button>
+        </form>
+      <% end %>
+    <% else %>
+      <form action="/blackjack/deal_cards" method="post">
+        <button type="submit" class="btn btn-primary">Deal cards!</button>
+      </form>
+    <% end %>
+  </div>
+</div>
