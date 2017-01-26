@@ -2,7 +2,7 @@ require_relative 'constants'
 require_relative 'player'
 
 class Game
-  attr_reader :dealer_cards, :player_cards, :dealer_pts, :player_pts, :status
+  attr_reader :dealer_cards, :player_cards, :player_cards_2, :dealer_pts, :player_pts, :player_pts_2, :status, :status_2, :dealer_turn, :valid_split, :split_game, :activate_split_cards
 
   def initialize
     @deck = Constants::DECK.shuffle
@@ -11,37 +11,84 @@ class Game
     deal_initial_hands
     @dealer_pts = check_points(@dealer_cards)
     @player_pts = check_points(@player_cards)
+    @dealer_turn = false
+    @valid_split = valid_split? #true
     @status = check_blackjack
+    # for split games
+    @player_cards_2 = []
+    @player_pts_2 = nil
+    @split_game = false
+    @activate_split_cards = false
+    @status_2 = nil
   end
 
   def hit
-    @player_cards << @deck.pop
-    @player_pts = check_points(@player_cards)
-    @status = check_bust
+    if @activate_split_cards && @player_pts_2 != 'blackjack' && @player_pts_2 != 'bust'
+      @split_game = false
+      @player_cards_2 << @deck.pop
+      @player_pts_2 = check_points(@player_cards_2)
+      @status_2 = check_bust(@player_pts_2)
+      if (@player_pts != 'bust' && @player_pts_2 == 'bust') || @player_pts_2 == 'blackjack'
+        @dealer_turn = true
+        finish_dealer_turn
+        @status = determine_game_result(@player_pts)
+        @status_2 = determine_game_result(@player_pts_2)
+      end
+    elsif @player_pts != 'bust'
+      @player_cards << @deck.pop
+      @player_pts = check_points(@player_cards)
+      @status = check_bust(@player_pts)
+      @activate_split_cards = true if @split_game && @player_pts == 'blackjack'
+      @activate_split_cards = true if @split_game && @player_pts == 'bust'
+    end
   end
 
   def stay
-    finish_dealer_turn
-    @status = determine_game_result
-  end
-
-  def double
+    if @split_game && @player_cards.size > 1
+      @activate_split_cards = true 
+    elsif @activate_split_cards && @player_cards_2.size > 1
+      @dealer_turn = true
+      finish_dealer_turn
+      @status = determine_game_result(@player_pts)
+      @status_2 = determine_game_result(@player_pts_2) 
+    elsif @player_cards.size > 1
+      @dealer_turn = true
+      finish_dealer_turn
+      @status = determine_game_result(@player_pts)
+    end
   end
 
   def split
+    #if @valid_split
+      @valid_split = false
+      @player_cards_2 << @player_cards.pop
+      @player_pts = check_points(@player_cards)
+      @player_pts_2 = check_points(@player_cards_2)
+      @split_game = true
+      @status_2 = 'ongoing'
+    #end
   end
 
   private
 
-  def determine_game_result
+  def valid_split?
+    card_1 = convert_to_point_value(@player_cards[0][0])
+    card_2 = convert_to_point_value(@player_cards[1][0])
+    return true if card_1 == card_2
+    false
+  end
+
+  def determine_game_result(player_pts)
+    return 'tie' if player_pts == @dealer_pts
+    return 'lose' if player_pts == 'bust'
     return 'win' if @dealer_pts == 'bust'
-    return 'win' if @player_pts > @dealer_pts
-    return 'tie' if @player_pts == @dealer_pts
+    return 'blackjack' if player_pts == 'blackjack'
+    return 'win' if player_pts > @dealer_pts
     'lose'
   end
 
-  def check_bust
-    return 'lose' if @player_pts == 'bust'
+  def check_bust(player_pts)
+    return 'lose' if player_pts == 'bust'
     'ongoing'
   end
 
@@ -73,7 +120,7 @@ class Game
       ace_count.times do |i|
         points_array << points - 10 * (i + 1)
       end
-      points_array.select! { |sum| sum < 21 }
+      points_array.select! { |sum| sum <= 21 }
       return 'bust' if points_array.empty?
       return points_array.max
     end

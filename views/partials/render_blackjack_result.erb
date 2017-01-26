@@ -1,0 +1,89 @@
+<% if game.split_game || game.activate_split_cards %>
+  <% case game.status %>
+  <% when 'blackjack' %>
+    <% hand_1_payout = bet * 1.5 %>
+  <% when 'win' %>
+    <% hand_1_payout = bet %>
+  <% when 'lose' %>
+    <% hand_1_payout = -bet %>
+  <% when 'tie' %>
+    <% hand_1_payout = 0 %>
+  <% end %>
+  <% case game.status_2 %>
+  <% when 'blackjack' %>
+    <% hand_2_payout = bet * 1.5 %>
+  <% when 'win' %>
+    <% hand_2_payout = bet %>
+  <% when 'lose' %>
+    <% hand_2_payout = -bet %>
+  <% when 'tie' %>
+    <% hand_2_payout = 0 %>
+  <% end %>
+  <% net = hand_1_payout + hand_2_payout %>
+  <div class="alert alert-info" role="alert">
+    <strong>
+      Game results ( net: 
+      <% if net > 0 %>
+        + <%= "#{'$%.2f' % net}" %> ):
+      <% elsif hand_1_payout < 0 %>
+        - <%= "#{'$%.2f' % net.abs}" %> ):
+      <% else %>
+        +/- <%= "#{'$%.2f' % hand_1_payout}" %> ):
+      <% end %>
+    </strong>
+    &nbsp; 
+    Hand 1 ~ <%= game.status %> 
+    <% if hand_1_payout > 0 %>
+      ( + <%= "#{'$%.2f' % hand_1_payout}" %> )
+    <% elsif hand_1_payout < 0 %>
+      ( - <%= "#{'$%.2f' % hand_1_payout.abs}" %> )
+    <% else %>
+      ( +/- <%= "#{'$%.2f' % hand_1_payout}" %> )
+    <% end %>
+    &nbsp; | &nbsp;
+    Hand 2 ~ <%= game.status_2 %>
+    <% if hand_2_payout > 0 %>
+      ( + <%= "#{'$%.2f' % hand_2_payout}" %> )
+    <% elsif hand_2_payout < 0 %>
+      ( - <%= "#{'$%.2f' % hand_2_payout.abs}" %> )
+    <% else %>
+      ( +/- <%= "#{'$%.2f' % hand_2_payout}" %> )
+    <% end %>
+  </div>
+<% else %>
+  <% case game.status %>
+  <% when 'blackjack' %>
+    <div class="alert alert-success" role="alert">
+      <strong>You win $<%= "#{'%.2f' % (bet * 1.5)}" %>!</strong> - You have blackjack!
+    </div>
+  <% when 'win' %>
+    <div class="alert alert-success" role="alert">
+      <strong>You win $<%= "#{'%.2f' % bet }" %>!</strong> - 
+      <% if game.dealer_pts == 'bust' %>
+        You win with <%= game.player_pts %> points. The dealer has bust!
+      <% else %>
+        Your <%= game.player_pts %> points is greater than the dealer's <%= game.dealer_pts %> points!
+      <% end %>
+    </div>
+  <% when 'tie' %>
+    <div class="alert alert-info" role="alert">
+      <strong>It's a tie!</strong> - 
+      <% if game.player_pts == 'blackjack' %>
+        You and the dealer both have blackjack!
+      <% else %>
+        You and the dealer both have <%= game.player_pts %> points!
+      <% end %>
+    </div>
+  <% when 'lose' %>
+    <div class="alert alert-danger" role="alert">
+      <strong>Sorry, you lose $<%= "#{'%.2f' % bet }" %>!</strong> - 
+      <% if game.player_pts == 'bust' %>
+        You have bust!
+      <% elsif game.dealer_pts == 'blackjack' %>
+        The dealer has blackjack!
+      <% else %>
+        Your <%= game.player_pts %> points is less than the dealer's <%= game.dealer_pts %> points!
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

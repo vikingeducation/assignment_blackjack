@@ -1,23 +1,47 @@
 <div class="container">
   <div class="jumbotron">
-    <h1 class="display-3">Current game of blackjack</h1>
+    <h1 class="display-3 blackjack-header">Current game of blackjack:</h1>
     <p class="lead">Your bankroll: $<%= "#{'%.2f' % bankroll}" %></p>
-    <p class="lead">Your bet: $<%= "#{'%.2f' % bet}" %></p>
-    <hr class="my-4">
+    <% if game.split_game || game.activate_split_cards %>
+      <p class="lead">Your bet: $<%= "#{'%.2f' % bet}" %> x 2 (total: $<%= "#{'%.2f' % (bet * 2)}" %>)</p>
+    <% else %>
+      <p class="lead">Your bet: $<%= "#{'%.2f' % bet}" %></p>
+    <% end %>
+    <hr id="cards" class="my-4">
     <% if show_cards %>
       <div class="row">
-        <div class="col-xs-6">
-          <p>Your cards: <%= game.player_cards %> (<%= game.player_pts%>)</p>
+        <div class="col-xs-6"> 
+          <%= erb :"partials/render_blackjack_cards_and_pts", locals: { game: game, dealer: false, split: false } %>
         </div>
         <div class="col-xs-6">
-          <p>Dealer cards: <%= game.dealer_cards %> (<%= game.dealer_pts%>)</p>
+          <%= erb :"partials/render_blackjack_cards_and_pts", locals: { game: game, dealer: true, split: false } %>
         </div>
       </div>
+      <% if game.split_game || game.activate_split_cards %>
+        <br>
+        <div class="row">
+          <div class="col-xs-6"> 
+            <%= erb :"partials/render_blackjack_cards_and_pts", locals: { game: game, dealer: false, split: true } %>
+          </div>
+        </div>
+      <% end %>
       <hr class="my-4">
-      <% if game.status == 'ongoing' %>
-        <%= erb :"partials/render_game_actions", locals: { game: game } %>
+      <% if double_alert %>
+        <div class="alert alert-warning" role="alert">
+          <strong>You initial bet of $<%= "#{'%.2f' % (bet/2) }" %> has been doubled to $<%= "#{'%.2f' % bet }" %>!</strong>
+        </div>
+      <% end %>
+      <% if split_alert %>
+        <div class="alert alert-info" role="alert">
+          <strong>You have split your cards!</strong> Each hand now has a bet of $<%= "#{'%.2f' % bet }" %>
+        </div>
+      <% end %>
+      <% if game.status == 'ongoing' && !(game.split_game || game.activate_split_cards) %>
+        <%= erb :"partials/render_blackjack_actions", locals: { game: game, double_option: double_option, bankroll: bankroll, bet: bet } %>
+      <% elsif (game.split_game || game.activate_split_cards) && game.status_2 == 'ongoing' %>
+        <%= erb :"partials/render_blackjack_actions", locals: { game: game, double_option: double_option, bankroll: bankroll, bet: bet } %>
       <% else %>
-        <%= erb :"partials/render_game_result", locals: { game: game } %>
+        <%= erb :"partials/render_blackjack_result", locals: { game: game, bet: bet } %>
         <form action="/blackjack/play_again" method="post">
           <button type="submit" class="btn btn-primary">Play again!</button>
         </form>

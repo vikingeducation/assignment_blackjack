@@ -1,0 +1,70 @@
+<% if dealer %>
+  <% cards = game.dealer_cards %>
+  <% points = game.dealer_pts %>
+<% elsif split %> 
+  <% cards = game.player_cards_2 %>
+  <% points = game.player_pts_2 %>
+  <% hand = '2' %>
+<% else %>
+  <% cards = game.player_cards %>
+  <% points = game.player_pts %>
+  <% hand = '1' %>
+<% end %>
+
+<% if dealer %>
+  <p>Dealer's cards:</p>
+<% elsif game.split_game || game.activate_split_cards %>
+  <p>Hand <%= hand %>:</p>
+<% else %>
+  <p>Your cards:</p>
+<% end %>
+
+<% cards.each_with_index do |card, index| %>
+  <div class="blackjack-card <%= card[1] %>">
+    <% if game.split_game || game.activate_split_cards %>
+     <% unless dealer && index == 1 && !game.dealer_turn && game.status_2 == 'ongoing' %>
+        <%= card[0] %>
+        <% case card[1] %>
+        <% when 'spades' %>
+          <%= "\u2660" %>
+        <% when 'clubs' %>
+          <%= "\u2663" %>
+        <% when 'hearts' %>
+          <%= "\u2665" %>
+        <% when 'diamonds' %>
+          <%= "\u2666" %>
+        <% end %>
+      <% end %>
+    <% else %>
+      <% unless dealer && index == 1 && !game.dealer_turn && game.status == 'ongoing' %>
+        <%= card[0] %>
+        <% case card[1] %>
+        <% when 'spades' %>
+          <%= "\u2660" %>
+        <% when 'clubs' %>
+          <%= "\u2663" %>
+        <% when 'hearts' %>
+          <%= "\u2665" %>
+        <% when 'diamonds' %>
+          <%= "\u2666" %>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+<% end %>
+
+<br class="clear">
+
+<% if dealer && points == 'blackjack' %> 
+  <p>> Blackjack!</p>
+<% elsif dealer && game.dealer_turn && points.is_a?(Integer) %>
+  <p>> <%= points %> points</p>
+<% elsif dealer && game.dealer_turn && points == 'bust' %>
+  <p>> Bust!</p>
+<% elsif dealer == false && points == 'blackjack' %>
+  <p>> Blackjack!</p>    
+<% elsif dealer == false && points == 'bust' %>
+  <p>> Bust!</p>  
+<% elsif dealer == false %>
+  <p>> <%= points %> points</p>
+<% end %>
