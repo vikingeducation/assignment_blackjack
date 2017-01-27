@@ -1,11 +1,33 @@
 <div class="container">
   <div class="jumbotron">
-    <h1 class="display-3">Welcome to Blackjack!</h1>
-    <p class="lead">A brief description</p>
+    <h1 class="display-3">Viking Games!</h1>
+    <p class="lead">Play some games!</p>
     <hr class="my-4">
-    <p>How to play/instructions</p>
+    <h2>Blackjack:</h2>
+    <p>Rules:</p>
+    <ul>
+      <li>Player begins by betting.</li>
+      <li>Player and dealer are both dealt two cards (one card is face down for dealer).</li>
+      <li>If dealer has been dealt 21 points (blackjack), player loses unless also dealt blackjack.</li>
+      <li>If only player is dealt blackjack, player wins and is paid 3:2.</li>
+      <li>For non-blackjack hands, player always goes first and can HIT, STAY, DOUBLE, or SPLIT.</li>
+      <li>HIT: Another card is drawn from the deck and added to the point total.</li>
+      <li>STAY: Moves turn to dealer.</li>
+      <li>DOUBLE: Doubles the player's initial bet.</li>
+      <li>
+        SPLIT: This option is available if the two cards dealt have the same point value. Then, they can be split into two hands, each receiving a bet equal to the intial bet. Each of those hands is then played in sequence independently.
+      </li>
+      <li>
+        When it is dealer's turn, dealer will always hit if point value is less than or equal to 16. Dealer will also always stay if point value is greater than or equal to 17.
+      </li>
+      <li>Points: For cards of rank 2 to 10, the point value is equal to the rank. Jack, Queen, and King are worth 10 points. Ace is either 1 point or 11 points, depending on which value gives you a better outcome. The objective is to get as close as possible to 21 points without busting (22 points or more).</li>
+      <li>Win: Player point total is greater than dealer point total. Payout is 1:1. </li>
+      <li>Tie: Player and dealer have same point total. Bet is returned to player.</li>
+      <li>Lose: Player busts or has a smaller point total than dealer. Player loses bet.</li>
+    </ul>
+    <br>
     <p class="lead">
-      <a class="btn btn-primary btn-lg" href="/blackjack" role="button">Play a game!</a>
+      <a class="btn btn-primary btn-lg" href="/blackjack" role="button">Play blackjack!</a>
     </p>
   </div>
 </div>
