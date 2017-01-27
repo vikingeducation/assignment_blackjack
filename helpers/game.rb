@@ -12,7 +12,7 @@ class Game
     @dealer_pts = check_points(@dealer_cards)
     @player_pts = check_points(@player_cards)
     @dealer_turn = false
-    @valid_split = valid_split? #true
+    @valid_split = valid_split? 
     @status = check_blackjack
     # for split games
     @player_cards_2 = []

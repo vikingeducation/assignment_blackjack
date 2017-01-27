@@ -24,28 +24,26 @@
     <% if game.split_game || game.activate_split_cards %>
      <% unless dealer && index == 1 && !game.dealer_turn && game.status_2 == 'ongoing' %>
         <%= card[0] %>
-        <% case card[1] %>
-        <% when 'spades' %>
+        <% if card[1] == 'spades' %>
           <%= "\u2660" %>
-        <% when 'clubs' %>
+        <% elsif card[1] == 'clubs' %>
           <%= "\u2663" %>
-        <% when 'hearts' %>
+        <% elsif card[1] == 'hearts' %>
           <%= "\u2665" %>
-        <% when 'diamonds' %>
+        <% elsif card[1] == 'diamonds' %>
           <%= "\u2666" %>
         <% end %>
       <% end %>
     <% else %>
       <% unless dealer && index == 1 && !game.dealer_turn && game.status == 'ongoing' %>
         <%= card[0] %>
-        <% case card[1] %>
-        <% when 'spades' %>
+        <% if card[1] == 'spades' %>
           <%= "\u2660" %>
-        <% when 'clubs' %>
+        <% elsif card[1] == 'clubs' %>
           <%= "\u2663" %>
-        <% when 'hearts' %>
+        <% elsif card[1] == 'hearts' %>
           <%= "\u2665" %>
-        <% when 'diamonds' %>
+        <% elsif card[1] == 'diamonds' %>
           <%= "\u2666" %>
         <% end %>
       <% end %>

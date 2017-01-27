@@ -8,7 +8,7 @@ body {
   border-radius: 30%;
   background-color: #eee; }
 
-h1 .blackjack-header {
+h1.blackjack-header {
   margin: 0 0 15px;
   font-size: 30px;
 }

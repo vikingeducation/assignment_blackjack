@@ -1,22 +1,20 @@
 <% if game.split_game || game.activate_split_cards %>
-  <% case game.status %>
-  <% when 'blackjack' %>
+  <% if game.status == 'blackjack' %>
     <% hand_1_payout = bet * 1.5 %>
-  <% when 'win' %>
+  <% elsif game.status == 'win' %>
     <% hand_1_payout = bet %>
-  <% when 'lose' %>
+  <% elsif game.status == 'lose' %>
     <% hand_1_payout = -bet %>
-  <% when 'tie' %>
+  <% elsif game.status == 'tie' %>
     <% hand_1_payout = 0 %>
   <% end %>
-  <% case game.status_2 %>
-  <% when 'blackjack' %>
+  <% if game.status_2 == 'blackjack' %>
     <% hand_2_payout = bet * 1.5 %>
-  <% when 'win' %>
+  <% elsif game.status_2 == 'win' %>
     <% hand_2_payout = bet %>
-  <% when 'lose' %>
+  <% elsif game.status_2 == 'lose' %>
     <% hand_2_payout = -bet %>
-  <% when 'tie' %>
+  <% elsif game.status_2 == 'tie' %>
     <% hand_2_payout = 0 %>
   <% end %>
   <% net = hand_1_payout + hand_2_payout %>
@@ -51,12 +49,11 @@
     <% end %>
   </div>
 <% else %>
-  <% case game.status %>
-  <% when 'blackjack' %>
+  <% if game.status == 'blackjack' %>
     <div class="alert alert-success" role="alert">
       <strong>You win $<%= "#{'%.2f' % (bet * 1.5)}" %>!</strong> - You have blackjack!
     </div>
-  <% when 'win' %>
+  <% elsif game.status == 'win' %>
     <div class="alert alert-success" role="alert">
       <strong>You win $<%= "#{'%.2f' % bet }" %>!</strong> - 
       <% if game.dealer_pts == 'bust' %>
@@ -65,7 +62,7 @@
         Your <%= game.player_pts %> points is greater than the dealer's <%= game.dealer_pts %> points!
       <% end %>
     </div>
-  <% when 'tie' %>
+  <% elsif game.status == 'tie' %>
     <div class="alert alert-info" role="alert">
       <strong>It's a tie!</strong> - 
       <% if game.player_pts == 'blackjack' %>
@@ -74,7 +71,7 @@
         You and the dealer both have <%= game.player_pts %> points!
       <% end %>
     </div>
-  <% when 'lose' %>
+  <% elsif game.status == 'lose' %>
     <div class="alert alert-danger" role="alert">
       <strong>Sorry, you lose $<%= "#{'%.2f' % bet }" %>!</strong> - 
       <% if game.player_pts == 'bust' %>
