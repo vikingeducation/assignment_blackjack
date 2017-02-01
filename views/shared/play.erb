@@ -9,5 +9,13 @@
  
 <form action="blackjack/stay" method="get">
 	<button type="submit" value="STAY">STAY</button>
-</form></center>
+</form>
+
+<% unless double %>
+<form action="blackjack/double" method="post">
+  <button type="submit" value="DOUBLE">DOUBLE</button>
+</form>
+<% end %>
+
+</center>
 

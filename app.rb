@@ -14,16 +14,11 @@ get '/' do
   player = load_player(session['player']) if session['player']
   session.clear
   set_up_player(player) if player
-
   erb :index
 end
 
 get '/bet' do
-  if session['player']
-    bank = Player.new(session['player']).bank
-  else
-    bank = 1000
-  end
+  bank = session['player'] ? Player.new(session['player']).bank : 1000
   erb :bet, :locals => { 'redirect' => session['redirect_message'], 'bank' => bank}
 end
 
@@ -52,17 +47,16 @@ get '/blackjack' do
   save_player('dealer', dealer)
   save_player('player', player)
   save_deck(deck)
-  erb :blackjack, :locals => {'deck' => deck, 'dealer' => dealer, 'player' => player, 'game_over' => session[:game_over]}
+  erb :blackjack, :locals => {'deck' => deck, 'dealer' => dealer, 'player' => player, 'game_over' => session[:game_over], 'double' => session[:double]}
 end
 
 post '/blackjack/hit' do
   deck = Deck.new(session['deck'])
   player = Player.new(session['player'])
   deck.hit(player)
-
   save_deck(deck)
   save_player('player', player)
-  redirect to("/blackjack/stay") if player.sum > 21
+  redirect to("/blackjack/stay") if player.sum > 21 || session['double']
   redirect to('/blackjack')
 end
 
@@ -76,4 +70,16 @@ get '/blackjack/stay' do
   session['game_over'] = true
   save_player('dealer', dealer)
   redirect '/blackjack'
+end
+
+post '/blackjack/double' do
+  session['double'] = true
+  deck = Deck.new(session['deck'])
+  player = Player.new(session['player'])
+  deck.hit(player)
+  save_deck(deck)
+  player.bet *= 2
+  save_player('player', player)
+  redirect to("/blackjack/stay")
+
 end
