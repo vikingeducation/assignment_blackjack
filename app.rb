@@ -35,6 +35,10 @@ get '/blackjack' do
   player = Player.new(session['player'])
   dealer = AI.new(session['dealer'])
   deck.deal(player, dealer) unless session['on']
+  if dealer.blackjack? || player.blackjack?
+    deck.settle_winnings(player, dealer)
+    session['game_over'] = true
+  end
 
   session['on'] = true
   save_player('dealer', dealer)

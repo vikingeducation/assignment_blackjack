@@ -10,4 +10,5 @@ module Savers
                'status' => player.status}
     session[n] = bundle.to_json
   end
+
 end

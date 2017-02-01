@@ -12,9 +12,9 @@ class Player
     sum = 0
     ace = false
     @hand.each do |card|
-      if card[0] == 'ace'
+      if card[0] == 'A'
         ace = true
-      elsif card[0] == 'king' || card[0] == 'jack' || card[0] == 'queen'
+      elsif card[0] == 'K' || card[0] == 'J' || card[0] == 'Q'
         sum += 10
       else
         sum += card[0].to_i
@@ -25,6 +25,11 @@ class Player
     end
     sum
   end
+
+  def blackjack?
+    self.sum == 21
+  end
+
 end
 
 class AI < Player
