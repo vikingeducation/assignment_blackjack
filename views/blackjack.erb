@@ -1,14 +1,17 @@
 <% if ! game_over	%>
+
 <%= erb :'shared/play', :locals => { 'player' => player, 'double' => double } %>
 
 
 <% else %>
-<%= erb :"shared/#{player.status.to_s}", :locals => {'bet' => player.bet} %>
+<%= erb :"shared/#{player.status.to_s}", :locals => {'player' => player} %>
 
-
+<div class="card-display">
 <h6>PLAYER:</h6> <%= erb :'shared/hand', :locals => { 'player' => player} %> <br>
-<h6>DEALER:</h6> <%= erb :'shared/hand', :locals => { 'player' => dealer} %> <br>
+<h6>DEALER:</h6> <%= erb :'shared/hand', :locals => { 'player' => dealer} %> <br><br>
+</div>
 
+<span><i>You currently have $<%= player.bank %> in the bank.</i></span><br>
 <form action="/" method="get">
 	<button type="submit" value="true">PLAY AGAIN</button>
 </form>

@@ -56,8 +56,8 @@ post '/blackjack/hit' do
   deck.hit(player)
   save_deck(deck)
   save_player('player', player)
-  redirect to("/blackjack/stay") if player.sum > 21 || session['double']
-  redirect to('/blackjack')
+  redirect "/blackjack/stay" if player.sum > 21 || session['double']
+  redirect '/blackjack'
 end
 
 get '/blackjack/stay' do
