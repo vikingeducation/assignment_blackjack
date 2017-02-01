@@ -1,4 +1,7 @@
-
+<% if player.bet > 0 %>
+<p><i>Current bet:</i></p>
+<h4><b><u>$<%= player.bet %></u></b></h4>
+<% end %>
 <h6>Player:</h6> 
 <%= erb :'shared/hand', :locals => {'player' => player} %>
 
@@ -11,7 +14,7 @@
 	<button type="submit" value="STAY">STAY</button>
 </form>
 
-<% unless double %>
+<% unless double || player.bet == 0 %>
 <form action="blackjack/double" method="post">
   <button type="submit" value="DOUBLE">DOUBLE</button>
 </form>
