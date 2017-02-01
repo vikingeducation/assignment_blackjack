@@ -4,26 +4,34 @@ require 'json'
 require 'erb'
 require_relative 'lib/player'
 require_relative 'lib/deck'
-require './helpers/savers'
+require './helpers/sessions'
 
 enable :sessions
 
-helpers Savers
+helpers Sessions
 
 get '/' do
+  player = load_player(session['player']) if session['player']
   session.clear
+  set_up_player(player) if player
+
   erb :index
 end
 
 get '/bet' do
-  erb :bet, :locals => { 'redirect' => session['redirect_message']}
+  if session['player']
+    bank = Player.new(session['player']).bank
+  else
+    bank = 1000
+  end
+  erb :bet, :locals => { 'redirect' => session['redirect_message'], 'bank' => bank}
 end
 
 post '/bet' do
   player = Player.new(session['player'])
   player.bet = params[:bet].to_i
   if player.bank < player.bet
-    session['redirect_message'] = "Sorry, you don't have that much money (yet)! Please enter a different amount:"
+    session['redirect_message'] = "Sorry, you only have $#{player.bank}<br> Please enter a different amount:<br>"
     redirect '/bet'
   end
   save_player('player', player)

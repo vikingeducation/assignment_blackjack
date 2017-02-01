@@ -1,6 +1,7 @@
 <i><%= redirect %></i>
 <form action="/bet" method="post">
 	<label for="bet">How much would you like to bet?</label>
-	<input type="number" name="bet" placeholder="$">
-	<button type="submit">Place Bet</button>
+	<input type="number" name="bet" placeholder="$" max="<%= bank %>">
+	<button type="submit">Place Bet</button><br>
+  <p><i><small>You have $<%= bank %> available</small></i></p>
 </form>
