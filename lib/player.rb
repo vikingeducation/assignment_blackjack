@@ -1,7 +1,11 @@
 class Player
-  attr_accessor :hand
-  def initialize(hand=nil)
-    @hand = hand ? JSON.parse(hand) : []
+  attr_accessor :hand, :bank, :bet, :status
+  def initialize(opts=nil)
+    opts = opts ? JSON.parse(opts) : {}
+    @hand = opts['hand'] ? opts['hand'] : []
+    @bank = opts['bank'] ? opts['bank'] : 1000
+    @bet = opts['bet'] ? opts['bet'] : 0
+    @status = opts['status']
   end
 
   def sum
@@ -17,7 +21,7 @@ class Player
       end
     end
     if ace
-      sum = sum + 11 < 21 ? sum + 11 : sum + 1
+      sum = sum + 11 <= 21 ? sum + 11 : sum + 1
     end
     sum
   end

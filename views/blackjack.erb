@@ -1,29 +1,15 @@
 <% if ! game_over	%>
-PLAYER: <%= player.hand %> <br>
-DEALER: <%= dealer.hand %>
+<%= erb :'shared/play', :locals => { 'player' => player } %>
 
-<form action="blackjack/hit" method="post">
-	<button type="submit" value="HIT">HIT</button>
-</form>
 
-<form action="blackjack/stay" method="get">
-	<button type="submit" value="STAY">STAY</button>
-</form>
-<% else
-if (player.sum == 21 && dealer.sum != 21) || ( dealer.sum > 21 && player.sum < 21 ) || (player.sum > dealer.sum && player.sum < 21)
-	message = 'Congratulations, you\'ve won! '
+<% else %>
+<%= erb :"shared/#{player.status.to_s}", :locals => {'bet' => player.bet} %>
 
-elsif player.sum == dealer.sum && player.sum <= 21
-	message = "It's a tie!"
-else
-	message = "Sorry, you\'ve lost!"
-end
-%>
-<h1><%= message %></h1>
+
 PLAYER: <%= player.hand %> <br>
 DEALER: <%= dealer.hand %> <br>
-
-<form action="blackjack/restart" method="get">
+<br>
+<form action="/" method="get">
 	<button type="submit" value="true">PLAY AGAIN</button>
 </form>
 <% end %>

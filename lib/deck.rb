@@ -24,4 +24,19 @@ class Deck
     player.hand << s
     @cards.delete(s)
   end
+
+  def settle_winnings(player, dealer)
+    if player.sum > 21 || player.sum < dealer.sum && dealer.sum < 21 || dealer.sum == 21 && player.sum != 21
+      player.bank -= player.bet
+      player.status = :loss
+    elsif player.sum == 21 && dealer.sum != 21 || player.sum > dealer.sum && player.sum < 21 || dealer.sum > 21
+      player.bank += player.bet
+      player.status = :win
+    elsif  player.sum == 21 && dealer.sum != 21 && player.hand.size == 2
+      player.bank += player.bet * 1.5
+      player.status = :blackjack
+    else
+      player.status = :tie
+    end
+  end
 end
