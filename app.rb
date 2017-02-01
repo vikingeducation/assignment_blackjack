@@ -81,5 +81,4 @@ post '/blackjack/double' do
   player.bet *= 2
   save_player('player', player)
   redirect to("/blackjack/stay")
-
 end
