@@ -1,0 +1,26 @@
+<% if ! game_over	%>
+PLAYER: <%= player %> <br>
+
+<form action="blackjack/hit" method="post">
+	<button type="submit" value="HIT">HIT</button>
+</form>
+
+<form action="blackjack/stay" method="get">
+	<button type="submit" value="STAY">STAY</button>
+</form>
+<% else 
+
+if (player_sum == 21 && dealer_sum != 21) || ( dealer_sum > 21 && player_sum < 21 ) || (player_sum > dealer_sum && player_sum < 21)
+	message = 'Congratulations, you\'ve won!'
+elsif player_sum == dealer_sum && player_sum <= 21
+	message = 'It\'s a tie!'
+else
+	message = "Sorry, you\'ve lost!"
+end
+%>
+<h1><%= message %></h1>
+PLAYER: <%= player %> <br>
+DEALER: <%= dealer %> <br>
+<% end %>
+
+
