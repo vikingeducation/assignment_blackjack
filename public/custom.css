@@ -2,7 +2,7 @@
   margin-top: 80px;
 }
 body {
-  font-family: "Roboto Mono";
+  font-family: "Roboto Mono", Menlo, "HelveticaNeue", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 .card {
   font-size: 10em;
