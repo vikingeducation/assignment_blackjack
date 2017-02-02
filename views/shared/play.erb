@@ -5,6 +5,8 @@
 <div class="card-display">
 <h6>Player:</h6> 
 <%= erb :'shared/hand', :locals => {'player' => player} %>
+<h6>Dealer:</h6>
+<%= erb :'shared/one-card', :locals => {'card' => dealer.hand[0]} %>
 </div>
 
  <center>

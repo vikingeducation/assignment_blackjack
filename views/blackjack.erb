@@ -1,6 +1,6 @@
 <% if ! game_over	%>
 
-<%= erb :'shared/play', :locals => { 'player' => player, 'double' => double } %>
+<%= erb :'shared/play', :locals => { 'player' => player, 'double' => double, 'dealer' => dealer } %>
 
 
 <% else %>
