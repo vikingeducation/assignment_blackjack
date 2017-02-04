@@ -12,9 +12,12 @@
 <br>
 <h2>Your Cards</h2>
 <br>
-<%=@player_hand[0]%>
-<%=@player_hand[1]%>
+<%@player_hand << deal_hand(@deck)%>
+<%@player_hand.length.times do |i| %>
+  <%=@player_hand[i]%>
+<%end%>
 <br>
+<%@deck.pop%>
 <form action="/hit" method="post">
   <input type="submit" value="HIT">
 </form>

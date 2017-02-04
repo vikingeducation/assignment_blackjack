@@ -6,15 +6,19 @@
 <h2>Dealer's Cards</h2>
 <br>
 <%@deck%>
-<%=@dealer_hand[0]%>
-<p>hidden card</p>
+<%@dealer_hand << deal_hand(@deck)%>
+<%@dealer_hand.length.times do |i| %>
+  <%=@dealer_hand[i]%>
+<%end%>
 <br>
 <br>
 <h2>Your Cards</h2>
 <br>
-<%=@player_hand[0]%>
-<%=@player_hand[1]%>
+<%@player_hand.length.times do |i| %>
+  <%=@player_hand[i]%>
+<%end%>
 <br>
+<%@deck.pop%>
 <form action="/hit" method="post">
   <input type="submit" value="HIT">
 </form>
