@@ -1,4 +1,6 @@
 
+require 'json'
+
 module BJHelper
 
   #we need to store the status of the deck
@@ -6,27 +8,27 @@ module BJHelper
   #we neeed current_hand of dealer
 
   def save_dealer_hand(dealer_hand)
-    session[:dealer_hand] = dealer_hand
+    ( session[:dealer_hand] = dealer_hand ).to_json
   end
 
   def save_player_hand(player_hand)
-    session[:player_hand] = player_hand
+    ( session[:player_hand] = player_hand).to_json
   end
 
   def save_the_deck(deck)
-    session[:deck] = deck
+    ( session[:deck] = deck).to_json
   end
 
   def load_player_hand
-    session[:player_hand]
+    session[:player_hand] ? JSON.parse(session[:player_hand]) : [deal_hand(create_deck), deal_hand(create_deck)]
     #   session[:player_hand]
     # else
-    #   [deal_hand(deck), deal_hand(deck)]
+    #   [deal_hand(create_deck), deal_hand(create_deck)]
     # end
   end
 
   def load_dealer_hand
-    session[:player_hand]
+    session[:dealer_hand] ? JSON.parse(session[:dealer_hand]) : [deal_hand(create_deck), deal_hand(create_deck)]
     #   session[:player_hand]
     # else
     #   [deal_hand(deck), deal_hand(deck)]
@@ -34,14 +36,14 @@ module BJHelper
   end
 
   def load_the_deck
-    session[:deck] || deck
+    session[:deck] ? JSON.parse(session[:deck]) : create_deck
   end
 
   def creating_deck
     [2,3,4,5,6,7,8,9,10, "J", "Q", "K", "A"].product(["Diamonds", "Hearts", "Clubs", "Spades"])
   end
 
-  def deck
+  def create_deck
     the_deck = []
     4.times { |i| the_deck += creating_deck }
     the_deck.shuffle
@@ -55,7 +57,7 @@ module BJHelper
 
   def dealer_deals(current_hand)
     points = checking_points(current_hand)
-    deal_hand(deck) if points[0] + points[1] < 17
+    deal_hand(create_deck) if points[0] + points[1] < 17
   end
 
   def checking_points(current_hand)
