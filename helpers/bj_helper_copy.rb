@@ -1,4 +1,6 @@
 
+require 'json'
+
 module BJHelper
 
   #we need to store the status of the deck
@@ -6,28 +8,30 @@ module BJHelper
   #we neeed current_hand of dealer
 
   def save_dealer_hand(dealer_hand)
-    session[:dealer_hand] = dealer_hand.to_json
-    puts "DBG: session[:dealer_hand] method save_dealer_hand  = #{session[:dealer_hand] .inspect}"
+    session[:dealer_hand] = dealer_hand
   end
 
   def save_player_hand(player_hand)
-    session[:player_hand] = player_hand.to_json
+    session[:player_hand] = player_hand
   end
 
   def save_the_deck(deck)
-    session[:deck] = deck.to_json
+    session[:deck] = deck
   end
 
   def load_player_hand
-    session[:player_hand] ? JSON.parse(session[:player_hand],:quirks_mode => true) : [deal_hand(create_deck), deal_hand(create_deck)]
+    session[:player_hand] ? session[:player_hand] : [deal_hand(create_deck), deal_hand(create_deck)]
   end
 
   def load_dealer_hand
-    session[:dealer_hand] ? JSON.parse(session[:dealer_hand],:quirks_mode => true) : [deal_hand(create_deck), deal_hand(create_deck)]
+    puts "DBG: session[:dealer_hand] = #{session[:dealer_hand].inspect}"
+    puts "DBG: session[:dealer_hand]) = #{session[:dealer_hand].inspect}"
+    session[:dealer_hand] ? session[:dealer_hand] : [deal_hand(create_deck), deal_hand(create_deck)]
   end
 
   def load_the_deck
-    session[:deck]  ? JSON.parse(session[:deck],:quirks_mode => true) : create_deck
+    puts "DBG: session[:deck] = #{session[:deck].inspect}"
+    session[:deck] ? session[:deck] : create_deck
   end
 
   def creating_deck
@@ -54,6 +58,7 @@ module BJHelper
   def checking_points(current_hand)
     total = 0
     as_value = 0
+    puts "DBG: current_hand = #{current_hand.inspect}"
     current_hand.each do |arr|
       if %w{J K Q}.include? arr[0]
         total += 10
