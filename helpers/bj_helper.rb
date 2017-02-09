@@ -27,7 +27,8 @@ module BJHelper
   end
 
   def load_the_deck
-    session[:deck]  ? JSON.parse(session[:deck],:quirks_mode => true) : create_deck
+    create_deck
+    # session[:deck]  ? JSON.parse(session[:deck],:quirks_mode => true) : create_deck
   end
 
   def creating_deck
@@ -45,6 +46,10 @@ module BJHelper
   end
 
   #we need current_hand of player
+
+  def check_who_won(player_hand, dealer_hand)
+    checking_points(player_hand) <=> checking_points(dealer_hand)
+  end
 
   def dealer_deals(current_hand)
     points = checking_points(current_hand)
@@ -64,7 +69,12 @@ module BJHelper
         total += arr[0]
       end
     end
-    [total, as_value]
+    if total <= 11
+      total += 10 if as_value != 0
+    else
+      return total
+    end
+    total
   end
 
 end

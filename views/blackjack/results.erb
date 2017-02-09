@@ -1,0 +1,37 @@
+
+<br>
+<br>
+<br>
+<br>
+<h2>Dealer's Cards</h2>
+<br>
+<%dealer_hand.length.times do |i| %>
+  <%=dealer_hand[i]%>
+<%end%>
+<br>
+<br>
+<h2>Your Cards</h2>
+<br>
+<%player_hand.length.times do |i| %>
+  <%=player_hand[i]%>
+<%end%>
+<br>
+<%if check_who_won(player_hand, dealer_hand) == -1%>
+  <h1> You busted!</h1>
+  <%elsif  check_who_won(player_hand, dealer_hand) == 0%>
+    <h1>DRAW</h1>
+  <%else%>
+    <h1>Congratulations, You won!!!</h1>
+<%end%>
+<br>
+<br>
+<form action="/new_game" method="post">
+  <input type="submit" value="TRY NEW GAME">
+</form>
+<br>
+<h2>BETS</h2>
+<br>
+<br>
+<h2>BANK ROLL</h2>
+<br>
+<br>

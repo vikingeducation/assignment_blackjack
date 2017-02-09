@@ -5,19 +5,16 @@
 <br>
 <h2>Dealer's Cards</h2>
 <br>
-<%deck%>
 <%=dealer_hand[0]%>
 <p>hidden card</p>
 <br>
 <br>
 <h2>Your Cards</h2>
 <br>
-<%player_hand << deal_hand(deck)%>
 <%player_hand.length.times do |i| %>
   <%=player_hand[i]%>
 <%end%>
 <br>
-<%deck.pop%>
 <form action="/hit" method="post">
   <input type="submit" value="HIT">
 </form>
