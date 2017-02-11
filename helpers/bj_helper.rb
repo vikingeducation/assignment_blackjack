@@ -7,7 +7,6 @@ module BJHelper
 
   def save_dealer_hand(dealer_hand)
     session[:dealer_hand] = dealer_hand.to_json
-    puts "DBG: session[:dealer_hand] method save_dealer_hand  = #{session[:dealer_hand] .inspect}"
   end
 
   def save_player_hand(player_hand)
@@ -23,6 +22,7 @@ module BJHelper
   end
 
   def load_dealer_hand
+    puts "DBG: session[:dealer_hand] = #{session[:dealer_hand].inspect}"
     session[:dealer_hand] ? JSON.parse(session[:dealer_hand],:quirks_mode => true) : [deal_hand(create_deck), deal_hand(create_deck)]
   end
 
@@ -34,6 +34,7 @@ module BJHelper
   def creating_deck
     [2,3,4,5,6,7,8,9,10, "J", "Q", "K", "A"].product(["Diamonds", "Hearts", "Clubs", "Spades"])
   end
+
 
   def create_deck
     the_deck = []
@@ -48,7 +49,13 @@ module BJHelper
   #we need current_hand of player
 
   def check_who_won(player_hand, dealer_hand)
-    checking_points(player_hand) <=> checking_points(dealer_hand)
+    if checking_points(player_hand) <= 21 && checking_points(dealer_hand) <= 21
+      checking_points(player_hand) <=> checking_points(dealer_hand)
+    elsif checking_points(player_hand) > 21
+      -1
+    else
+      1
+    end
   end
 
   def dealer_deals(current_hand)

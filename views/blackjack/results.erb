@@ -16,13 +16,13 @@
   <%=player_hand[i]%>
 <%end%>
 <br>
-<%if check_who_won(player_hand, dealer_hand) == -1%>
-  <h1> You busted!</h1>
+  <%if check_who_won(player_hand, dealer_hand) == -1%>
+    <h1> You busted!</h1>
   <%elsif  check_who_won(player_hand, dealer_hand) == 0%>
     <h1>DRAW</h1>
   <%else%>
     <h1>Congratulations, You won!!!</h1>
-<%end%>
+  <%end%>
 <br>
 <br>
 <form action="/new_game" method="post">
