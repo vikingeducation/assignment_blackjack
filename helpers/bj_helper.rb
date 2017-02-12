@@ -1,9 +1,19 @@
 
 module BJHelper
 
-  #we need to store the status of the deck
-  
-  #we neeed current_hand of dealer
+  class Player
+
+    def initialize(session_hash)
+    end
+
+  end
+
+  class Dealer
+
+    def initialize(session_hash)
+    end
+
+  end
 
   def save_dealer_hand(dealer_hand)
     session[:dealer_hand] = dealer_hand.to_json

@@ -16,22 +16,26 @@
   <%=player_hand[i]%>
 <%end%>
 <br>
-  <%if check_who_won(player_hand, dealer_hand) == -1%>
+  <%if who_won == -1%>
     <h1> You busted!</h1>
-  <%elsif  check_who_won(player_hand, dealer_hand) == 0%>
+  <%elsif  who_won == 0%>
     <h1>DRAW</h1>
   <%else%>
     <h1>Congratulations, You won!!!</h1>
   <%end%>
 <br>
 <br>
+<form action="/continue_game" method="post">
+  <input type="submit" value="PLAY MORE">
+</form>
 <form action="/new_game" method="post">
-  <input type="submit" value="TRY NEW GAME">
+  <input type="submit" value="TRY A NEW GAME">
 </form>
 <br>
 <h2>BETS</h2>
+<%=player_bet%>
 <br>
 <br>
 <h2>BANK ROLL</h2>
-<br>
+<%=player_bankroll%>
 <br>
