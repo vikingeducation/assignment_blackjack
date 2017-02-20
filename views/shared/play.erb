@@ -1,0 +1,28 @@
+<% if player.bet > 0 %>
+<p><i>Current bet:</i></p>
+<h4><b><u>$<%= player.bet %></u></b></h4>
+<% end %>
+<div class="card-display">
+<h6>Player:</h6> 
+<%= erb :'shared/hand', :locals => {'player' => player} %>
+<h6>Dealer:</h6>
+<%= erb :'shared/one-card', :locals => {'card' => dealer.hand[0]} %>
+</div>
+
+ <center>
+<form action="blackjack/hit" method="post">
+	<button type="submit" value="HIT">HIT</button>
+</form>
+ 
+<form action="blackjack/stay" method="get">
+	<button type="submit" value="STAY">STAY</button>
+</form>
+
+<% unless double || player.bet == 0 %>
+<form action="blackjack/double" method="post">
+  <button type="submit" value="DOUBLE">DOUBLE</button>
+</form>
+<% end %>
+
+</center>
+

@@ -1,0 +1,13 @@
+<% 
+  html = '<div class="card small">' + card[0]
+  html += '<sup class="suit '
+  html += 'red' if card[1] == 'diamonds' || card[1] == 'hearts'
+  html += 'black' if card[1] == 'clubs' || card[1] == 'spades'
+  html += '">'
+  html += '♠' if card[1] == 'spades'
+  html += '♥︎' if card[1] == 'hearts'
+  html += '♦︎' if card[1] == 'diamonds'
+  html += '♣︎' if card[1] == 'clubs'
+  html += '</sup></div>'
+   %>
+<%= html %>
