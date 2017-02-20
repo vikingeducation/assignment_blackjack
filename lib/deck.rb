@@ -5,7 +5,7 @@ class Deck
   end
 
   def make_deck
-    %w{1 2 3 4 5 6 7 8 9 10 J Q K A}.product(%w{diamonds clubs hearts spades}).shuffle
+    %w{2 3 4 5 6 7 8 9 10 J Q K A}.product(%w{diamonds clubs hearts spades}).shuffle
   end
 
   def deal(one, two)
