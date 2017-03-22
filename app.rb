@@ -18,7 +18,10 @@ end
 
 def load_game_state
   c1, c2 = load_cards
-  Blackjack.new(c1, c2)
+  deck, bankroll = session[:deck], session[:bankroll]
+  bet = session[:bet]
+  opts = {cards1: c1, cards2: c2, deck: deck, bankroll: bankroll, bet: bet}
+  Blackjack.new(opts)
 end
 
 def save_cards!(c1, c2)
@@ -30,6 +33,8 @@ def save_game_state!(bj)
   c1, c2 = bj.p1[:cards], bj.p2[:cards]
   save_cards!(c1, c2)
   session[:deck] = bj.deck
+  session[:bankroll] = bj.bankroll
+  session[:bet] = bj.bet
 end
 
 def deal_hands!(bj)
@@ -76,6 +81,27 @@ end
 get "/blackjack/new-game" do
   reset_game_state!
   redirect to("/blackjack")
+end
+
+get "/blackjack/bet" do
+  bj = load_game_state
+  locals = {locals: {bj: bj}}
+  erb :bet, locals
+end
+
+post "/blackjack/bet" do
+  bet = params[:bet].to_i
+  bj = load_game_state
+  locals = {locals: {bj: bj}}
+  if bj.bankroll < bet
+    @msg = "You are poor. Place a smaller bet."
+    erb :bet, locals
+  else
+    bj.bankroll -= bet
+    bj.bet = bet
+    save_game_state!(bj)
+    redirect to("/blackjack")
+  end
 end
 
 post "/blackjack/hit" do

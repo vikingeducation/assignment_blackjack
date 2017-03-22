@@ -15,15 +15,17 @@
 # - Scoring higher than 21 results in a loss
 
 class Blackjack
-  attr_accessor :deck, :p1, :p2
+  attr_accessor :deck, :p1, :p2, :bankroll, :bet
 
   SUITS = ["clubs", "diamonds", "hearts", "spades"]
   RANKS = (2..10).to_a + ["ace", "jack", "queen", "king"]
 
-  def initialize(cards1=[], cards2=[], deck=nil)
-    @deck = deck || make_deck.flatten!.shuffle
-    @p1 = make_player(cards1)
-    @p2 = make_player(cards2)
+  def initialize(opts)
+    @deck = opts[:deck] || make_deck.flatten!.shuffle
+    @p1 = make_player(opts[:cards1])
+    @p2 = make_player(opts[:cards2])
+    @bankroll = opts[:bankroll] || 1000
+    @bet = opts[:bet]
   end
 
   def make_card(suit, rank)

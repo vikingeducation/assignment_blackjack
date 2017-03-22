@@ -1,0 +1,13 @@
+<h1>Sinatra Blackjack</h1>
+
+<h2>Bet</h2>
+
+<form action="/blackjack/bet" method="post">
+  <% if @msg %>
+  <p><i><%= @msg %></i></p>
+  <% end %>
+  <p>Your bankroll is <%= bj.bankroll %>.</p>
+  <p>How much would you like to bet?</p>
+  <input type="number" name="bet" value="10">
+  <button type="submit" name="button">Place bet</button>
+</form>
