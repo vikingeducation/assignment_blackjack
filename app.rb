@@ -26,11 +26,17 @@ def save_cards!(c1, c2)
   session[:cards2] = c2.to_json
 end
 
+def save_game_state!(bj)
+  c1, c2 = bj.p1[:cards], bj.p2[:cards]
+  save_cards!(c1, c2)
+  session[:deck] = bj.deck
+end
+
 def deal_hands!(bj)
   c1, c2 = bj.p1[:cards], bj.p2[:cards]
   if c1.empty? && c2.empty?
     bj.deal_hands!(2)
-    save_cards!(c1, c2)
+    save_game_state!(bj)
   end
 end
 
@@ -44,10 +50,10 @@ end
 
 def hit!(bj)
   bj.deal_card!(bj.p1)
+  save_game_state!(bj)
   if bj.get_score(bj.p1[:cards]) > 21
     return redirect to("/blackjack/stay")
   end
-  save_cards!(bj.p1[:cards], bj.p2[:cards])
 end
 
 # ------------------------------------------------------------------------
@@ -76,4 +82,20 @@ post "/blackjack/hit" do
   bj = load_game_state
   hit!(bj)
   redirect to("/blackjack")
+end
+
+get "/blackjack/stay" do
+  bj = load_game_state
+  while bj.get_score(bj.p2[:cards]) < 17
+    bj.deal_card!(bj.p2)
+  end
+  save_game_state!(bj)
+  redirect to("/blackjack/result")
+end
+
+get "/blackjack/result" do
+  bj = load_game_state
+  @result = bj.result
+  locals = {locals: {bj: bj}}
+  erb :blackjack, locals
 end

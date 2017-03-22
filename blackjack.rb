@@ -20,8 +20,8 @@ class Blackjack
   SUITS = ["clubs", "diamonds", "hearts", "spades"]
   RANKS = (2..10).to_a + ["ace", "jack", "queen", "king"]
 
-  def initialize(cards1=[], cards2=[])
-    @deck = make_deck.flatten!.shuffle
+  def initialize(cards1=[], cards2=[], deck=nil)
+    @deck = deck || make_deck.flatten!.shuffle
     @p1 = make_player(cards1)
     @p2 = make_player(cards2)
   end
@@ -64,6 +64,20 @@ class Blackjack
         rank
       end
     end.sum
+  end
+
+  def result
+    score1, score2 = get_score(p1[:cards]), get_score(p2[:cards])
+    return "Draw" if score1 > 21 && score2 > 21
+    if score1 > score2
+      return "You Lose" if score1 > 21
+      "You win!"
+    elsif score2 > score1
+      return "You win!" if score2 > 21
+      "You lose!"
+    else
+      "Draw!"
+    end
   end
 
 end
