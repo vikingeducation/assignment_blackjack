@@ -17,38 +17,53 @@
 class Blackjack
   attr_accessor :deck, :p1, :p2
 
-  Card = Struct.new("Card", :suit, :rank)
-  Player = Struct.new("Player", :cards)
-  SUITS = [:clubs, :diamonds, :hearts, :spades]
-  RANKS = (2..10).to_a + [:ace, :jack, :queen, :king]
+  SUITS = ["clubs", "diamonds", "hearts", "spades"]
+  RANKS = (2..10).to_a + ["ace", "jack", "queen", "king"]
 
-  def initialize
+  def initialize(cards1=[], cards2=[])
     @deck = make_deck.flatten!.shuffle
-    @p1 = Player.new([])
-    @p2 = Player.new([])
+    @p1 = make_player(cards1)
+    @p2 = make_player(cards2)
+  end
+
+  def make_card(suit, rank)
+    {suit: suit, rank: rank}
+  end
+
+  def make_player(cards)
+    {cards: cards}
   end
 
   def make_deck
     SUITS.map do |s|
       RANKS.map do |r|
-        Card.new(s, r)
+        make_card(s, r)
       end
     end
   end
 
-  def deal_card(p)
+  def deal_card!(p)
     card = deck.pop
-    p1.card.push(card)
+    p[:cards].push(card)
   end
 
-  def check_score(cards)
-    cards.map do |card|
-      if card.is_a? Symbol
-        card == :ace ? (cards.count > 2 ? 1 : 11) : 10
-      else
-        card
+  def deal_hands!(n=1)
+    [p1, p2].each do |p|
+      n.times do |i|
+        deal_card!(p)
       end
     end
+  end
+
+  def get_score(cards)
+    cards.map do |card|
+      rank = card[:rank]
+      if rank.is_a? String
+        rank == "ace" ? (cards.count > 2 ? 1 : 11) : 10
+      else
+        rank
+      end
+    end.sum
   end
 
 end
