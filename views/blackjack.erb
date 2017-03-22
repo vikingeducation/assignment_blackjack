@@ -1,0 +1,34 @@
+<h1>Sinatra Blackjack</h1>
+
+<h2>Play</h2>
+
+<% if @result %>
+<p><b>Dealer cards:</b> <%= bj.p2[:cards].map{|c| c[:rank] } %></p>
+<p><b>Dealer Score:</b> <%= bj.get_score(bj.p2[:cards]) %></p>
+<% else %>
+<p><b>Dealer cards:</b> <%= bj.p2[:cards].first[:rank] %></p>
+<% end %>
+<p><b>Your cards:</b> <%= bj.p1[:cards].map{|c| c[:rank] } %></p>
+<p><b>Your Score:</b> <%= bj.get_score(bj.p1[:cards]) %></p>
+
+<p><b>Bet:</b> <%= bj.bet || "Place your bet!" %></p> 
+
+<form action="/blackjack/bet" method="get">
+  <button type="submit" name="button">Play Hand</button>
+</form>
+
+<form action="/blackjack/hit" method="post">
+  <button type="submit" name="button">Hit</button>
+</form>
+
+<form action="/blackjack/stay" method="get">
+  <button type="submit" name="button">Stay</button>
+</form>
+
+<form action="/blackjack/new-game" method="get">
+  <button type="submit" name="button">New Game</button>
+</form>
+
+<% if @result %>
+  <h3><%= @result %></h3>
+<% end %>
