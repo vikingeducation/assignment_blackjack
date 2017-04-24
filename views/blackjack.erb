@@ -1,1 +1,27 @@
-<h1>start game</h1>
+<!doctype html>
+<h1>Dealer Hand:</h1>
+<h2><% session["dealer_hand"].each do |card| %>
+  <%= card.name %>
+<% end %></h2>
+<br>
+<% session["num_players"].to_i.times do |p| %>
+  <h1><%= "Player #{p + 1}'s Hand:" %> </h1>
+  <h2><% session["player#{p}_hand"].each do |card| %>
+    <%= card.name %>
+  <% end %></h2>
+  <h3><%= "Player #{p + 1}'s Bet: " %></h3>
+  <h3>$ <%= session["player#{p}_bet"] %></h3>
+  <h3><%= "Player #{p +1}'s Bank:" %></h3>
+  <h3>$ <%= session["player#{p}_bank"] %></h3>
+  <% end %>
+<% if session["ai"] %>
+  <h1>Ben's Hand: </h1>
+  <h2><% session["ai_hand"].each do |card| %>
+    <%= card.name %>
+  <% end %></h2>
+  <h3><%= "Ben's Bet: " %></h3>
+  <h3>$ <%= session["ai_bet"] %></h3>
+  <h3><%= "Ben's Bank:" %></h3>
+  <h3>$ <%= session["ai_bank"] %></h3>
+<% end %>
+<%= session["num_players"] %>
