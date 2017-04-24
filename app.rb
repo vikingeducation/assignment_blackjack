@@ -11,7 +11,7 @@ end
 
 def create_shoe
   rank_hash = {"2":  2, "3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 10, "Q": 10, "K": 10, "A": 11}
-  suit_arr = [:, :D, :C, :S]
+  suit_arr = [:H, :D, :C, :S]
   shoe_cards = []
   1.times do
     suit_arr.each do |suit_sym|
@@ -23,10 +23,6 @@ def create_shoe
   shoe_ready = shoe_cards.shuffle
   return shoe_ready
 end #create_shoe method
-
-def bet
-  20
-end
 
 def bank
   480
@@ -131,14 +127,20 @@ post '/blackjack' do
   session["num_players"] = params[:num_players].to_i
   session["num_players"].times do |x|
     session["player#{x}_hand"] = deal(shoe)
-    session["player#{x}_bet"] = bet
     session["player#{x}_bank"] = bank
   end
   session["ai"] = params[:ai]
   if session["ai"]
     session["ai_hand"] = deal(shoe)
-    session["ai_bet"] = bet
     session["ai_bank"] = bank
   end
   erb :blackjack
+end
+
+post '/bet' do
+  session["num_players"].times do |x|
+    session["player#{x}_bet"] = params[:playerx_bet]
+  end
+  session["ai_bet"] = 50
+  erb :bet
 end

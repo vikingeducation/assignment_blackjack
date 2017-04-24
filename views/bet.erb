@@ -13,9 +13,7 @@
       <%= card.name %>
     <% end %></h2>
     <h3><%= "Player #{p + 1}'s Bet: " %></h3>
-    <form >
-      <input type="text" name="player#{p}_bet" >
-    </form>
+    <h3><%= session["player#{p}_bet"] %></h3>
     <h3><%= "Player #{p +1}'s Bank:" %></h3>
     <h3>$ <%= session["player#{p}_bank"] %></h3>
   </div>
@@ -27,10 +25,9 @@
     <h2><% session["ai_hand"].each do |card| %>
       <%= card.name %>
     <% end %></h2>
+    <h3>Ben's Bet: </h3>
+    <h3><%= session["ai_bet"] %></h3>
     <h3><%= "Ben's Bank:" %></h3>
     <h3>$ <%= session["ai_bank"] %></h3>
   <% end %>
 </div>
-<form action="bet" method="post">
-  <input type="submit" value="Make Bets">
-</form>
