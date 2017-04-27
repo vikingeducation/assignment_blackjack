@@ -118,6 +118,7 @@ end
 
 get '/' do
   session["shoe"] = create_shoe
+  session["turn"] = 0
   erb :index
 end
 
@@ -138,9 +139,11 @@ post '/blackjack' do
 end
 
 post '/bet' do
-  session["num_players"].times do |x|
-    session["player#{x}_bet"] = params[:playerx_bet]
+  session["player#{session["turn"]}_bet"] = params[:bet]
+  session["turn"] += 1
+  if session["turn"] == session["num_players"]
+    erb :bet
+  else
+    erb :blackjack
   end
-  session["ai_bet"] = 50
-  erb :bet
 end
