@@ -24,8 +24,13 @@ def create_shoe
   return shoe_ready
 end #create_shoe method
 
-def bank
-  480
+def update_bank(bank, op, amount)
+  if op == "subtract"
+    updated_bank = bank - amount
+  else
+    updated_bank = bank + amount
+  end
+  return updated_bank
 end
 
 def render(dealer_reveal, num_players, ai)
@@ -128,18 +133,20 @@ post '/blackjack' do
   session["num_players"] = params[:num_players].to_i
   session["num_players"].times do |x|
     session["player#{x}_hand"] = deal(shoe)
-    session["player#{x}_bank"] = bank
+    session["player#{x}_bank"] = 1000
   end
   session["ai"] = params[:ai]
   if session["ai"]
     session["ai_hand"] = deal(shoe)
-    session["ai_bank"] = bank
+    session["ai_bank"] = 1000
   end
   erb :blackjack
 end
 
 post '/bet' do
   session["player#{session["turn"]}_bet"] = params[:bet]
+  session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
+
   session["turn"] += 1
   if session["turn"] == session["num_players"]
     erb :bet
