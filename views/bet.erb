@@ -4,15 +4,16 @@
   <h2>Hello, please place your bets on this page.  You may be any dollar amount up to your total bank.  If you try to make a bet larger than your bank, your bet will become the total amount left in your bank.</h2>
 </div>
 
-<% session["num_players"].to_i.times do |p| %>
+<% session["num_players"].times do |p| %>
   <div class="players">
     <h1><%= session["player#{p}"].name %> </h1>
     <h3>Bet:
-    <form action="bet" method="post">
-      <input type="text" name="bet" '<%= session["turn"] == p  ? disabled="false" : disabled="true" %>'>
-      <br />
-      <input type="submit" value="Make Bets" style='<%= session["turn"] == p ? "visibility: visible;" : "visibility: hidden;"%>'>
-    </form></h3>
+      <form action="place_bet" method="post">
+        <input type="text" name="bet" <%= session["turn"] != p ? "disabled" : "enabled autofocus" %> >
+        <br />
+        <input type="submit" value="Place Bet" style='<%= session["turn"] == p ? "visibility: visible;" : "visibility: hidden;"%>'>
+      </form>
+    </h3>
     <h3>Bank: $ <%= session["player#{p}"].chips %></h3>
   </div>
 <% end %>

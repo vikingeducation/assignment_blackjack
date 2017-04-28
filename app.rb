@@ -66,7 +66,7 @@ def dealer_total_showing(hand, reveal)
 end
 
 def valid_bet(bank, bet)
-  return bet >= bank
+  return bet <= bank
 end
 
 class Card
@@ -145,23 +145,23 @@ post '/save_names' do
   if session["turn"] < session["num_players"]
     erb :names
   else
-    session["turn"] = -1
+    session["turn"] = 0
     erb :bet
   end
 end
 
-post '/bet' do
-  session["player#{session["turn"]}_bet"] = params[:bet]
-  session["turn"] += 1
-  if valid_bet(session["player#{session["turn"]}_bank"].to_i, session["player#{session["turn"]}_bet"].to_i)
-    session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
+post '/place_bet' do
+  session["player#{session["turn"]}"].bet = params[:bet].to_i
+  if valid_bet(session["player#{session["turn"]}"].chips, session["player#{session["turn"]}"].bet)
+    session["player#{session["turn"]}"].chips =  update_bank(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].bet)
   else
-    session["player#{session["turn"]}_bet"] = session["player#{session["turn"]}_bank"]
-    session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
+    session["player#{session["turn"]}"].bet = session["player#{session["turn"]}"].chips
+    session["player#{session["turn"]}"].chips =  update_bank(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].bet)
   end
+  session["turn"] += 1
   if session["turn"] == session["num_players"]
-    session["ai_bet"] = 20
-    session["ai_bank"] = update_bank(session["ai_bank"].to_i, "subtract", session["ai_bet"].to_i)
+    session["ai"].bet = 20
+    session["ai_bank"] = update_bank(session["ai"].chips, "subtract", session["ai"].bet)
     erb :blackjack
   else
     erb :bet
