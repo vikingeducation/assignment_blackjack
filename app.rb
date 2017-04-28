@@ -34,6 +34,15 @@ def update_bank(bank, op, amount)
 end
 
 def ai_bet
+  bet = 0
+  if session["dealer_total_showing"] >= 20
+    bet = 10
+  elsif session["ai_total"] >= 20
+    bet = 50
+  else
+    bet = 20
+  end
+  return bet
 end
 
 def player_total(hand)
