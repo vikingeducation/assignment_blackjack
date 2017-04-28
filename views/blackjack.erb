@@ -18,14 +18,9 @@
     <h2>Hand: <% session["player#{p}_hand"].each do |card| %>
       <%= card.name %>
     <% end %></h2>
-    <h2>Total: <%= session["player#{p}_total"] %>
-    <h3>Bet:
-    <form action="bet" method="post">
-      <input type="text" name="bet" '<%= session["turn"] == p  ? disabled="false" : disabled="true" %>'>
-      <br />
-      <input type="submit" value="Make Bets" style='<%= session["turn"] == p ? "visibility: visible;" : "visibility: hidden;"%>'>
-    </form></h3>
-    <h3>Banks: $ <%= session["player#{p}_bank"] %></h3>
+    <h2>Total: <%= session["player#{p}_total"] %></h2>
+    <h2>Bet: <%= session["player#{p}_bet"] %></h2>
+    <h3>Bank: $ <%= session["player#{p}_bank"] %></h3>
   </div>
 
 <% end %>
@@ -37,12 +32,7 @@
       <%= card.name %>
     <% end %></h2>
     <h2>Total: <%= session["ai_total"] %></h2>
-    <h3>Bet:
-    <form>
-      <input type="text" value="????" disabled="true" style="margin-bottom: 1px;">
-      <br />
-      <br />
-    </form>
+    <h2>Bet: <%= session["ai_bet"] %></h2>
     <h3>Bank: $ <%= session["ai_bank"] %></h3>
   <% end %>
 </div>

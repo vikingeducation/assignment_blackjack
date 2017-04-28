@@ -1,26 +1,17 @@
 <!DOCTYPE html>
 <div class="dealer">
   <h1>Dealer: </h1>
-  <h2>Hand:
-  <% if session["dealer_reveal"] %>
-    <% session["dealer_hand"].each do |card| %>
-    <%= card.name %>
-    <% end %></h2>
-  <% else %>
-    <%= (session["dealer_hand"][0]).name %> **
-  <% end %></h2>
-  <h2>Total Showing: <%= session["dealer_total_showing"] %></h2>
-
 </div>
 
 <% session["num_players"].to_i.times do |p| %>
   <div class="players">
     <h1><%= "Player #{p + 1}:" %> </h1>
-    <h2>Hand: <% session["player#{p}_hand"].each do |card| %>
-      <%= card.name %>
-    <% end %></h2>
-    <h2>Total: <%= session["player#{p}_total"] %>
-    <h3>Bet: <%= session["player#{p}_bet"] %></h3>
+    <h3>Bet:
+    <form action="bet" method="post">
+      <input type="text" name="bet" '<%= session["turn"] == p  ? disabled="false" : disabled="true" %>'>
+      <br />
+      <input type="submit" value="Make Bets" style='<%= session["turn"] == p ? "visibility: visible;" : "visibility: hidden;"%>'>
+    </form></h3>
     <h3>Bank: $ <%= session["player#{p}_bank"] %></h3>
   </div>
 <% end %>
@@ -28,11 +19,12 @@
 <div class="players">
   <% if session["ai"] %>
     <h1>Ben: </h1>
-    <h2>Hand: <% session["ai_hand"].each do |card| %>
-      <%= card.name %>
-    <% end %></h2>
-    <h2>Total: <%= session["ai_total"] %></h2>
-    <h3>Bet: <%= session["ai_bet"] %></h3>
+    <h3>Bet:
+    <form>
+      <input type="text" value="????" disabled="true" style="margin-bottom: 1px;">
+      <br />
+      <br />
+    </form></h3>
     <h3>Bank: $ <%= session["ai_bank"] %></h3>
   <% end %>
 </div>

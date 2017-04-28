@@ -77,9 +77,24 @@ end
 
 get '/' do
   session["shoe"] = create_shoe
-  session["turn"] = 0
+  session["turn"] = -1
   erb :index
 end
+
+post '/bet' do
+  session["player#{session["turn"]}_bank"] = 1000
+  session["player#{session["turn"]}_bet"] = params[:bet]
+  session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
+  session["turn"] += 1
+  if session["turn"] == session["num_players"]
+    session["ai_bet"] = 20
+    session["ai_bank"] = update_bank(session["ai_bank"].to_i, "subtract", session["ai_bet"].to_i)
+    erb :blackjack
+  else
+    erb :bet
+  end
+end
+
 
 post '/blackjack' do
   shoe = session["shoe"]
@@ -99,18 +114,4 @@ post '/blackjack' do
     session["ai_total"] = player_total(session["ai_hand"])
   end
   erb :blackjack
-end
-
-post '/bet' do
-  session["player#{session["turn"]}_bet"] = params[:bet]
-  session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
-
-  session["turn"] += 1
-  if session["turn"] == session["num_players"]
-    session["ai_bet"] = ai_bet
-    session["ai_bank"] = update_bank(session["ai_bank"].to_i, "subtract", session["ai_bet"].to_i)
-    erb :bet
-  else
-    erb :blackjack
-  end
 end
