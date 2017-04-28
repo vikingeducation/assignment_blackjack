@@ -152,6 +152,7 @@ post '/blackjack' do
   if session["ai"]
     session["ai_hand"] = deal(shoe)
     session["ai_bank"] = 1000
+    session["ai_total"] = player_total(session["ai_hand"])
   end
   erb :blackjack
 end
