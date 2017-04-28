@@ -81,8 +81,8 @@ end #end Card class
 
 class Player
   attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet
-  def initialize
-    @name =
+  def initialize(name)
+    @name = name
     @chips = 1000
     @hand = []
     @bet = 0
@@ -134,13 +134,16 @@ post '/init_players' do
   erb :names
 end
 
-post '/names' do
-  if session["turn"] == (session["num_players"] - 1)
+post '/save_names' do
+  if params[:name] != nil
+    session["player#{session["turn"]}"] = Player.new(params[:name])
+  end
+  session["turn"] += 1
+  if session["turn"] < session["num_players"]
+    erb :names
+  else
     session["turn"] = -1
     erb :bet
-  else
-    session["turn"] += 1
-    erb :names
   end
 end
 
