@@ -65,6 +65,10 @@ def dealer_total_showing(hand, reveal)
   return tot
 end
 
+def valid_bet(bank, bet)
+  return bet >= bank
+end
+
 class Card
   attr_accessor :value, :rank, :suit, :name
   def initialize(rank, suit_sym, value)
@@ -73,19 +77,90 @@ class Card
     @value = value
     @name = "#{rank}#{suit}"
   end
-end
+end #end Card class
+
+class Player
+  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet
+  def initialize
+    @name =
+    @chips = 1000
+    @hand = []
+    @bet = 0
+    @insurance_bet = 0
+    @split_hand = []
+    @split_total = 0
+    @split_bet = 0
+  end
+
+  def total
+    tot = 0
+    num_aces = 0
+    if !@hand.nil?
+      @hand.each do |card|
+        if !card.nil?
+          tot += card.value
+        else
+          tot += 0
+        end
+        if card.value == 11
+          num_aces +=1
+        end
+      end
+    end
+    while (tot > 21) && (num_aces > 0) do
+      tot -= 10
+      num_aces -= 1
+    end
+    return tot
+  end
+
+  def blackjack(player)
+    return (player.total == 21) && (@hand.length == 2)
+  end
+
+  def bust(player)
+    return player.total > 21
+  end
+end #Player class
 
 get '/' do
-  session["shoe"] = create_shoe
-  session["turn"] = -1
   erb :index
 end
 
+post '/init_players' do
+  session["num_players"] = params[:num_players].to_i
+  session["ai"] = params[:ai]
+  session["turn"] = 0
+  erb :names
+end
+
+post '/names' do
+  if session["turn"] == (session["num_players"] - 1)
+    session["turn"] = -1
+    erb :bet
+  else
+    session["turn"] += 1
+    erb :names
+  end
+end
+
+post '/init' do
+  session["num_players"].times do |x|
+    session["player#{x}_bank"] = 1000
+  end
+  session["ai_turn"]
+  erb :bet
+end
+
 post '/bet' do
-  session["player#{session["turn"]}_bank"] = 1000
   session["player#{session["turn"]}_bet"] = params[:bet]
-  session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
   session["turn"] += 1
+  if valid_bet(session["player#{session["turn"]}_bank"].to_i, session["player#{session["turn"]}_bet"].to_i)
+    session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
+  else
+    session["player#{session["turn"]}_bet"] = session["player#{session["turn"]}_bank"]
+    session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
+  end
   if session["turn"] == session["num_players"]
     session["ai_bet"] = 20
     session["ai_bank"] = update_bank(session["ai_bank"].to_i, "subtract", session["ai_bet"].to_i)
@@ -97,17 +172,15 @@ end
 
 
 post '/blackjack' do
-  shoe = session["shoe"]
+  session["shoe"] = create_shoe
   session["dealer_hand"] = deal(shoe)
   session["dealer_reveal"] = false
   session["dealer_total_showing"] = dealer_total_showing(session["dealer_hand"], false)
-  session["num_players"] = params[:num_players].to_i
   session["num_players"].times do |x|
     session["player#{x}_hand"] = deal(shoe)
     session["player#{x}_bank"] = 1000
     session["player#{x}_total"] = player_total(session["player#{x}_hand"])
   end
-  session["ai"] = params[:ai]
   if session["ai"]
     session["ai_hand"] = deal(shoe)
     session["ai_bank"] = 1000
