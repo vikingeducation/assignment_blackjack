@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <div class="dealer">
   <h1>Dealer</h1>
-  <h2>Hand: <% session["dealer_hand"].each do |card| %>
+  <h2>Hand:
+  <% if session["dealer_reveal"] %>
+    <% session["dealer_hand"].each do |card| %>
     <%= card.name %>
+    <% end %></h2>
+  <% else %>
+    <%= (session["dealer_hand"][0]).name %> **
   <% end %></h2>
-  <h2>Total Showing: <%= session["dealer_showing"] %></h2>
+  <h2>Total Showing: <%= session["dealer_total_showing"] %></h2>
 </div>
 
 <% session["num_players"].to_i.times do |p| %>
@@ -34,7 +39,9 @@
     <h2>Total: <%= session["ai_total"] %></h2>
     <h3>Bet:
     <form>
-      <input type="text" value="????" disabled="true">
+      <input type="text" value="????" disabled="true" style="margin-bottom: 1px;">
+      <br />
+      <br />
     </form>
     <h3>Bank: $ <%= session["ai_bank"] %></h3>
   <% end %>
