@@ -130,6 +130,9 @@ end
 post '/init_players' do
   session["num_players"] = params[:num_players].to_i
   session["ai"] = params[:ai]
+  if session["ai"]
+    session["ai"] = Player.new("Ben")
+  end
   session["turn"] = 0
   erb :names
 end
@@ -145,14 +148,6 @@ post '/save_names' do
     session["turn"] = -1
     erb :bet
   end
-end
-
-post '/init' do
-  session["num_players"].times do |x|
-    session["player#{x}_bank"] = 1000
-  end
-  session["ai_turn"]
-  erb :bet
 end
 
 post '/bet' do

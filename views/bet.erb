@@ -6,26 +6,21 @@
 
 <% session["num_players"].to_i.times do |p| %>
   <div class="players">
-    <h1><%= "Player #{p + 1}:" %> </h1>
+    <h1><%= session["player#{p}"].name %> </h1>
     <h3>Bet:
     <form action="bet" method="post">
       <input type="text" name="bet" '<%= session["turn"] == p  ? disabled="false" : disabled="true" %>'>
       <br />
       <input type="submit" value="Make Bets" style='<%= session["turn"] == p ? "visibility: visible;" : "visibility: hidden;"%>'>
     </form></h3>
-    <h3>Bank: $ <%= session["player#{p}_bank"] %></h3>
+    <h3>Bank: $ <%= session["player#{p}"].chips %></h3>
   </div>
 <% end %>
 
 <div class="players">
   <% if session["ai"] %>
     <h1>Ben: </h1>
-    <h3>Bet:
-    <form>
-      <input type="text" value="????" disabled="true" style="margin-bottom: 1px;">
-      <br />
-      <br />
-    </form></h3>
-    <h3>Bank: $ <%= session["ai_bank"] %></h3>
+    <h3>Bet:</h3>
+    <h3>Bank: $ <%= session["ai"].chips %></h3>
   <% end %>
 </div>
