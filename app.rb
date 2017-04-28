@@ -102,12 +102,13 @@ post '/blackjack' do
 end
 
 post '/bet' do
-  session["ai_bet"] = ai_bet
   session["player#{session["turn"]}_bet"] = params[:bet]
   session["player#{session["turn"]}_bank"] =  update_bank(session["player#{session["turn"]}_bank"].to_i, "subtract", session["player#{session["turn"]}_bet"].to_i)
 
   session["turn"] += 1
   if session["turn"] == session["num_players"]
+    session["ai_bet"] = ai_bet
+    session["ai_bank"] = update_bank(session["ai_bank"].to_i, "subtract", session["ai_bet"].to_i)
     erb :bet
   else
     erb :blackjack
