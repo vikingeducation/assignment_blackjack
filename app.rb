@@ -76,6 +76,9 @@ def player_blackjack
       return true
     end
   end
+  if (session["ai"].total == 21) && (session["ai"].hand.length == 2)
+    return true
+  end
   return bj
 end
 
@@ -86,7 +89,22 @@ def player_split
       return true
     end
   end
+  if (session["ai"].chips >= session["ai"].bet) && (session["ai"].hand[0].rank == session["ai"].hand[1].rank)
+  end
   return split
+end
+
+def player_double
+  double = false
+  session["num_players"].times do |player|
+    if (session["player#{player}"].chips >= session["player#{player}"].bet)
+      return true
+    end
+  end
+  if (session["ai"].chips >= session["ai"].bet)
+    return true
+  end
+  return double
 end
 
 def bust(player)
