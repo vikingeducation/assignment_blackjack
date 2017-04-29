@@ -20,7 +20,9 @@ def create_shoe
       end
     end
   end
-  shoe_ready = shoe_cards.shuffle
+  # shoe_ready = shoe_cards.shuffle
+  shoe_ready = shoe_cards.unshift(Card.new("K", :H, 10))
+  shoe_ready = shoe_cards.unshift(Card.new("A", :H, 11))
   return shoe_ready
 end #create_shoe method
 
@@ -76,6 +78,7 @@ def validate_bet(chips, bet)
 end
 
 def options_set_up_validations
+  session["turn"] = 0
   session["need_insurance"] = session["dealer"].total_showing == 11
   session["player_blackjack"] = player_blackjack
   session["player_split"] = player_split
@@ -119,9 +122,9 @@ def player_double
   return double
 end
 
-def bust(player)
-  return player.total > 21
-end
+# def bust(player)
+#   return player.total > 21
+# end
 
 
 class Card
@@ -155,7 +158,7 @@ class Dealer
     @name = "Conrad"
     @reveal = false
     @hand = deal(shoe)
-    @total = 0
+    @total = player_total(@hand)
     @total_showing = dealer_total_showing(@hand, @reveal)
   end
 end #Dealer Class
@@ -199,5 +202,23 @@ post '/place_bet' do
     erb :blackjack
   else
     erb :bet
+  end
+end
+
+post '/insurance_options' do
+  erb :insurance
+end
+
+post '/insurance_bet' do
+  session["player#{session["turn"]}"].insurance_bet = params[:insurance_bet].to_i
+  validate_bet(session["player#{session["turn"]}"].chips, session["player#{session["turn"]}"].insurance_bet)
+  session["turn"] += 1
+  if session["turn"] == session["num_players"]
+    if session["dealer"].total == 21
+      session["dealer"].reveal = true
+      erb :dealer_blackjack
+    else
+      erb :no_dealer_blackjack
+    end
   end
 end
