@@ -36,3 +36,42 @@
     <h3>Bank: $ <%= session["ai"].chips %></h3>
   <% end %>
 </div>
+
+<div>
+  <% if session["need_insurance"] %>
+    <p>
+      Conrad has a potential blackjack.  Maybe some people would like to place insurance bets.
+    </p>
+    <form action="insurance_options" method="post">
+      <input type="submit" value="Go to insurance options" />
+    </form>
+  <% elsif session["player_blackjack"] %>
+    <p>
+      At least one player has a blackjack.  Let's settle that up first.
+    </p>
+    <form action="player_blackjack_options" method="post">
+      <input type="submit" value="Settle Up" />
+    </form>
+  <% elsif session["player_split"] %>
+    <p>
+      At lease one player has the right cards for a split.  Let's give them that options.
+    </p>
+    <form action="split_options" method="post">
+      <input type="submit" value="Go to split options" />
+    </form>
+  <% elsif session["player_double"] %>
+    <p>
+      At least one player has enough chips to double down.  Let's give them that options.
+    </p>
+    <form action="double_down_options" method="post">
+      <input type="submit" value="Settle Up" />
+    </form>
+  <% else %>
+    <p>
+      Let's start with <%= session["player0"].name %> and see if they'd like to hit or stay.
+    </p>
+    <form action="standard_options" method="post">
+      <input type="submit" value="Let's get started!" />
+    </form>
+  <% end %>
+</div>

@@ -69,6 +69,31 @@ def valid_bet(bank, bet)
   return bet <= bank
 end
 
+def player_blackjack
+  bj = false
+  session["num_players"].times do |player|
+    if (session["player#{player}"].total == 21) && (session["player#{player}"].hand.length == 2)
+      return true
+    end
+  end
+  return bj
+end
+
+def player_split
+  split = false
+  session["num_players"].times do |player|
+    if (session["player#{player}"].chips >= session["player#{player}"].bet) && (session["player#{player}"].hand[0].rank == session["player#{player}"].hand[1].rank)
+      return true
+    end
+  end
+  return split
+end
+
+def bust(player)
+  return player.total > 21
+end
+
+
 class Card
   attr_accessor :value, :rank, :suit, :name
   def initialize(rank, suit_sym, value)
@@ -92,14 +117,6 @@ class Player
     @split_total = 0
     @split_bet = 0
   end
-
-  def blackjack(player)
-    return (player.total == 21) && (@hand.length == 2)
-  end
-
-  def bust(player)
-    return player.total > 21
-  end
 end #Player class
 
 class Dealer
@@ -111,14 +128,6 @@ class Dealer
     @total = 0
     @total_showing = 0
   end
-
-  # def blackjack(player)
-  #   return (player.total == 21) && (@hand.length == 2)
-  # end
-  #
-  # def bust(player)
-  #   return player.total > 21
-  # end
 end #Dealer Class
 
 get '/' do
@@ -176,13 +185,11 @@ post '/place_bet' do
       session["ai"].hand = deal
       session["ai"].total = player_total(session["ai"].hand)
     end
+    session["need_insurance"] = session["dealer"].total_showing == 11
+    session["player_blackjack"] = player_blackjack
+    session["player_split"] = player_split
     erb :blackjack
   else
     erb :bet
   end
-end
-
-
-post '/blackjack' do
-  erb :blackjack
 end
