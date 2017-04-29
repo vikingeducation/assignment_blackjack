@@ -21,7 +21,7 @@ def create_shoe
     end
   end
   # shoe_ready = shoe_cards.shuffle
-  shoe_ready = shoe_cards.unshift(Card.new("K", :H, 10))
+  shoe_ready = shoe_cards.unshift(Card.new("4", :H, 4))
   shoe_ready = shoe_cards.unshift(Card.new("A", :H, 11))
   return shoe_ready
 end #create_shoe method
