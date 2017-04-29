@@ -1,10 +1,10 @@
 require 'sinatra'
 enable :sessions
 
-def deal
+def deal(shoe)
   hand = []
   2.times do
-    hand << session["shoe"].shift
+    hand << shoe.shift
   end
   return hand
 end
@@ -24,13 +24,13 @@ def create_shoe
   return shoe_ready
 end #create_shoe method
 
-def update_bank(bank, op, amount)
+def update_chips(chips, op, amount)
   if op == "subtract"
-    updated_bank = bank - amount
+    updated_chips = chips - amount
   else
-    updated_bank = bank + amount
+    updated_chips = chips + amount
   end
-  return updated_bank
+  return updated_chips
 end
 
 def ai_bet
@@ -65,8 +65,20 @@ def dealer_total_showing(hand, reveal)
   return tot
 end
 
-def valid_bet(bank, bet)
-  return bet <= bank
+def validate_bet(chips, bet)
+  if bet <= chips
+    chips =  update_chips(chips, "subtract", bet)
+  else
+    bet = bank
+    chips =  update_chips(chips, "subtract", bet)
+  end
+  return chips
+end
+
+def options_set_up_validations
+  session["need_insurance"] = session["dealer"].total_showing == 11
+  session["player_blackjack"] = player_blackjack
+  session["player_split"] = player_split
 end
 
 def player_blackjack
@@ -124,11 +136,11 @@ end #end Card class
 
 class Player
   attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total
-  def initialize(name)
+  def initialize(name, shoe)
     @name = name
     @chips = 1000
-    @hand = []
-    @total = 0
+    @hand = deal(shoe)
+    @total = player_total(@hand)
     @bet = 0
     @insurance_bet = 0
     @split_hand = []
@@ -139,12 +151,12 @@ end #Player class
 
 class Dealer
   attr_accessor :name, :hand, :total, :total_showing, :reveal
-  def initialize
+  def initialize(shoe)
     @name = "Conrad"
     @reveal = false
-    @hand = []
+    @hand = deal(shoe)
     @total = 0
-    @total_showing = 0
+    @total_showing = dealer_total_showing(@hand, @reveal)
   end
 end #Dealer Class
 
@@ -153,11 +165,12 @@ get '/' do
 end
 
 post '/init_players' do
-  session["dealer"] = Dealer.new
+  session["shoe"] = create_shoe
+  session["dealer"] = Dealer.new(session["shoe"])
   session["num_players"] = params[:num_players].to_i
   session["ai"] = params[:ai]
   if session["ai"]
-    session["ai"] = Player.new("Ben")
+    session["ai"] = Player.new("Ben", session["shoe"])
   end
   session["turn"] = 0
   erb :names
@@ -165,7 +178,7 @@ end
 
 post '/save_names' do
   if params[:name] != nil
-    session["player#{session["turn"]}"] = Player.new(params[:name])
+    session["player#{session["turn"]}"] = Player.new(params[:name], session["shoe"])
   end
   session["turn"] += 1
   if session["turn"] < session["num_players"]
@@ -178,34 +191,11 @@ end
 
 post '/place_bet' do
   session["player#{session["turn"]}"].bet = params[:bet].to_i
-  if valid_bet(session["player#{session["turn"]}"].chips, session["player#{session["turn"]}"].bet)
-    session["player#{session["turn"]}"].chips =  update_bank(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].bet)
-  else
-    session["player#{session["turn"]}"].bet = session["player#{session["turn"]}"].chips
-    session["player#{session["turn"]}"].chips =  update_bank(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].bet)
-  end
+  validate_bet(session["player#{session["turn"]}"].chips, session["player#{session["turn"]}"].bet)
   session["turn"] += 1
   if session["turn"] == session["num_players"]
-    #shoe set-up
-    session["shoe"] = create_shoe
-    #dealer set-up
-    session["dealer"].hand = deal
-    session["dealer"].total_showing = dealer_total_showing(session["dealer"].hand, false)
-    #player set-up
-    session["num_players"].times do |x|
-      session["player#{x}"].hand = deal
-      session["player#{x}"].total = player_total(session["player#{x}"].hand)
-    end
-    #ai set-up
-    if session["ai"]
-      session["ai"].bet = 20
-      session["ai"].chips = update_bank(session["ai"].chips, "subtract", session["ai"].bet)
-      session["ai"].hand = deal
-      session["ai"].total = player_total(session["ai"].hand)
-    end
-    session["need_insurance"] = session["dealer"].total_showing == 11
-    session["player_blackjack"] = player_blackjack
-    session["player_split"] = player_split
+    validate_bet(session["ai"].chips, 20) if session["ai"]
+    options_set_up_validations
     erb :blackjack
   else
     erb :bet
