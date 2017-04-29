@@ -67,16 +67,6 @@ def dealer_total_showing(hand, reveal)
   return tot
 end
 
-def validate_bet(chips, bet)
-  if bet <= chips
-    chips =  update_chips(chips, "subtract", bet)
-  else
-    bet = bank
-    chips =  update_chips(chips, "subtract", bet)
-  end
-  return chips
-end
-
 def options_set_up_validations
   session["turn"] = 0
   session["need_insurance"] = session["dealer"].total_showing == 11
@@ -122,10 +112,18 @@ def player_double
   return double
 end
 
+def settle_dealer_blackjack
+  session["num_players"].times do |player|
+    session["player#{player}"].chips = update_chips(session["player#{player}"].chips, "add", session["player#{player}"].insurance_bet * 2) if session["player#{player}"].insurance_bet > 0
+    session["player#{player}"].chips = update_chips(session["player#{player}"].chips, "add", session["player#{player}"].bet) if session["player#{player}"].total == 21
+  end
+  session["ai"].chips = update_chips(session["ai"].chips, "add", session["ai"].insurance_bet * 2) if session["ai"].insurance_bet > 0
+  session["ai"].chips = update_chips(session["ai"].chips, "add", session["ai"].bet) if session["ai"].total == 21
+end
+
 # def bust(player)
 #   return player.total > 21
 # end
-
 
 class Card
   attr_accessor :value, :rank, :suit, :name
@@ -194,10 +192,16 @@ end
 
 post '/place_bet' do
   session["player#{session["turn"]}"].bet = params[:bet].to_i
-  validate_bet(session["player#{session["turn"]}"].chips, session["player#{session["turn"]}"].bet)
+  if session["player#{session["turn"]}"].bet <= session["player#{session["turn"]}"].chips
+    session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].bet)
+  else
+    session["player#{session["turn"]}"].bet = session["player#{session["turn"]}"].chips
+    session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].bet)
+  end
   session["turn"] += 1
   if session["turn"] == session["num_players"]
-    validate_bet(session["ai"].chips, 20) if session["ai"]
+    session["ai"].bet = 20
+    session["ai"].chips = update_chips(session["ai"].chips, "subtract", session["ai"].bet) if session["ai"]
     options_set_up_validations
     erb :blackjack
   else
@@ -211,7 +215,13 @@ end
 
 post '/insurance_bet' do
   session["player#{session["turn"]}"].insurance_bet = params[:insurance_bet].to_i
-  validate_bet(session["player#{session["turn"]}"].chips, session["player#{session["turn"]}"].insurance_bet)
+
+  if session["player#{session["turn"]}"].insurance_bet <= session["player#{session["turn"]}"].chips
+    session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].insurance_bet)
+  else
+    session["player#{session["turn"]}"].insurance_bet = session["player#{session["turn"]}"].chips
+    session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].insurance_bet)
+  end
   session["turn"] += 1
   if session["turn"] == session["num_players"]
     if session["dealer"].total == 21
@@ -220,5 +230,15 @@ post '/insurance_bet' do
     else
       erb :no_dealer_blackjack
     end
+  end
+end
+
+post '/settle_dealer_blackjack' do
+  settle_dealer_blackjack
+  if next_round_possible
+    session["message"] = "The bets have been settled and your totals are below.  Would you like to play another round"
+    erb :end_hand
+  else
+    erb :end_game
   end
 end
