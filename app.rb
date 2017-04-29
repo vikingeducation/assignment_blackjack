@@ -21,6 +21,8 @@ def create_shoe
     end
   end
   # shoe_ready = shoe_cards.shuffle
+  shoe_ready = shoe_cards.unshift(Card.new("K", :D, 10))
+  shoe_ready = shoe_cards.unshift(Card.new("A", :D, 11))
   shoe_ready = shoe_cards.unshift(Card.new("4", :H, 4))
   shoe_ready = shoe_cards.unshift(Card.new("A", :H, 11))
   return shoe_ready
@@ -150,6 +152,16 @@ def reset_players
   end
 end
 
+def reset_one_player(player)
+  player.hand = []
+  player.total = 0
+  player.bet = 0
+  player.insurance_bet = 0
+  player.split_hand = []
+  player.split_total = 0
+  player.split_bet = 0
+end
+
 def reset_ai
   session["ai"].hand = deal(session["shoe"])
   session["ai"].total = player_total(session["ai"].hand)
@@ -270,7 +282,6 @@ end
 
 post '/insurance_bet' do
   session["player#{session["turn"]}"].insurance_bet = params[:insurance_bet].to_i
-
   if session["player#{session["turn"]}"].insurance_bet <= session["player#{session["turn"]}"].chips
     session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].insurance_bet)
   else
@@ -313,4 +324,20 @@ post '/reset' do
     session["winner"] = most_chips
     erb :end_game
   end
+end
+
+post '/player_blackjack_options' do
+  session["num_players"].times do |p|
+    if session["player#{p}"].total == 21
+      session["player#{p}"].chips = update_chips(session["player#{p}"].chips, "add", session["player#{p}"].bet * 1.5)
+      reset_one_player(session["player#{p}"])
+    end
+  end
+  if session["ai"].total == 21
+    session["ai"].chips = update_chips(session["ai"].chips, "add", session["ai"].bet * 1.5)
+    reset_one_player(session["ai"])
+  end
+  session["need_insurance"] = false
+  session["player_blackjack"] = false
+  erb :blackjack
 end
