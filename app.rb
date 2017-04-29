@@ -131,6 +131,51 @@ def next_round_possible
   return possible
 end
 
+def reset_dealer
+  session["dealer"].reveal = false
+  session["dealer"].hand = deal(session["shoe"])
+  session["dealer"].total = player_total(session["dealer"].hand)
+  session["dealer"].total_showing = dealer_total_showing(session["dealer"].hand, session["dealer"].reveal)
+end
+
+def reset_players
+  session["num_players"].times do |player|
+    session["player#{player}"].hand = deal(session["shoe"])
+    session["player#{player}"].total = player_total(session["player#{player}"].hand)
+    session["player#{player}"].bet = 0
+    session["player#{player}"].insurance_bet = 0
+    session["player#{player}"].split_hand = []
+    session["player#{player}"].split_total = 0
+    session["player#{player}"].split_bet = 0
+  end
+end
+
+def reset_ai
+  session["ai"].hand = deal(session["shoe"])
+  session["ai"].total = player_total(session["ai"].hand)
+  session["ai"].bet = 0
+  session["ai"].insurance_bet = 0
+  session["ai"].split_hand = []
+  session["ai"].split_total = 0
+  session["ai"].split_bet = 0
+end
+
+def most_chips
+  most_chips = 0
+  winner = session["ai"]
+  session["num_players"].times do |player|
+    if session["player#{player}"].chips > most_chips
+      most_chips = session["player#{player}"].chips
+      winner = session["player#{player}"]
+    end
+  end
+  if session["ai"].chips > most_chips
+    winner = session["ai"]
+  end
+  return winner
+end
+
+
 # def bust(player)
 #   return player.total > 21
 # end
@@ -180,7 +225,7 @@ post '/init_players' do
   session["dealer"] = Dealer.new(session["shoe"])
   session["num_players"] = params[:num_players].to_i
   session["ai"] = params[:ai]
-  if session["ai"]
+  if session["ai"] == "true"
     session["ai"] = Player.new("Ben", session["shoe"])
   end
   session["turn"] = 0
@@ -236,6 +281,7 @@ post '/insurance_bet' do
   if session["turn"] == session["num_players"]
     if session["dealer"].total == 21
       session["dealer"].reveal = true
+      session["dealer"].total_showing = dealer_total_showing(session["dealer"].hand, session["dealer"].reveal)
       erb :dealer_blackjack
     else
       erb :no_dealer_blackjack
@@ -249,6 +295,22 @@ post '/settle_dealer_blackjack' do
     session["message"] = "The bets have been settled and your totals are below.  Would you like to play another round"
     erb :end_hand
   else
+    session["winner"] = most_chips
+    erb :end_game
+  end
+end
+
+post '/reset' do
+  session["another"] = params[:next_round]
+  if session["another"] == "true"
+    session["shoe"] = create_shoe
+    session["turn"] = 0
+    reset_dealer
+    reset_players
+    reset_ai
+    erb :bet
+  else
+    session["winner"] = most_chips
     erb :end_game
   end
 end
