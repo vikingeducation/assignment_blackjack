@@ -121,6 +121,16 @@ def settle_dealer_blackjack
   session["ai"].chips = update_chips(session["ai"].chips, "add", session["ai"].bet) if session["ai"].total == 21
 end
 
+def next_round_possible
+  possible = false
+  session["num_players"].times do |player|
+    if session["player#{player}"].chips > 0
+      return true
+    end
+  end
+  return possible
+end
+
 # def bust(player)
 #   return player.total > 21
 # end
