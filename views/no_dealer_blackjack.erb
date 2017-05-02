@@ -15,7 +15,7 @@
 
 <% session["num_players"].to_i.times do |p| %>
   <div class="players">
-    <h1><%= "Player #{p + 1}:" %> </h1>
+    <h1><%= session["player#{p}"].name %> </h1>
     <h2>Hand: <% session["player#{p}"].hand.each do |card| %>
       <%= card.name %>
     <% end %></h2>

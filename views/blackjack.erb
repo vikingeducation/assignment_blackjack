@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <div class="dealer">
-  <h1>Dealer</h1>
+  <h1>Dealer: </h1>
   <h2>Hand:
   <% if session["dealer"].reveal %>
     <% session["dealer"].hand.each do |card| %>
@@ -14,7 +14,7 @@
 
 <% session["num_players"].to_i.times do |p| %>
   <div class="players">
-    <h1><%= "Player #{p + 1}:" %> </h1>
+    <h1><%= session["player#{p}"].name %>: </h1>
     <h2>Hand: <% session["player#{p}"].hand.each do |card| %>
       <%= card.name %>
     <% end %></h2>
@@ -60,7 +60,7 @@
     </form>
   <% elsif session["player_double"] %>
     <h2>
-      At least one player has enough chips to double down.  Let's give them that options.
+      At least one player has enough chips to double down.  Let's give them that option.
     </h2>
     <form action="/double_down_options" method="post">
       <input type="submit" autofocus value="Settle Up" />

@@ -21,10 +21,12 @@ def create_shoe
     end
   end
   # shoe_ready = shoe_cards.shuffle
-  shoe_ready = shoe_cards.unshift(Card.new("K", :D, 10))
-  shoe_ready = shoe_cards.unshift(Card.new("A", :D, 11))
+  shoe_ready = shoe_cards.unshift(Card.new("6", :H, 6))
+  shoe_ready = shoe_cards.unshift(Card.new("6", :C, 6))
+  shoe_ready = shoe_cards.unshift(Card.new("6", :D, 6))
+  shoe_ready = shoe_cards.unshift(Card.new("4", :D, 4))
   shoe_ready = shoe_cards.unshift(Card.new("4", :H, 4))
-  shoe_ready = shoe_cards.unshift(Card.new("A", :H, 11))
+  shoe_ready = shoe_cards.unshift(Card.new("5", :H, 5))
   return shoe_ready
 end #create_shoe method
 
@@ -187,10 +189,55 @@ def most_chips
   return winner
 end
 
+def split_up_hand(player)
+  split_card = player.hand.pop
+  player.split_hand << split_card
+  player.hand << session["shoe"].shift
+  player.total = player_total(player.hand)
+  player.split_hand << session["shoe"].shift
+  player.split_total = player_total(player.split_hand)
+  player.split_bet = player.bet
+end
 
-# def bust(player)
-#   return player.total > 21
-# end
+def hit(player)
+  player.hand << session["shoe"].shift
+  player.total = player_total(player.hand)
+end
+
+def split_hit(player)
+  player.split_hand << session["shoe"].shift
+  player.split_total = player_total(player.split_hand)
+end
+
+def bust(total)
+  return total > 21
+end
+
+def ai_decide_hit(hand, total)
+  hand.each do |card|
+    if card.value == 11
+      while total <= 18 do
+        hand << session["shoe"].shift
+        session["ai"].total = player_total(session["ai"].hand)
+      end
+    elsif ((session["dealer"].total_showing >= 7 ) && (session["dealer"].total_showing <= 11))
+      while total <=17 do
+        hand << session["shoe"].shift
+        session["ai"].total = player_total(session["ai"].hand)
+      end
+    elsif ((session["dealer"].total_showing >=4) && (session["dealer"].total_showing <= 6))
+      while total <= 12 do
+        hand << session["shoe"].shift
+        session["ai"].total = player_total(session["ai"].hand)
+      end
+    else
+      while total <= 13 do
+        hand << session["shoe"].shift
+        session["ai"].total = player_total(session["ai"].hand)
+      end
+    end
+  end
+end
 
 class Card
   attr_accessor :value, :rank, :suit, :name
@@ -203,17 +250,19 @@ class Card
 end #end Card class
 
 class Player
-  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total
+  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total, :hand_stand, :split_stand
   def initialize(name, shoe)
     @name = name
     @chips = 1000
     @hand = deal(shoe)
     @total = player_total(@hand)
     @bet = 0
+    @hand_stand = false
     @insurance_bet = 0
     @split_hand = []
     @split_total = 0
     @split_bet = 0
+    @split_stand = false
   end
 end #Player class
 
@@ -227,6 +276,7 @@ class Dealer
     @total_showing = dealer_total_showing(@hand, @reveal)
   end
 end #Dealer Class
+
 
 get '/' do
   erb :index
@@ -340,4 +390,71 @@ post '/player_blackjack_options' do
   session["need_insurance"] = false
   session["player_blackjack"] = false
   erb :blackjack
+end
+
+post '/split_options' do
+  if (session["player#{session["turn"]}"].chips >= session["player#{session["turn"]}"].bet) && (session["player#{session["turn"]}"].hand[0].rank == session["player#{session["turn"]}"].hand[1].rank)
+    split_up_hand(session["player#{session["turn"]}"])
+  end
+  session["turn"] += 1
+  erb :split
+end
+
+post '/standard_turn_reset' do
+  session["turn"] = 0
+  erb :standard
+end
+
+post '/standard_options' do
+  #params
+  session["player#{session["turn"]}_hit"] = params[:hit]
+  session["player#{session["turn"]}_split_hit"] = params[:split_hit]
+  #hit
+  if session["player#{session["turn"]}_hit"] == "true"
+    hit(session["player#{session["turn"]}"])
+    #bust
+    if bust(session["player#{session["turn"]}"].total)
+      session["standard_message"] = "You went over 21 and lose this hand."
+      session["player#{session["turn"]}"].hand_stand = true
+      erb :standard
+    else
+      session["standard_message"] = "You may continue to hit or stand."
+      erb :standard
+    end
+  end
+  #stand
+  if session["player#{session["turn"]}_hit"] == "false"
+    session["standard_message"] = "#{session["player#{session["turn"]}"]} stands."
+    session["player#{session["turn"]}"].hand_stand = true
+    erb :standard
+  end #end main hitting
+
+  if ((session["player#{session["turn"]}"].split_hand != nil) && (session["player#{session["turn"]}"].hand_stand))
+    if session["player#{session["turn"]}_split_hit"] == "true"
+      split_hit(session["player#{session["turn"]}"])
+      #bust
+      if bust(session["player#{session["turn"]}"].split_total)
+        session["standard_message"] = "You went over 21 and lose this hand."
+        session["player#{session["turn"]}"].split_stand = true
+        session["turn"] += 1
+        erb :standard
+      else
+        session["standard_message"] = "You may continue to hit or stand."
+        erb :standard
+      end
+    erb :standard
+    end
+    #stand
+    if session["player#{session["turn"]}_split_hit"] == "false"
+      session["player#{session["turn"]}"].hand_stand = true
+      session["turn"] +=1
+      erb :standard
+    end #end split hitting
+  elsif (session["player#{session["turn"]}"].hand_stand)
+    session["turn"] += 1
+    erb :standard
+  else
+    erb :standard
+  end
+  erb :standard
 end

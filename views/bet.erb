@@ -6,7 +6,7 @@
 
 <% session["num_players"].times do |p| %>
   <div class="players">
-    <h1><%= session["player#{p}"].name %> </h1>
+    <h1><%= session["player#{p}"].name %>: </h1>
     <h3>Bet:
       <form action="place_bet" method="post">
         <input type="text" name="bet" <%= session["turn"] != p ? "disabled" : "enabled autofocus" %> >
