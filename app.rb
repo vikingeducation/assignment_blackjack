@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'pry-byebug'
 enable :sessions
 
 def deal(shoe)
@@ -213,31 +214,60 @@ def bust(total)
   return total > 21
 end
 
-def ai_decide_hit(hand, total)
-  hand.each do |card|
+def ai_decide_hit
+  session["ai"].hand.each do |card|
     if card.value == 11
-      while total <= 18 do
-        hand << session["shoe"].shift
+      while session["ai"].total <= 18 do
+        session["ai"].hand << session["shoe"].shift
         session["ai"].total = player_total(session["ai"].hand)
       end
     elsif ((session["dealer"].total_showing >= 7 ) && (session["dealer"].total_showing <= 11))
-      while total <=17 do
-        hand << session["shoe"].shift
+      while session["ai"].total <=17 do
+        session["ai"].hand << session["shoe"].shift
         session["ai"].total = player_total(session["ai"].hand)
       end
     elsif ((session["dealer"].total_showing >=4) && (session["dealer"].total_showing <= 6))
-      while total <= 12 do
-        hand << session["shoe"].shift
+      while session["ai"].total <= 12 do
+        session["ai"].hand << session["shoe"].shift
         session["ai"].total = player_total(session["ai"].hand)
       end
     else
-      while total <= 13 do
-        hand << session["shoe"].shift
+      while session["ai"].total <= 13 do
+        session["ai"].hand << session["shoe"].shift
         session["ai"].total = player_total(session["ai"].hand)
       end
     end
   end
+  session["ai"].hand_stand = true
 end
+
+def ai_decide_split_hit
+  session["ai"].split_hand.each do |card|
+    if card.value == 11
+      while session["ai"].split_total <= 18 do
+        session["ai"].split_hand << session["shoe"].shift
+        session["ai"].split_total = player_total(session["ai"].split_hand)
+      end
+    elsif ((session["dealer"].total_showing >= 7 ) && (session["dealer"].total_showing <= 11))
+      while session["ai"].split_total <=17 do
+        session["ai"].split_hand << session["shoe"].shift
+        session["ai"].split_total = player_total(session["ai"].split_hand)
+      end
+    elsif ((session["dealer"].total_showing >=4) && (session["dealer"].total_showing <= 6))
+      while session["ai"].split_total <= 12 do
+        session["ai"].split_hand << session["shoe"].shift
+        session["ai"].split_total = player_total(session["ai"].split_hand)
+      end
+    else
+      while session["ai"].split_total <= 13 do
+        session["ai"].split_hand << session["shoe"].shift
+        session["ai"].split_total = player_total(session["ai"].split_hand)
+      end
+    end
+  end
+  session["ai"].split_stand = true
+end
+
 
 class Card
   attr_accessor :value, :rank, :suit, :name
@@ -308,17 +338,23 @@ post '/save_names' do
 end
 
 post '/place_bet' do
-  session["player#{session["turn"]}"].bet = params[:bet].to_i
-  if session["player#{session["turn"]}"].bet <= session["player#{session["turn"]}"].chips
-    session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].bet)
+  #method variables
+  cur = session["player#{session["turn"]}"]
+  ai = session["ai"]
+  turn = session["turn"]
+  #params
+  cur.bet = params[:bet].to_i
+
+  if cur.bet <= cur.chips
+    cur.chips = update_chips(cur.chips, "subtract", cur.bet)
   else
-    session["player#{session["turn"]}"].bet = session["player#{session["turn"]}"].chips
-    session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].bet)
+    cur.bet = cur.chips
+    cur.chips = update_chips(cur.chips, "subtract", cur.bet)
   end
-  session["turn"] += 1
-  if session["turn"] == session["num_players"]
-    session["ai"].bet = 20
-    session["ai"].chips = update_chips(session["ai"].chips, "subtract", session["ai"].bet) if session["ai"]
+  turn += 1
+  if turn == session["num_players"]
+    ai.bet = 20
+    ai.chips = update_chips(ai.chips, "subtract", ai.bet) if session["ai"]
     options_set_up_validations
     erb :blackjack
   else
@@ -331,15 +367,15 @@ post '/insurance_options' do
 end
 
 post '/insurance_bet' do
-  session["player#{session["turn"]}"].insurance_bet = params[:insurance_bet].to_i
-  if session["player#{session["turn"]}"].insurance_bet <= session["player#{session["turn"]}"].chips
-    session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].insurance_bet)
+  session["player#{turn}"].insurance_bet = params[:insurance_bet].to_i
+  if session["player#{turn}"].insurance_bet <= session["player#{turn}"].chips
+    session["player#{turn}"].chips = update_chips(session["player#{turn}"].chips, "subtract", session["player#{turn}"].insurance_bet)
   else
-    session["player#{session["turn"]}"].insurance_bet = session["player#{session["turn"]}"].chips
-    session["player#{session["turn"]}"].chips = update_chips(session["player#{session["turn"]}"].chips, "subtract", session["player#{session["turn"]}"].insurance_bet)
+    session["player#{turn}"].insurance_bet = session["player#{turn}"].chips
+    session["player#{turn}"].chips = update_chips(session["player#{turn}"].chips, "subtract", session["player#{turn}"].insurance_bet)
   end
-  session["turn"] += 1
-  if session["turn"] == session["num_players"]
+  turn += 1
+  if turn == session["num_players"]
     if session["dealer"].total == 21
       session["dealer"].reveal = true
       session["dealer"].total_showing = dealer_total_showing(session["dealer"].hand, session["dealer"].reveal)
@@ -377,15 +413,19 @@ post '/reset' do
 end
 
 post '/player_blackjack_options' do
+  #method variables
+  cur = session["player"]
+  ai = session["ai"]
+
   session["num_players"].times do |p|
-    if session["player#{p}"].total == 21
-      session["player#{p}"].chips = update_chips(session["player#{p}"].chips, "add", session["player#{p}"].bet * 1.5)
-      reset_one_player(session["player#{p}"])
+    if cur[p].total == 21
+      cur[p].chips = update_chips(cur[p].chips, "add", cur[p].bet * 1.5)
+      reset_one_player(cur[p])
     end
   end
-  if session["ai"].total == 21
-    session["ai"].chips = update_chips(session["ai"].chips, "add", session["ai"].bet * 1.5)
-    reset_one_player(session["ai"])
+  if ai.total == 21
+    ai.chips = update_chips(ai.chips, "add", ai.bet * 1.5)
+    reset_one_player(ai)
   end
   session["need_insurance"] = false
   session["player_blackjack"] = false
@@ -393,8 +433,10 @@ post '/player_blackjack_options' do
 end
 
 post '/split_options' do
-  if (session["player#{session["turn"]}"].chips >= session["player#{session["turn"]}"].bet) && (session["player#{session["turn"]}"].hand[0].rank == session["player#{session["turn"]}"].hand[1].rank)
-    split_up_hand(session["player#{session["turn"]}"])
+  #method variables
+  cur = session["player#{session["turn"]}"]
+  if (cur.chips >= cur.bet) && (cur.hand[0].rank == cur.hand[1].rank)
+    split_up_hand(cur)
   end
   session["turn"] += 1
   erb :split
@@ -407,54 +449,74 @@ end
 
 post '/standard_options' do
   #params
-  session["player#{session["turn"]}_hit"] = params[:hit]
-  session["player#{session["turn"]}_split_hit"] = params[:split_hit]
+  to_hit = params[:hit]
+  to_split_hit = params[:split_hit]
+  #method variables
+  next_page = "standard"
+  turn = session["turn"]
+  cur = session["player#{turn}"]
+  msg = session["standard_message"]
+  ai = session["ai"]
+  num = session["num_players"]
   #hit
-  if session["player#{session["turn"]}_hit"] == "true"
-    hit(session["player#{session["turn"]}"])
+  if to_hit == "yes"
+    hit(cur)
     #bust
-    if bust(session["player#{session["turn"]}"].total)
-      session["standard_message"] = "You went over 21 and lose this hand."
-      session["player#{session["turn"]}"].hand_stand = true
-      erb :standard
+    if bust(cur.total)
+      msg = "You went over 21 and lose this hand."
+      cur.hand_stand = true
+      next_page = "standard"
     else
-      session["standard_message"] = "You may continue to hit or stand."
-      erb :standard
+      msg = "You may continue to hit or stand."
+      next_page = "standard"
     end
-  end
   #stand
-  if session["player#{session["turn"]}_hit"] == "false"
-    session["standard_message"] = "#{session["player#{session["turn"]}"]} stands."
-    session["player#{session["turn"]}"].hand_stand = true
-    erb :standard
+  elsif to_hit == "no"
+    msg = "Stands."
+    cur.hand_stand = true
+    next_page = "standard"
+  else
+    next_page = "standard"
   end #end main hitting
 
-  if ((session["player#{session["turn"]}"].split_hand != nil) && (session["player#{session["turn"]}"].hand_stand))
-    if session["player#{session["turn"]}_split_hit"] == "true"
-      split_hit(session["player#{session["turn"]}"])
+  if ((!cur.split_hand.empty?) && (cur.hand_stand) && (!cur.split_stand))
+    #split hit
+    if to_split_hit == "yes"
+      split_hit(cur)
       #bust
-      if bust(session["player#{session["turn"]}"].split_total)
-        session["standard_message"] = "You went over 21 and lose this hand."
-        session["player#{session["turn"]}"].split_stand = true
-        session["turn"] += 1
-        erb :standard
+      if bust(cur.split_total)
+        msg = "You went over 21 and lose this hand."
+        cur.split_stand = true
+        turn += 1
+        next_page = "standard"
       else
-        session["standard_message"] = "You may continue to hit or stand."
-        erb :standard
+        msg = "You may continue to hit or stand."
+        next_page = "standard"
       end
-    erb :standard
-    end
-    #stand
-    if session["player#{session["turn"]}_split_hit"] == "false"
-      session["player#{session["turn"]}"].hand_stand = true
-      session["turn"] +=1
-      erb :standard
+    #split stand
+  elsif to_split_hit == "no"
+      cur.split_stand = true
+      turn +=1
+      next_page = "standard"
     end #end split hitting
-  elsif (session["player#{session["turn"]}"].hand_stand)
-    session["turn"] += 1
-    erb :standard
+  elsif (cur.split_stand)
+    turn += 1
+    next_page = "standard"
+  else
+    next_page = "standard"
+  end
+  if ((turn == num) && (ai.hand_stand == true) && (ai.split_stand == true))
+    next_page = "settle"
+  elsif turn == num
+    ai_decide_hit
+    if ((ai.split_hand != nil) && (ai.hand_stand))
+      ai_decide_split_hit
+    end
+    next_page = "settle"
+  end
+  if next_page == "settle"
+    erb :settle
   else
     erb :standard
   end
-  erb :standard
 end

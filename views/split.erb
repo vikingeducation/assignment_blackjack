@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<div class="dealer">
+  <h1>Dealer: </h1>
+  <h2>If you have two cards of the same face value and enough chips in your bank you will be given the option to split your hand.</h2>
+  <h2>Hand:
+  <% if session["dealer"].reveal %>
+    <% session["dealer"].hand.each do |card| %>
+    <%= card.name %>
+    <% end %></h2>
+  <% else %>
+    <%= (session["dealer"].hand[0]).name %> **
+  <% end %></h2>
+  <h2>Total Showing: <%= session["dealer"].total_showing %></h2>
+</div>
+
+<% session["num_players"].times do |p| %>
+  <div class="players">
+    <h1><%= session["player#{p}"].name %>: </h1>
+    <h2>Hand: <% session["player#{p}"].hand.each do |card| %>
+      <%= card.name %>
+    <% end %></h2>
+    <h2>Total: <%= session["player#{p}"].total %></h2>
+    <h2>Bet: <%= session["player#{p}"].bet %></h2>
+      <h3>
+        <form action="place_bet" method="post">
+          <input type="submit" value="Split Hand" style="<%= ((session["turn"] != p) && (session["player#{p}"].hand[0].rank == session["player#{p}"].hand[1].rank) && (session["player#{p}"].chips >= session["player#{p}"].bet)) ? "visibility: visible;" : "visibility: hidden;"%>">
+        </form>
+      </h3>
+    <% if session["player#{p}"].split_hand != nil %>
+      <h2>Split: <% session["player#{p}"].split_hand.each do |card| %>
+        <%= card.name %>
+      <% end %></h2>
+      <h2>Total: <%= session["player#{p}"].split_total %></h2>
+      <h2>Bet: <%= session["player#{p}"].split_bet %></h2>
+    <% end %>
+    <h3>Bank: $ <%= session["player#{p}"].chips %></h3>
+  </div>
+<% end %>
+
+<div class="players">
+  <% if session["ai"] %>
+    <h1>Ben: </h1>
+    <h2>Hand: <% session["ai"].hand.each do |card| %>
+      <%= card.name %>
+    <% end %></h2>
+    <h2>Bet: <%= session["ai"].bet %></h2>
+    <h3>Bank: $ <%= session["ai"].chips %></h3>
+  <% end %>
+</div>
+<form action="/standard_turn_reset" method="post">
+  <input type="submit" autofocus value="Go to 'Hit' phase" />
+</form>
