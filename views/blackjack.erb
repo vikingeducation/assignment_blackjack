@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <div class="dealer">
   <h1>Dealer: </h1>
+  <h2>A few notes on side bets... You may purchase insurance if I havea potentail blackjack showing.  You may split if you have two cards of the same rank and you may double down on your bet (taking only one additional card) if you have enough chips.  You may not double down after a split.</h2>
   <h2>Hand:
   <% if session["dealer"].reveal %>
     <% session["dealer"].hand.each do |card| %>
@@ -36,6 +37,15 @@
   <% end %>
 </div>
 
+<% session["num_players"].to_i.times do |p| %>
+  <h1><%= "Player #{p} can dd:  #{double_pos(session["player#{p}"]).inspect}" %></h1>
+  <% end %>
+
+<h2><%= session["player_double"].inspect %></h2>
+<h2><%= session["player_split"].inspect %></h2>
+<h2><%= double_pos(session["player0"]).inspect %></h2>
+
+
 <div>
   <% if session["need_insurance"] %>
     <h2>
@@ -62,7 +72,7 @@
     <h2>
       At least one player has enough chips to double down.  Let's give them that option.
     </h2>
-    <form action="/double_down_options" method="post">
+    <form action="/double_turn_reset" method="post">
       <input type="submit" autofocus value="Settle Up" />
     </form>
   <% else %>

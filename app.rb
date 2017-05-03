@@ -22,7 +22,7 @@ def create_shoe
     end
   end
   # shoe_ready = shoe_cards.shuffle
-  shoe_ready = shoe_cards.unshift(Card.new("6", :H, 6))
+  shoe_ready = shoe_cards.unshift(Card.new("7", :H, 7))
   shoe_ready = shoe_cards.unshift(Card.new("6", :C, 6))
   shoe_ready = shoe_cards.unshift(Card.new("6", :D, 6))
   shoe_ready = shoe_cards.unshift(Card.new("4", :D, 4))
@@ -77,6 +77,7 @@ def options_set_up_validations
   session["need_insurance"] = session["dealer"].total_showing == 11
   session["player_blackjack"] = player_blackjack
   session["player_split"] = player_split
+  session["player_double"] = player_double
 end
 
 def player_blackjack
@@ -100,6 +101,7 @@ def player_split
     end
   end
   if (session["ai"].chips >= session["ai"].bet) && (session["ai"].hand[0].rank == session["ai"].hand[1].rank)
+    return true
   end
   return split
 end
@@ -107,7 +109,7 @@ end
 def player_double
   double = false
   session["num_players"].times do |player|
-    if (session["player#{player}"].chips >= session["player#{player}"].bet)
+    if session["player#{player}"].chips >= session["player#{player}"].bet
       return true
     end
   end
@@ -206,6 +208,16 @@ def split_up_hand(player)
   player.split_bet = player.bet
 end
 
+def double_pos(player)
+  if ((player.chips >= player.bet) && (player.split_hand.nil?))
+    player.double_possible = true
+  end
+end
+
+def double_down(player)
+  player.bet *= 2
+end
+
 def hit(player)
   player.hand << session["shoe"].shift
   player.total = player_total(player.hand)
@@ -286,7 +298,7 @@ class Card
 end #end Card class
 
 class Player
-  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total, :hand_stand, :split_stand, :split_possible
+  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total, :hand_stand, :split_stand, :split_possible, :double_possible
   def initialize(name, shoe)
     @name = name
     @chips = 1000
@@ -300,6 +312,7 @@ class Player
     @split_total = 0
     @split_bet = 0
     @split_stand = false
+    @double_possible = false
   end
 end #Player class
 
@@ -460,7 +473,7 @@ post '/split_options' do
     split_up_hand(cur)
     turn += 1
     next_page = "split"
-  elsif to_split == "no"
+  else
     turn += 1
     next_page = "split"
   end
@@ -472,6 +485,43 @@ post '/split_options' do
   end
   if next_page == "split"
     erb :split
+  else
+    erb :standard
+  end
+end
+
+post '/double_turn_reset' do
+  session["turn"] = 0
+  session["num_players"].times do |p|
+    double_pos(session["player#{p}"])
+  end
+  double_pos(session["ai"])
+  erb :double
+end
+
+post '/double_options' do
+  cur = session["player#{session["turn"]}"]
+  ai = session["ai"]
+  turn = session["turn"]
+  #params
+  to_double = params[:to_double]
+
+  if to_double == "yes"
+    double_down(cur)
+    turn += 1
+    next_page = "double"
+  else
+    turn += 1
+    next_page = "double"
+  end
+  if session["turn"] == session["num_players"]
+    if ai.double_possible
+      double_down(ai)
+    end
+    next_page = "standard"
+  end
+  if next_page == "double"
+    erb :double
   else
     erb :standard
   end

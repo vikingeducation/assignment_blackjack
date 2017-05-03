@@ -31,10 +31,18 @@
       </form>
     </h3>
   </div>
-  <form action="/split_options" method="post">
-    <input type="submit" autofocus value="Go to 'Hit' phase" style='<%=(p == session["num_players"] - 1) ? "visibility: visible;" : "visibility: hidden;"%>'>
-  </form>
-
+  <% if session["player_double"] %>
+    <h2>
+      At least one player has enough chips to double down.  Let's give them that option.
+    </h2>
+    <form action="/double_down_options" method="post">
+      <input type="submit" autofocus value="Doubling Down" style='<%=(p == session["num_players"] - 1) ? "visibility: visible;" : "visibility: hidden;"%>'> />
+    </form>
+  <% else %>
+    <form action="/split_options" method="post">
+      <input type="submit" autofocus value="Go to 'Hit' phase" style='<%=(p == session["num_players"] - 1) ? "visibility: visible;" : "visibility: hidden;"%>'>
+    </form>
+  <% end %>
 <% end %>
 
 <div class="players">
