@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<div class="dealer">
+  <h1>Dealer</h1>
+  <h2>Because I have an ace showing you may choose to wager up to the amount of your original bet that my "hole" card has a value of 10, giving me a blackjack.  If I have a blackjack, you still lose your original bet but your insurance wager pays 2:1.  If I check and do not have a blackjack, you lose your insurance bet and play continues as normal.</h2>
+  <h2>Hand:
+  <% if session["dealer"].reveal %>
+    <% session["dealer"].hand.each do |card| %>
+    <%= card.name %>
+    <% end %></h2>
+  <% else %>
+    <%= (session["dealer"].hand[0]).name %> **
+  <% end %></h2>
+  <h2>Total Showing: <%= session["dealer"].total_showing %></h2>
+</div>
+
+<% session["num_players"].to_i.times do |p| %>
+  <div class="players">
+    <h1><%= session["player#{p}"].name %> </h1>
+    <h2>Hand: <% session["player#{p}"].hand.each do |card| %>
+      <%= card.name %>
+    <% end %></h2>
+    <h2>Total: <%= session["player#{p}"].total %></h2>
+    <h3>Bet: <%= session["player#{p}"].bet %></h3>
+    <h3>Insurance Bet:
+      <form action="insurance_bet" method="post">
+        <input type="text" name="insurance_bet" <%= session["turn"] != p ? "disabled" : "enabled autofocus" %> >
+        <br />
+        <input type="submit" value="Place Insurance Bet" style='<%= session["turn"] == p ? "visibility: visible;" : "visibility: hidden;"%>'>
+      </form>
+    </h3>
+    <h3>Bank: $ <%= session["player#{p}"].chips %></h3>
+  </div>
+<% end %>
+
+<div class="players">
+  <% if session["ai"] %>
+    <h1>Ben: </h1>
+    <h2>Hand: <% session["ai"].hand.each do |card| %>
+      <%= card.name %>
+    <% end %></h2>
+    <h2>Total: <%= session["ai"].total %></h2>
+    <h2>Bet: <%= session["ai"].bet %></h2>
+    <h3>Bank: $ <%= session["ai"].chips %></h3>
+  <% end %>
+</div>

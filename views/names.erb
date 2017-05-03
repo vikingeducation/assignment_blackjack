@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<div class="dealer">
+  <h1>Dealer: </h1>
+  <h2>Please enter your names.</h2>
+</div>
+
+<% session["num_players"].to_i.times do |p| %>
+  <div class="players">
+    <h1><%= "Player #{p + 1}:" %> </h1>
+    <h3>Name:
+      <form action="save_names" method="post">
+        <input type="text" name="name" <%= session["turn"] != p ? "disabled" : "enabled autofocus" %> >
+        <br />
+        <input type="submit" value="Enter Name" style='<%= session["turn"] == p ? "visibility: visible;" : "visibility: hidden;"%>'>
+      </form></h3>
+  </div>
+<% end %>

@@ -1,0 +1,9 @@
+<h1> Thank you for playing blackjack.  Your final chip totals are below!</h1>
+
+<% session["num_players"].times do |player| %>
+  <h2><%= session["player#{player}"].name %> has <%= session["player#{player}"].chips %> chips.</h2>
+<% end %>
+
+<h2><%= session["ai"].name %> has <%= session["ai"].chips %> chips.</h2>
+
+<h2>The winner is <%= session["winner"].name %>! </h2>

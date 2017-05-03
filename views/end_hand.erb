@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<div class="dealer">
+  <h1>Dealer</h1>
+  <h2><%= session["message"] %></h2>
+  <h2>Hand:
+  <% if session["dealer"].reveal %>
+    <% session["dealer"].hand.each do |card| %>
+    <%= card.name %>
+    <% end %></h2>
+  <% else %>
+    <%= (session["dealer"].hand[0]).name %> **
+  <% end %></h2>
+  <h2>Total Showing: <%= session["dealer"].total_showing %></h2>
+</div>
+
+<% session["num_players"].to_i.times do |p| %>
+  <div class="players">
+    <h1><%= session["player#{p}"].name %> </h1>
+    <h2>Hand: <% session["player#{p}"].hand.each do |card| %>
+      <%= card.name %>
+    <% end %></h2>
+    <h2>Total: <%= session["player#{p}"].total %></h2>
+    <h3>Bank: $ <%= session["player#{p}"].chips %></h3>
+  </div>
+<% end %>
+
+<div class="players">
+  <% if session["ai"] %>
+    <h1>Ben: </h1>
+    <h2>Hand: <% session["ai"].hand.each do |card| %>
+      <%= card.name %>
+    <% end %></h2>
+    <h2>Total: <%= session["ai"].total %></h2>
+    <h3>Bank: $ <%= session["ai"].chips %></h3>
+  <% end %>
+</div>
+
+<div>
+  <h2>Would you like to play another round?</h2>
+    <form action="/reset" method="post">
+      <input type="radio" name="next_round" value="true" checked="checked">Yes, play another hand!
+      <input type="radio" name="next_round" value="false" >No, I would like to end the game.
+      <input type="submit" value="Next Round" autofocus>
+    </form>
+</div>
