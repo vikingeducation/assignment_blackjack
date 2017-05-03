@@ -10,7 +10,7 @@
     <%= (session["dealer"].hand[0]).name %> **
   <% end %></h2>
   <h2>Total Showing: <%= session["dealer"].total_showing %></h2>
-  <h2>You will each, in turn, have the option to take as many additional cards as you like until you decide to stand or you bust by going over a total of 21.</h2>
+  <h2>You will each, in turn, have the option to take as many additional cards as you like until you decide to stand or you bust by going over a total of 21. Remember, if you doubled down you will only receive one card.</h2>
   <h2><%= session["standard_message"] %></h2>
 </div>
 
@@ -31,7 +31,7 @@
         <input type="submit" value="Make Move" autofocus style='<%= ((session["turn"] == p) && (!session["player#{p}"].hand_stand)) ? "visibility: visible;" : "visibility: hidden;"%>'>
       </form>
     </h3>
-    <% if session["player#{p}"].split_hand != nil %>
+    <% if session["player#{p}"].split_total != 0 %>
       <h2>Split: <% session["player#{p}"].split_hand.each do |card| %>
         <%= card.name %>
       <% end %></h2>

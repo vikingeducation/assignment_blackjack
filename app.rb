@@ -209,13 +209,14 @@ def split_up_hand(player)
 end
 
 def double_pos(player)
-  if ((player.chips >= player.bet) && (player.split_hand.nil?))
+  if ((player.chips >= player.bet) && (player.split_total == 0))
     player.double_possible = true
   end
 end
 
 def double_down(player)
-  player.bet *= 2
+  player.bet = player.bet * 2
+  player.doubled = true
 end
 
 def hit(player)
@@ -298,7 +299,7 @@ class Card
 end #end Card class
 
 class Player
-  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total, :hand_stand, :split_stand, :split_possible, :double_possible
+  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total, :hand_stand, :split_stand, :split_possible, :double_possible, :doubled
   def initialize(name, shoe)
     @name = name
     @chips = 1000
@@ -313,6 +314,7 @@ class Player
     @split_bet = 0
     @split_stand = false
     @double_possible = false
+    @doubled = false
   end
 end #Player class
 
@@ -551,6 +553,12 @@ post '/standard_options' do
       msg = "You went over 21 and lose this hand."
       cur.hand_stand = true
       next_page = "standard"
+    elsif cur.doubled
+      if cur.hand.length == 3
+        msg = "You have already received the one card for your doubled down hand."
+        cur.hand_stand = true
+        next_page = "standard"
+      end
     else
       msg = "You may continue to hit or stand."
       next_page = "standard"
@@ -594,7 +602,7 @@ post '/standard_options' do
     next_page = "settle"
   elsif turn == num
     ai_decide_hit
-    if ((ai.split_hand != nil) && (ai.hand_stand))
+    if ((ai.split_total != 0) && (ai.hand_stand))
       ai_decide_split_hit
     end
     next_page = "settle"

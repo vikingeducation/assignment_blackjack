@@ -37,15 +37,6 @@
   <% end %>
 </div>
 
-<% session["num_players"].to_i.times do |p| %>
-  <h1><%= "Player #{p} can dd:  #{double_pos(session["player#{p}"]).inspect}" %></h1>
-  <% end %>
-
-<h2><%= session["player_double"].inspect %></h2>
-<h2><%= session["player_split"].inspect %></h2>
-<h2><%= double_pos(session["player0"]).inspect %></h2>
-
-
 <div>
   <% if session["need_insurance"] %>
     <h2>
