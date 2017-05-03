@@ -1,5 +1,4 @@
 require 'sinatra'
-require 'pry-byebug'
 enable :sessions
 
 def deal(shoe)
