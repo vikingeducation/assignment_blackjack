@@ -190,6 +190,12 @@ def most_chips
   return winner
 end
 
+def split_pos(player)
+  if (player.chips >= player.bet) && (player.hand[0].rank == player.hand[1].rank)
+    player.split_possible = true
+  end
+end
+
 def split_up_hand(player)
   split_card = player.hand.pop
   player.split_hand << split_card
@@ -280,7 +286,7 @@ class Card
 end #end Card class
 
 class Player
-  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total, :hand_stand, :split_stand
+  attr_accessor :name, :chips, :hand, :bet, :insurance_bet, :split_hand,  :split_total, :split_bet, :total, :hand_stand, :split_stand, :split_possible
   def initialize(name, shoe)
     @name = name
     @chips = 1000
@@ -289,6 +295,7 @@ class Player
     @bet = 0
     @hand_stand = false
     @insurance_bet = 0
+    @split_possible = false
     @split_hand = []
     @split_total = 0
     @split_bet = 0
@@ -432,14 +439,42 @@ post '/player_blackjack_options' do
   erb :blackjack
 end
 
+post '/split_turn_reset' do
+  session["turn"] = 0
+  session["num_players"].times do |p|
+    split_pos(session["player#{p}"])
+  end
+  split_pos(session["ai"])
+  erb :split
+end
+
 post '/split_options' do
   #method variables
   cur = session["player#{session["turn"]}"]
-  if (cur.chips >= cur.bet) && (cur.hand[0].rank == cur.hand[1].rank)
+  ai = session["ai"]
+  turn = session["turn"]
+  #params
+  to_split = params[:to_split]
+
+  if to_split == "yes"
     split_up_hand(cur)
+    turn += 1
+    next_page = "split"
+  elsif to_split == "no"
+    turn += 1
+    next_page = "split"
   end
-  session["turn"] += 1
-  erb :split
+  if session["turn"] == session["num_players"]
+    if ai.split_possible
+      split_up_hand(ai)
+    end
+    next_page = "standard"
+  end
+  if next_page == "split"
+    erb :split
+  else
+    erb :standard
+  end
 end
 
 post '/standard_turn_reset' do
@@ -519,4 +554,8 @@ post '/standard_options' do
   else
     erb :standard
   end
+end
+
+post '/settle_options' do
+
 end
