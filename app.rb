@@ -287,6 +287,27 @@ def ai_decide_split_hit
   session["ai"].split_stand = true
 end
 
+def settle(player)
+  dealer = session["dealer"]
+  win = false
+   if bust(player.total)
+       win = false
+   elsif player.total > dealer.total
+       win = true
+   elsif player.total < dealer.total
+       win = false
+   end
+   if win == true
+       player.chips += player.bet * 2
+       player.bet = 0
+   elsif win == false
+       player.bet = 0
+   else
+       player.chips += player.bet
+       player.bet = 0
+   end
+end
+
 
 class Card
   attr_accessor :value, :rank, :suit, :name
@@ -539,7 +560,7 @@ post '/standard_options' do
   to_hit = params[:hit]
   to_split_hit = params[:split_hit]
   #method variables
-  next_page = "standard"
+  # next_page = "standard"
   turn = session["turn"]
   cur = session["player#{turn}"]
   msg = session["standard_message"]
@@ -552,24 +573,24 @@ post '/standard_options' do
     if bust(cur.total)
       msg = "You went over 21 and lose this hand."
       cur.hand_stand = true
-      next_page = "standard"
+      # next_page = "standard"
     elsif cur.doubled
       if cur.hand.length == 3
         msg = "You have already received the one card for your doubled down hand."
         cur.hand_stand = true
-        next_page = "standard"
+        # next_page = "standard"
       end
     else
       msg = "You may continue to hit or stand."
-      next_page = "standard"
+      # next_page = "standard"
     end
   #stand
   elsif to_hit == "no"
     msg = "Stands."
     cur.hand_stand = true
-    next_page = "standard"
+    # next_page = "standard"
   else
-    next_page = "standard"
+    # next_page = "standard"
   end #end main hitting
 
   if ((!cur.split_hand.empty?) && (cur.hand_stand) && (!cur.split_stand))
@@ -581,39 +602,40 @@ post '/standard_options' do
         msg = "You went over 21 and lose this hand."
         cur.split_stand = true
         turn += 1
-        next_page = "standard"
+        # next_page = "standard"
       else
         msg = "You may continue to hit or stand."
-        next_page = "standard"
+        # next_page = "standard"
       end
     #split stand
   elsif to_split_hit == "no"
       cur.split_stand = true
       turn +=1
-      next_page = "standard"
+      # next_page = "standard"
     end #end split hitting
   elsif (cur.split_stand)
     turn += 1
-    next_page = "standard"
+    # next_page = "standard"
   else
-    next_page = "standard"
+    # next_page = "standard"
   end
   if ((turn == num) && (ai.hand_stand == true) && (ai.split_stand == true))
-    next_page = "settle"
+    # next_page = "settle"
   elsif turn == num
     ai_decide_hit
     if ((ai.split_total != 0) && (ai.hand_stand))
       ai_decide_split_hit
     end
-    next_page = "settle"
+    # next_page = "settle"
   end
-  if next_page == "settle"
-    erb :settle
-  else
-    erb :standard
-  end
+  erb :standard
 end
 
-post '/settle_options' do
-
+post '/end_functions' do
+  session["dealer"].reveal = true
+  session["num_players"].times do |player|
+    settle(session["player#{player}"])
+  end
+  settle(session["ai"])
+  erb :end_hand
 end

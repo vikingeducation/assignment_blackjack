@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<div class="dealer">
+  <h1>Dealer: </h1>
+  <h2>If you have at least as many chips in your bank as your current bet and have not split your hand, you will be given the option to double down and only receive one additional card.</h2>
+  <h2>Hand:
+  <% if session["dealer"].reveal %>
+    <% session["dealer"].hand.each do |card| %>
+    <%= card.name %>
+    <% end %></h2>
+  <% else %>
+    <%= (session["dealer"].hand[0]).name %> **
+  <% end %></h2>
+  <h2>Total Showing: <%= session["dealer"].total_showing %></h2>
+</div>
+
+<% session["num_players"].times do |p| %>
+  <div class="players">
+    <h1><%= session["player#{p}"].name %>: </h1>
+    <h2>Hand: <% session["player#{p}"].hand.each do |card| %>
+      <%= card.name %>
+    <% end %></h2>
+    <h2>Total: <%= session["player#{p}"].total %></h2>
+    <h2>Bet: <%= session["player#{p}"].bet %></h2>
+    <h3>Bank: $ <%= session["player#{p}"].chips %></h3>
+    <h3>
+      <form action="/double_options" method="post">
+        <input type="radio" name="to_double" value="yes" <%= ((session["turn"] != p) && (!session["player#{p}"].double_possible))  ? "disabled" : "enabled autofocus" %> >Double
+        <input type="radio" name="to_double" value="no" <%= ((session["turn"] != p) && (!session["player#{p}"].double_possible))  ? "disabled" : "enabled autofocus" %> >Don't Double
+        <br />
+        <input type="submit" value="Submit Selection" autofocus style='<%= ((session["turn"] == p) && (session["player#{p}"].double_possible)) ? "visibility: visible;" : "visibility: hidden;"%>'>
+      </form>
+    </h3>
+  </div>
+    <form action="/standard_options" method="post">
+      <input type="submit" autofocus value="Go to 'Hit' phase" style='<%=(p == session["num_players"] - 1) ? "visibility: visible;" : "visibility: hidden;"%>'>
+    </form>
+<% end %>
+
+<div class="players">
+  <% if session["ai"] %>
+    <h1>Ben: </h1>
+    <h2>Hand: <% session["ai"].hand.each do |card| %>
+      <%= card.name %>
+    <% end %></h2>
+    <h2>Bet: <%= session["ai"].bet %></h2>
+    <h3>Bank: $ <%= session["ai"].chips %></h3>
+  <% end %>
+</div>
