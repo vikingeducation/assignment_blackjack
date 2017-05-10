@@ -1,0 +1,70 @@
+<div class="bank">
+	<p>Bank: $<%= player.bank %></p>
+</div>
+<div>
+	<a href="/">Main Menu</a>
+</div>
+<div class="game">
+
+	<% if winner %>
+		<div class="result">
+			<% blackjack = winner.hand.points == 21 ? 'Blackjack! ' : '' %>
+			<h1><%= blackjack %>You <%= winner == player ? 'win' : 'lose' %>!</h1>
+			<p>Your points: <%= player.hand.points %></p>
+			<p>Dealer points: <%= dealer.hand.points %></p>
+			<p>You <%= winner == player ? "won $#{winnings}" : "lost $#{pot}" %></p>
+			<% if player.bank > 0 %>
+				<a href="/blackjack/new">Play again</a>
+			<% else %>
+				<p>No more $$!</p>
+			<% end %>
+		</div>
+	<% else %>
+		<div class="points">
+			<p>Your points: <%= player.hand.points %></p>
+		</div>
+	<% end %>
+
+	<div id="dealer" class="hand">
+		<p>Dealer</p>
+		<% dealer.hand.cards.each_with_index do |card, i| %>
+			<%
+			if i == 0 && !winner
+				card = card_back_image_filename
+			else
+				card = card_image_filename(card)
+			end
+			%>
+			<img class="card" src="/assets/images/cards/<%= card %>" alt="Card"/>
+		<% end %>
+	</div>
+
+	<% unless winner %>
+		<div class="pot">
+			<p>Pot: $<%= pot.to_i.to_s %></p>
+		</div>
+	<% end %>
+
+	<div id="player" class="hand">
+		<p>Player</p>
+		<% player.hand.cards.each do |card| %>
+			<img class="card" src="/assets/images/cards/<%= card_image_filename(card) %>" alt="Card"/>
+		<% end %>
+	</div>
+
+	<% unless player.betting? || winner %>
+		<form action="/blackjack/hit">
+			<button type="submit">Hit</button>
+		</form>
+		<form action="/blackjack/stay">
+			<button type="submit">Stay</button>
+		</form>
+	<% end %>
+
+	<% if player.betting? %>
+		<form action="/blackjack/bet" method="post">
+			<input type="text" name="bet" placeholder="Place your bet!"/>
+			<button type="submit">Bet</button>
+		</form>
+	<% end %>
+</div>

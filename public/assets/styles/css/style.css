@@ -1,0 +1,29 @@
+/*
+	style
+*/
+
+body {
+	max-width: 960px;
+	margin: 0 auto;
+}
+input[type="text"] {
+	line-height: 2.5em;
+	border-radius: 4px;
+	text-indent: 1em;
+	border: 1px solid #111;
+	outline: none;	
+}
+h1,
+.main-menu,
+.game {
+	text-align: center;
+}
+.card {
+	max-width: 128px;
+}
+.notice {
+	color: green;
+}
+.error {
+	color: red;
+}
