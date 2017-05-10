@@ -1,0 +1,15 @@
+<div class="row">
+  <div class="col-sm-12">
+    <h2>
+      <% if @blackjack.winner == :draw %>
+        <%= "It's a Draw." %>
+      <% else %>
+        <%= @blackjack.winner.to_s.capitalize + " Wins!" %>
+      <% end %>
+    </h2>
+
+    <form action="blackjack/new_round" method="post">
+      <button class="btn btn-primary">Bet Again</button>
+    </form>
+  </div>
+</div>

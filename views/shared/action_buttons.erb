@@ -1,0 +1,17 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="action-buttons" role="group">
+      <form action="blackjack/hit" method="post">
+        <button class="btn btn-success btn-lg">Hit</button>
+      </form>
+
+      <form action="blackjack/stay" method="post">
+        <button class="btn btn-primary btn-lg">Stay</button>
+      </form>
+
+      <form action="blackjack/double" method="post">
+        <button class="btn btn-primary btn-lg" <%= "disabled" if !@blackjack.can_double? %> >Double</button>
+      </form>
+    </div>
+  </div>
+</div>

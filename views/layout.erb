@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/bootstrap.css">
+  <link rel="stylesheet" href="/css/card.css">
+  <title>Blackjack</title>
+</head>
+<body>
+    <%= erb :"shared/navbar" %>
+    <% if flash[:notice] %>
+    <div class="alert alert-warning">
+      <h2><%= flash[:notice] %></h2>
+    </div>
+    <% end %>
+    <%= yield %>
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

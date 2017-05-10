@@ -1,0 +1,11 @@
+<h4> <%= hand.name %> <span class="label label-primary"><%= hand.cards[0].value %>+?</span></h3>
+<div class="well ">
+  <div class="row">
+    <div class="player-hand">
+      <ul>
+        <%= erb :"shared/card", locals: {card: hand.cards[0]} %>
+        <%= erb :"shared/hidden_card", locals: {card: hand.cards[1]} %>
+      </ul>
+    </div>
+  </div>
+</div>
