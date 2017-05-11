@@ -14,13 +14,15 @@ end
 get '/blackjack' do
 	game = Blackjack.new
 	cards = game.deal_cards
+	sessions[:player_hand] = game.get_player_score
 	erb :"blackjack", :locals => {:cards => cards}
 	
 end
 
 post '/blackjack' do 
-	@choice = save_choice(params[:choice])
-
+		if params[:hit])
+				game.add_card
+		end
 	redirect to("blackjack")
 
 end
