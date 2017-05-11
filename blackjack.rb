@@ -6,8 +6,8 @@ class Blackjack
 
 	def initialize
 		build_deck
-		@player_hand = player_hand
-		@computer_hand = computer_hand
+		@player_hand = []
+		@computer_hand = []
   end
   #iterates through suit and value and creates card struct
   #and puts them into array
@@ -23,9 +23,30 @@ class Blackjack
   end
 
   def deal_cards
-  	 @deck[0].value
+  		deal_player_hand
+  		deal_computer_hand
   end
+
+  def deal_player_hand
+	  0...2.times do
+  	  @deck.shuffle!
+  		@player_hand << @deck.pop
+    end
+      @player_hand
+  end
+
+  def deal_computer_hand
+  	0...2.times do
+  		@computer_hand << @deck.pop
+  	end
+  	  @computer_hand
+  end
+
 end
 
+
+game = Blackjack.new
+
+game.deal_cards
 
 
