@@ -47,23 +47,25 @@ class Blackjack
   #def get_player_score
   	#check_if_face_card?(@player_hand)
   	#check_if_ace?
-    #@score = @player_hand[0].value.to_i + @player_hand[1].value.to_i
+   # @score = @player_hand[0].value.to_i + @player_hand[1].value.to_i
     #puts @score
   #end
 
   def get_player_score
   	puts @player_hand
   	@player_hand.map do |card|
-  		card.value = check_if_ace?(card)
+  		#card.value = check_if_ace?(card)
   		card.value = check_if_face_card?(card)
   	end
+  	 @score = @player_hand[0].value.to_i + @player_hand[1].value.to_i
+ 	puts @score
   end
 
   def check_if_face_card?(card)
   	if card.value == "J" || card.value == "Q" || card.value == "K"
   		 card.value = 10
   	end
-  	card
+  	card.value
   end
 
 
