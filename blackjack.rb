@@ -57,15 +57,26 @@ class Blackjack
   		#card.value = check_if_ace?(card)
   		card.value = check_if_face_card?(card)
   	end
-  	 @score = @player_hand[0].value.to_i + @player_hand[1].value.to_i
- 	puts @score
+  		@score = sum_up_cards(@player_hand)
+  	 
+ puts @score
   end
 
   def check_if_face_card?(card)
   	if card.value == "J" || card.value == "Q" || card.value == "K"
   		 card.value = 10
   	end
-  	card.value
+  	   card.value
+  end
+
+  def sum_up_cards(cards)
+  	sum = 0
+  	#cards[0].value.to_i + cards[1].value.to_i
+  	cards.map do |card|
+  		sum += card.value.to_i
+  	end
+  	 sum
+
   end
 
 
