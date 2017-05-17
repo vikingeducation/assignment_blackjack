@@ -9,11 +9,15 @@
 <% @dealer.hand.each do |card| %>
 <p><%= @deck.render(card) %></p>
 <% end %>
+<h3>Points:</h3>
+<p><%= @deck.points(@dealer.hand) %></p>
 
 <h2>Player's Hand:</h2>
 <% @player.hand.each do |card| %>
 <p><%= @deck.render(card) %></p>
 <% end %>
+<h3>Points:</h3>
+<p><%= @deck.points(@player.hand) %></p>
 
 <form action="/blackjack/hit" method="post">
   <input type="submit" value="HIT">
