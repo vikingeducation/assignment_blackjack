@@ -14,3 +14,11 @@
 <% @player.hand.each do |card| %>
 <p><%= @deck.render(card) %></p>
 <% end %>
+
+<form action="/blackjack/hit" method="post">
+  <input type="submit" value="HIT">
+</form>
+
+<form action="/blackjack/stay" method="get">
+  <input type="submit" value="STAY">
+</form>
