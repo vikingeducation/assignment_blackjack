@@ -50,6 +50,12 @@ end
 # main game route
 get '/blackjack' do
   @deck = Deck.new
+  @player = Player.new
+  @dealer = Dealer.new
+
+  # deal cards to Dealer and Player
+  2.times { @player.hand << @deck.deal_card }
+  2.times { @dealer.hand << @deck.deal_card }
 
   # main game view
   erb :blackjack
