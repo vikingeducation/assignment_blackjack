@@ -19,6 +19,11 @@ class Deck
 
     values.product(suits).shuffle
   end
+
+  # deals a card from the top of the deck
+  def deal_card
+    @cards.shift
+  end
 end
 
 
