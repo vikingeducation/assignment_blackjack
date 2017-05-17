@@ -118,3 +118,22 @@ post '/blackjack/hit' do
   # render view
   erb :blackjack
 end
+
+# route for player to stay
+get '/blackjack/stay' do
+  # reinstantiate objects
+  @blackjack = Blackjack.new(session[:deck_cards])
+  @player = Player.new(session[:player_hand])
+  @dealer = Dealer.new(session[:dealer_hand])
+
+  # Dealer hits until at least 17 points
+  @dealer.hand << @blackjack.deal_card until @blackjack.points(@dealer.hand) >= 17
+
+  # save objects' state to session
+  session[:deck_cards] = @blackjack.cards
+  session[:player_hand] = @player.hand
+  session[:dealer_hand] = @dealer.hand
+
+  # render view
+  erb :blackjack
+end
