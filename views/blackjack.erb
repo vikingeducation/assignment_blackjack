@@ -1,23 +1,23 @@
 <h1>Sinatra Blackjack</h1>
 
 <h2>Current Deck:</h2>
-<p><%= @deck.cards %></p>
+<p><%= @blackjack.cards %></p>
 <h2>Number of cards left in deck:</h2>
-<p><%= @deck.cards.length %></p>
+<p><%= @blackjack.cards.length %></p>
 
 <h2>Dealer's Hand:</h2>
 <% @dealer.hand.each do |card| %>
-<p><%= @deck.render(card) %></p>
+<p><%= @blackjack.render(card) %></p>
 <% end %>
 <h3>Points:</h3>
-<p><%= @deck.points(@dealer.hand) %></p>
+<p><%= @blackjack.points(@dealer.hand) %></p>
 
 <h2>Player's Hand:</h2>
 <% @player.hand.each do |card| %>
-<p><%= @deck.render(card) %></p>
+<p><%= @blackjack.render(card) %></p>
 <% end %>
 <h3>Points:</h3>
-<p><%= @deck.points(@player.hand) %></p>
+<p><%= @blackjack.points(@player.hand) %></p>
 
 <form action="/blackjack/hit" method="post">
   <input type="submit" value="HIT">
