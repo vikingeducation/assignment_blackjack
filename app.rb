@@ -73,3 +73,20 @@ get '/blackjack' do
   # main game view
   erb :blackjack
 end
+
+# route for player to hit
+post '/blackjack/hit' do
+  # reinstantiate objects
+  @deck = Deck.new(session[:deck_cards])
+  @player = Player.new(session[:player_hand])
+
+  # deal card to Player
+  @player.hand << @deck.deal_card
+
+  # save objects' state to session
+  session[:deck_cards] = @deck.cards
+  session[:player_hand] = @player.hand
+
+  # render view
+  erb :blackjack
+end
