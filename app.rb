@@ -5,7 +5,7 @@ require 'pry-byebug'
 
 enable :sessions
 
-class Deck
+class Blackjack
   attr_reader :cards
 
   def initialize(cards = nil)
@@ -81,16 +81,16 @@ end
 # main game route
 get '/blackjack' do
   # reinstantiate / create new objects
-  @deck = Deck.new(session[:deck_cards])
+  @blackjack = Blackjack.new(session[:deck_cards])
   @player = Player.new(session[:player_hand])
   @dealer = Dealer.new(session[:dealer_hand])
 
   # deal cards to Dealer and Player
-  2.times { @player.hand << @deck.deal_card } if @player.hand.empty?
-  2.times { @dealer.hand << @deck.deal_card } if @dealer.hand.empty?
+  2.times { @player.hand << @blackjack.deal_card } if @player.hand.empty?
+  2.times { @dealer.hand << @blackjack.deal_card } if @dealer.hand.empty?
 
   # save objects' state to session
-  session[:deck_cards] = @deck.cards
+  session[:deck_cards] = @blackjack.cards
   session[:player_hand] = @player.hand
   session[:dealer_hand] = @dealer.hand
 
@@ -101,15 +101,15 @@ end
 # route for player to hit
 post '/blackjack/hit' do
   # reinstantiate objects
-  @deck = Deck.new(session[:deck_cards])
+  @blackjack = Blackjack.new(session[:deck_cards])
   @player = Player.new(session[:player_hand])
   @dealer = Dealer.new(session[:dealer_hand])
 
   # deal card to Player
-  @player.hand << @deck.deal_card
+  @player.hand << @blackjack.deal_card
 
   # save objects' state to session
-  session[:deck_cards] = @deck.cards
+  session[:deck_cards] = @blackjack.cards
   session[:player_hand] = @player.hand
 
   # render view
