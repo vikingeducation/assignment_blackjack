@@ -26,6 +26,21 @@ class Deck
   end
 end
 
+class Player
+  attr_accessor :hand
+
+  def initialize(hand = nil)
+    @hand = hand || []
+  end
+end
+
+class Dealer
+  attr_accessor :hand
+
+  def initialize(hand = nil)
+    @hand = hand || []
+  end
+end
 
 # root route
 get '/' do
