@@ -31,6 +31,25 @@ class Deck
   def render(card)
     "#{card[0].to_s.capitalize} of #{card[1].to_s.capitalize}"
   end
+
+  # calculates the points value of a hand
+  def points(hand)
+    points = 0
+
+    hand.each do |card|
+      case(card[0])
+      when :ace
+        points += 11
+        points -= 10 if points > 21
+      when :jack, :queen, :king
+        points += 10
+      else
+        points += card[0]
+      end
+    end
+
+    points
+  end
 end
 
 class Player
@@ -79,6 +98,7 @@ post '/blackjack/hit' do
   # reinstantiate objects
   @deck = Deck.new(session[:deck_cards])
   @player = Player.new(session[:player_hand])
+  @dealer = Dealer.new(session[:dealer_hand])
 
   # deal card to Player
   @player.hand << @deck.deal_card
