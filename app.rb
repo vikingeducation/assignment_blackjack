@@ -6,8 +6,8 @@ require 'pry-byebug'
 class Deck
   attr_reader :cards
 
-  def initialize
-    @cards = generate_cards
+  def initialize(cards = nil)
+    @cards = cards || generate_cards
   end
 
   # generates a standard 52 card deck
