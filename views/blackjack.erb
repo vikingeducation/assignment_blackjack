@@ -6,7 +6,11 @@
 <%= @deck.cards.length %>
 
 <h2>Dealer's Hand:</h2>
-<%= @dealer.hand %>
+<% @dealer.hand.each do |card| %>
+<p><%= @deck.render(card) %></p>
+<% end %>
 
 <h2>Player's Hand:</h2>
-<%= @player.hand %>
+<% @player.hand.each do |card| %>
+<p><%= @deck.render(card) %></p>
+<% end %>
