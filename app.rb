@@ -24,6 +24,11 @@ class Deck
   def deal_card
     @cards.shift
   end
+
+  # helper method to print out a card in a better-looking format
+  def render(card)
+    "#{card[0].to_s.capitalize} of #{card[1].to_s.capitalize}"
+  end
 end
 
 class Player
