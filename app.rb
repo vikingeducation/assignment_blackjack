@@ -56,6 +56,7 @@ end
 
 # main game route
 get '/blackjack' do
+  # reinstantiate / create new objects
   @deck = Deck.new(session[:deck_cards])
   @player = Player.new(session[:player_hand])
   @dealer = Dealer.new(session[:dealer_hand])
