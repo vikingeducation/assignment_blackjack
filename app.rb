@@ -50,6 +50,11 @@ class Deck
 
     points
   end
+
+  # checks if a hand is busted
+  def busted?(hand)
+    self.points(hand) > 21
+  end
 end
 
 class Player
