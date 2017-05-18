@@ -152,14 +152,14 @@ get '/blackjack/stay' do
   # Dealer hits until at least 17 points
   @dealer.hand << @blackjack.deal_card until @blackjack.points(@dealer.hand) >= 17
 
-  # save objects' state to session
-  session[:deck_cards] = @blackjack.cards
-  session[:player_hand] = @player.hand
-  session[:dealer_hand] = @dealer.hand
-
   # round is over, determine winner
   @round_over = true
   @winner = @blackjack.winner(@dealer.hand, @player.hand)
+
+  # clear objects' state from session for new round
+  session[:deck_cards] = nil
+  session[:player_hand] = nil
+  session[:dealer_hand] = nil
 
   # render view
   erb :blackjack
