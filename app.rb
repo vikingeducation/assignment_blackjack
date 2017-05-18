@@ -145,6 +145,7 @@ get '/blackjack/stay' do
   session[:player_hand] = @player.hand
   session[:dealer_hand] = @dealer.hand
 
+  # round is over, determine winner
   @round_over = true
   @winner = @blackjack.winner(@dealer.hand, @player.hand)
 
