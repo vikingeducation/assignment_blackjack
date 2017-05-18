@@ -34,4 +34,14 @@
   <form action="/blackjack/stay" method="get">
     <input type="submit" value="STAY">
   </form>
+<% else %>
+  <h2>Round results</h2>
+  <% case(@winner) %>
+  <% when :player %>
+    <p>The Player wins!!</p>
+  <% when :dealer %>
+    <p>The Dealer wins!!</p>
+  <% when :tie %>
+    <p>It's a tie!!</p>
+  <% end %>
 <% end %>
