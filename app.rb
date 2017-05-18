@@ -55,6 +55,15 @@ class Blackjack
   def busted?(hand)
     self.points(hand) > 21
   end
+
+  # determines the winner of a round
+  def winner(dealer_hand, player_hand)
+    return :tie if (busted?(dealer_hand) && busted?(player_hand)) || points(dealer_hand) == points(player_hand)
+
+    return :dealer if points(dealer_hand) > points(player_hand) && !busted?(dealer_hand)
+
+    return :player if points(player_hand) > points(dealer_hand) && !busted?(player_hand)
+  end
 end
 
 class Player
@@ -137,6 +146,7 @@ get '/blackjack/stay' do
   session[:dealer_hand] = @dealer.hand
 
   @round_over = true
+  @winner = @blackjack.winner(@dealer.hand, @player.hand)
 
   # render view
   erb :blackjack
