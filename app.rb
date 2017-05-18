@@ -58,11 +58,23 @@ class Blackjack
 
   # determines the winner of a round
   def winner(dealer_hand, player_hand)
-    return :tie if (busted?(dealer_hand) && busted?(player_hand)) || points(dealer_hand) == points(player_hand)
+    # check if either Dealer or Player has busted
+    if busted?(dealer_hand) && busted?(player_hand)
+      return :tie
+    elsif busted?(dealer_hand) && !busted?(player_hand)
+      return :player
+    elsif !busted?(dealer_hand) && busted?(player_hand)
+      return :dealer
+    end
 
-    return :dealer if points(dealer_hand) > points(player_hand) && !busted?(dealer_hand)
-
-    return :player if points(player_hand) > points(dealer_hand) && !busted?(player_hand)
+    # neither Dealer nor Player has busted, check points of hands
+    if points(dealer_hand) == points(player_hand)
+      return :tie
+    elsif points(dealer_hand) > points(player_hand)
+      return :dealer
+    elsif points(dealer_hand) < points(player_hand)
+      return :player
+    end
   end
 end
 
