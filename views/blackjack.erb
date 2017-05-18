@@ -6,8 +6,15 @@
 <p><%= @blackjack.cards.length %></p>
 
 <h2>Dealer's Hand:</h2>
-<% @dealer.hand.each do |card| %>
-<p><%= @blackjack.render(card) %></p>
+<% if @round_over %>
+  <% @dealer.hand.each do |card| %>
+    <p><%= @blackjack.render(card) %></p>
+  <% end %>
+<% else %>
+  <p>Hidden</p>
+  <% @dealer.hand[1..-1].each do |card| %>
+    <p><%= @blackjack.render(card) %></p>
+  <% end %>
 <% end %>
 <h3>Points:</h3>
 <p><%= @blackjack.points(@dealer.hand) %></p>
@@ -19,10 +26,12 @@
 <h3>Points:</h3>
 <p><%= @blackjack.points(@player.hand) %></p>
 
-<form action="/blackjack/hit" method="post">
-  <input type="submit" value="HIT">
-</form>
+<% unless @round_over %>
+  <form action="/blackjack/hit" method="post">
+    <input type="submit" value="HIT">
+  </form>
 
-<form action="/blackjack/stay" method="get">
-  <input type="submit" value="STAY">
-</form>
+  <form action="/blackjack/stay" method="get">
+    <input type="submit" value="STAY">
+  </form>
+<% end %>
