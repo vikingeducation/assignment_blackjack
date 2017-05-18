@@ -17,7 +17,11 @@
   <% end %>
 <% end %>
 <h3>Points:</h3>
-<p><%= @blackjack.points(@dealer.hand) %></p>
+<% if @round_over %>
+  <p><%= @blackjack.points(@dealer.hand) %></p>
+<% else %>
+  <p><%= @blackjack.points(@dealer.hand[1..-1]) %></p>
+<% end %>
 
 <h2>Player's Hand:</h2>
 <% @player.hand.each do |card| %>
