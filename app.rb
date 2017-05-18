@@ -84,6 +84,7 @@ get '/blackjack' do
   @blackjack = Blackjack.new(session[:deck_cards])
   @player = Player.new(session[:player_hand])
   @dealer = Dealer.new(session[:dealer_hand])
+  @round_over = false
 
   # deal cards to Dealer and Player
   2.times { @player.hand << @blackjack.deal_card } if @player.hand.empty?
@@ -104,6 +105,7 @@ post '/blackjack/hit' do
   @blackjack = Blackjack.new(session[:deck_cards])
   @player = Player.new(session[:player_hand])
   @dealer = Dealer.new(session[:dealer_hand])
+  @round_over = false
 
   # deal card to Player
   @player.hand << @blackjack.deal_card
@@ -133,6 +135,8 @@ get '/blackjack/stay' do
   session[:deck_cards] = @blackjack.cards
   session[:player_hand] = @player.hand
   session[:dealer_hand] = @dealer.hand
+
+  @round_over = true
 
   # render view
   erb :blackjack
