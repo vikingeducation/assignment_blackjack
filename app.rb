@@ -3,6 +3,10 @@ require 'sinatra/reloader' if development?
 require 'erb'
 require 'pry-byebug'
 
+require './helpers/blackjack_helpers'
+
+helpers BlackjackHelpers
+
 enable :sessions
 
 class Blackjack
