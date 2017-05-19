@@ -106,7 +106,7 @@ end
 # main game route
 get '/blackjack' do
   # reinstantiate / create new objects
-  @blackjack = Blackjack.new(session[:deck_cards])
+  @blackjack = Blackjack.new(session[:cards])
   @player = Player.new(session[:player_hand])
   @dealer = Dealer.new(session[:dealer_hand])
   @round_over = false
@@ -116,7 +116,7 @@ get '/blackjack' do
   2.times { @dealer.hand << @blackjack.deal_card } if @dealer.hand.empty?
 
   # save objects' state to session
-  session[:deck_cards] = @blackjack.cards
+  session[:cards] = @blackjack.cards
   session[:player_hand] = @player.hand
   session[:dealer_hand] = @dealer.hand
 
@@ -127,7 +127,7 @@ end
 # route for player to hit
 post '/blackjack/hit' do
   # reinstantiate objects
-  @blackjack = Blackjack.new(session[:deck_cards])
+  @blackjack = Blackjack.new(session[:cards])
   @player = Player.new(session[:player_hand])
   @dealer = Dealer.new(session[:dealer_hand])
   @round_over = false
@@ -139,7 +139,7 @@ post '/blackjack/hit' do
   redirect to('/blackjack/stay') if @blackjack.busted?(@player.hand)
 
   # save objects' state to session
-  session[:deck_cards] = @blackjack.cards
+  session[:cards] = @blackjack.cards
   session[:player_hand] = @player.hand
 
   # render view
@@ -149,7 +149,7 @@ end
 # route for player to stay
 get '/blackjack/stay' do
   # reinstantiate objects
-  @blackjack = Blackjack.new(session[:deck_cards])
+  @blackjack = Blackjack.new(session[:cards])
   @player = Player.new(session[:player_hand])
   @dealer = Dealer.new(session[:dealer_hand])
 
@@ -161,7 +161,7 @@ get '/blackjack/stay' do
   @winner = @blackjack.winner(@dealer.hand, @player.hand)
 
   # clear objects' state from session for new round
-  session[:deck_cards] = nil
+  session[:cards] = nil
   session[:player_hand] = nil
   session[:dealer_hand] = nil
 
