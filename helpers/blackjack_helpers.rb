@@ -1,3 +1,5 @@
+# ./helpers/blackjack_helpers.rb
+
 module BlackjackHelpers
   # save cards in dealer hand to session
   def save_dealer(dealer_hand)
