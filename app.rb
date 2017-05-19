@@ -161,10 +161,8 @@ get '/blackjack/stay' do
   @winner = @blackjack.winner(@dealer.hand, @player.hand)
 
   # clear objects' state from session for new round
-  session[:cards] = nil
-  session[:player_hand] = nil
-  session[:dealer_hand] = nil
-
+  reset_game
+  
   # render view
   erb :blackjack
 end
