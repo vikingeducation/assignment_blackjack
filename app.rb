@@ -106,9 +106,9 @@ end
 # main game route
 get '/blackjack' do
   # reinstantiate / create new objects
-  @blackjack = Blackjack.new(session[:cards])
-  @player = Player.new(session[:player_hand])
-  @dealer = Dealer.new(session[:dealer_hand])
+  @blackjack = load_cards
+  @player = load_player
+  @dealer = load_dealer
   @round_over = false
 
   # deal cards to Dealer and Player
@@ -116,9 +116,9 @@ get '/blackjack' do
   2.times { @dealer.hand << @blackjack.deal_card } if @dealer.hand.empty?
 
   # save objects' state to session
-  session[:cards] = @blackjack.cards
-  session[:player_hand] = @player.hand
-  session[:dealer_hand] = @dealer.hand
+  save_cards(@blackjack.cards)
+  save_player(@player.hand)
+  save_dealer(@dealer.hand)
 
   # main game view
   erb :blackjack
@@ -127,9 +127,9 @@ end
 # route for player to hit
 post '/blackjack/hit' do
   # reinstantiate objects
-  @blackjack = Blackjack.new(session[:cards])
-  @player = Player.new(session[:player_hand])
-  @dealer = Dealer.new(session[:dealer_hand])
+  @blackjack = load_cards
+  @player = load_player
+  @dealer = load_dealer
   @round_over = false
 
   # deal card to Player
@@ -139,8 +139,8 @@ post '/blackjack/hit' do
   redirect to('/blackjack/stay') if @blackjack.busted?(@player.hand)
 
   # save objects' state to session
-  session[:cards] = @blackjack.cards
-  session[:player_hand] = @player.hand
+  save_cards(@blackjack.cards)
+  save_player(@player.hand)
 
   # render view
   erb :blackjack
@@ -149,9 +149,9 @@ end
 # route for player to stay
 get '/blackjack/stay' do
   # reinstantiate objects
-  @blackjack = Blackjack.new(session[:cards])
-  @player = Player.new(session[:player_hand])
-  @dealer = Dealer.new(session[:dealer_hand])
+  @blackjack = load_cards
+  @player = load_player
+  @dealer = load_dealer
 
   # Dealer hits until at least 17 points
   @dealer.hand << @blackjack.deal_card until @blackjack.points(@dealer.hand) >= 17
@@ -162,7 +162,7 @@ get '/blackjack/stay' do
 
   # clear objects' state from session for new round
   reset_game
-  
+
   # render view
   erb :blackjack
 end
