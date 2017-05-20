@@ -26,17 +26,21 @@ module BlackjackHelpers
   # save Blackjack game state to session
   def save_game(game)
     session[:cards] = game.cards
+    session[:round_over] = game.round_over
+    session[:round_winner] = game.round_winner
   end
 
   # load Blackjack game state from session
   def load_game
-    Blackjack.new(session[:cards])
+    Blackjack.new(cards: session[:cards], round_over: session[:round_over], round_winner: session[:round_winner])
   end
 
   # clear required session state for next round
-  def next_round
+  def reset_for_next_round
     session[:dealer_hand] = nil
     session[:player_hand] = nil
     session[:cards] = nil
+    session[:round_over] = nil
+    session[:round_winner] = nil
   end
 end
