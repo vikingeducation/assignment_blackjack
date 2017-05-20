@@ -5,7 +5,8 @@
 <h2>Number of cards left in deck:</h2>
 <p><%= @blackjack.cards.length %></p>
 
-<h2>Dealer's Hand:</h2>
+<h2>Dealer</h2>
+<h3>Hand:</h3>
 <% if locals[:round_over] %>
   <% @dealer.hand.each do |card| %>
     <p><%= @blackjack.render(card) %></p>
@@ -23,7 +24,10 @@
   <p><%= @blackjack.points(@dealer.hand[1..-1]) %></p>
 <% end %>
 
-<h2>Player's Hand:</h2>
+<h2>Player</h2>
+<h3>Bet: $<%= @player.bet %></h3>
+<h3>Balance: $<%= @player.balance %></h3>
+<h3>Hand:</h3>
 <% @player.hand.each do |card| %>
 <p><%= @blackjack.render(card) %></p>
 <% end %>
@@ -49,7 +53,7 @@
     <p>It's a tie!!</p>
   <% end %>
 
-  <form action="/blackjack" method="get">
-    <input type="submit" value="New Game">
+  <form action="/bet" method="get">
+    <input type="submit" value="Bet Again">
   </form>
 <% end %>
