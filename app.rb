@@ -63,6 +63,9 @@ get '/blackjack' do
   save_player(@player)
   save_dealer(@dealer)
 
+  # redirect if either Dealer or Player has a blackjack
+  redirect to('/blackjack/stay') if @blackjack.blackjack?(@dealer.hand) || @blackjack.blackjack?(@player.hand)
+
   # main game view
   erb :blackjack
 end
@@ -95,6 +98,24 @@ get '/blackjack/stay' do
   @player = load_player
   @dealer = load_dealer
 
+  # check for blackjacks
+  if @blackjack.blackjack?(@dealer.hand) || @blackjack.blackjack?(@player.hand)
+    # set round as over
+    @blackjack.round_over = true
+
+    # determine who won / tie
+    @blackjack.round_winner = @blackjack.determine_winner(@dealer.hand, @player.hand)
+
+    # payout the Player if he has a blackjack, or if it's a tie
+    if @blackjack.round_winner == :tie
+      @player.payout(@player.bet)
+    elsif @blackjack.round_winner == :player
+      @player.payout(@player.bet * 3 / 2)
+    end
+  end
+
+  # prevents code from running again in event of
+  # page refresh
   unless @blackjack.round_over
     # Dealer hits until at least 17 points
     @dealer.hand << @blackjack.deal_card until @blackjack.points(@dealer.hand) >= 17
@@ -111,11 +132,11 @@ get '/blackjack/stay' do
 
     # indicate that round is over
     @blackjack.round_over = true
-
-    # save required object state
-    save_player(@player)
-    save_game(@blackjack)
   end
+
+  # save required object state
+  save_player(@player)
+  save_game(@blackjack)
 
   # render view
   erb :blackjack
