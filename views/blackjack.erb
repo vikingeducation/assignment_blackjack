@@ -1,10 +1,5 @@
 <%= erb :'header' %>
 
-<h2>Current Deck:</h2>
-<p><%= @blackjack.cards %></p>
-<h2>Number of cards left in deck:</h2>
-<p><%= @blackjack.cards.length %></p>
-
 <h2>Dealer</h2>
 <h3>Hand:</h3>
 <% if @blackjack.round_over %>
