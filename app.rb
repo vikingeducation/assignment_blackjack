@@ -40,7 +40,7 @@ get '/blackjack' do
 
   # save objects' state to session
   save_cards(@blackjack.cards)
-  save_player(@player.hand)
+  save_player(@player)
   save_dealer(@dealer.hand)
 
   # main game view
@@ -62,7 +62,7 @@ post '/blackjack/hit' do
 
   # save objects' state to session
   save_cards(@blackjack.cards)
-  save_player(@player.hand)
+  save_player(@player)
 
   # render view
   erb :blackjack
