@@ -46,9 +46,17 @@
   <h2>Round results</h2>
   <% case(@blackjack.round_winner) %>
   <% when :player %>
-    <p>The Player wins!!</p>
+    <% if @blackjack.blackjack?(@player.hand) %>
+      <p>The Player wins!! BLACKJACK!!</p>
+    <% else %>
+      <p>The Player wins!!</p>
+    <% end %>
   <% when :dealer %>
-    <p>The Dealer wins!!</p>
+    <% if @blackjack.blackjack?(@dealer.hand) %>
+      <p>The Dealer wins!! BLACKJACK!!</p>
+    <% else %>
+      <p>The Dealer wins!!</p>
+    <% end %>
   <% when :tie %>
     <p>It's a tie!!</p>
   <% end %>
@@ -56,7 +64,6 @@
   <form action="/bet" method="get">
     <input type="submit" value="Bet Again">
   </form>
-  <br>
   <form action="/" method="get">
     <input type="submit" value="Start Over">
   </form>
