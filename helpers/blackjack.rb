@@ -70,5 +70,10 @@ module BlackjackHelpers
         return :player
       end
     end
+
+    # checks if a potential bet is valid
+    def valid_bet?(player, bet)
+      bet <= player.balance && bet <= 200 && bet % 25 == 0
+    end
   end
 end
