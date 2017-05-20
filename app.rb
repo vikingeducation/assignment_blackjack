@@ -106,5 +106,5 @@ get '/blackjack/stay' do
   next_round
 
   # render view
-  erb :blackjack, locals: { round_over: true, winner: winner }
+  erb :blackjack, locals: { winner: winner }
 end
