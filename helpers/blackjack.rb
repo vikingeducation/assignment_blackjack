@@ -2,8 +2,13 @@ module BlackjackHelpers
   class Blackjack
     attr_reader :cards
 
-    def initialize(cards = nil)
-      @cards = cards || generate_cards
+    attr_accessor :round_over,
+                  :round_winner
+
+    def initialize(options = {})
+      @cards = options[:cards] || generate_cards
+      @round_over = options[:round_over] || false
+      @round_winner = options[:round_winner] || nil
     end
 
     # generates a standard 52 card deck
@@ -51,7 +56,7 @@ module BlackjackHelpers
     end
 
     # determines the winner of a round
-    def winner(dealer_hand, player_hand)
+    def determine_winner(dealer_hand, player_hand)
       # check if either Dealer or Player has busted
       if busted?(dealer_hand) && busted?(player_hand)
         return :tie
