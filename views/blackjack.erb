@@ -7,7 +7,7 @@
 
 <h2>Dealer</h2>
 <h3>Hand:</h3>
-<% if locals[:winner] %>
+<% if @blackjack.round_over %>
   <% @dealer.hand.each do |card| %>
     <p><%= @blackjack.render(card) %></p>
   <% end %>
@@ -18,7 +18,7 @@
   <% end %>
 <% end %>
 <h3>Points:</h3>
-<% if locals[:winner] %>
+<% if @blackjack.round_over %>
   <p><%= @blackjack.points(@dealer.hand) %></p>
 <% else %>
   <p><%= @blackjack.points(@dealer.hand[1..-1]) %></p>
@@ -34,7 +34,7 @@
 <h3>Points:</h3>
 <p><%= @blackjack.points(@player.hand) %></p>
 
-<% unless locals[:winner] %>
+<% unless @blackjack.round_over %>
   <form action="/blackjack/hit" method="post">
     <input type="submit" value="HIT">
   </form>
@@ -44,7 +44,7 @@
   </form>
 <% else %>
   <h2>Round results</h2>
-  <% case(locals[:winner]) %>
+  <% case(@blackjack.round_winner) %>
   <% when :player %>
     <p>The Player wins!!</p>
   <% when :dealer %>
