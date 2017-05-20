@@ -11,14 +11,16 @@ module BlackjackHelpers
     Dealer.new(session[:dealer_hand])
   end
 
-  # save cards in player hand to session
-  def save_player(player_hand)
-    session[:player_hand] = player_hand
+  # save Player state to session
+  def save_player(player)
+    session[:player_hand] = player.hand
+    session[:player_balance] = player.balance
+    session[:player_bet] = player.bet
   end
 
-  # load player hand from session
+  # load Player state from session
   def load_player
-    Player.new(session[:player_hand])
+    Player.new(hand: session[:player_hand], balance: session[:player_balance], bet: session[:player_bet])
   end
 
   # save remaining cards in deck to session
