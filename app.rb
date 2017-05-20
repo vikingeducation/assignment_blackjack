@@ -92,8 +92,18 @@ get '/blackjack/stay' do
   # round is over, determine winner
   winner = @blackjack.winner(@dealer.hand, @player.hand)
 
-  # clear objects' state from session for new round
-  reset_game
+  # payout the Player if he won or tie
+  if winner == :tie
+    @player.payout(@player.bet)
+  elsif winner == :player
+    @player.payout(@player.bet * 2)
+  end
+
+  # save Player balance
+  save_player(@player)
+
+  # clear session for next round
+  next_round
 
   # render view
   erb :blackjack, locals: { round_over: true, winner: winner }
