@@ -24,7 +24,7 @@ get '/bet' do
 end
 
 post '/bet' do
-  
+
 end
 
 # main game route
@@ -33,7 +33,6 @@ get '/blackjack' do
   @blackjack = load_cards
   @player = load_player
   @dealer = load_dealer
-  @round_over = false
 
   # deal cards to Dealer and Player
   2.times { @player.hand << @blackjack.deal_card } if @player.hand.empty?
@@ -54,7 +53,6 @@ post '/blackjack/hit' do
   @blackjack = load_cards
   @player = load_player
   @dealer = load_dealer
-  @round_over = false
 
   # deal card to Player
   @player.hand << @blackjack.deal_card
@@ -81,12 +79,11 @@ get '/blackjack/stay' do
   @dealer.hand << @blackjack.deal_card until @blackjack.points(@dealer.hand) >= 17
 
   # round is over, determine winner
-  @round_over = true
   @winner = @blackjack.winner(@dealer.hand, @player.hand)
 
   # clear objects' state from session for new round
   reset_game
 
   # render view
-  erb :blackjack
+  erb :blackjack, locals: { round_over: true }
 end
