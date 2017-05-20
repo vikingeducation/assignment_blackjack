@@ -1,0 +1,8 @@
+<h1>Place your Bet!</h1>
+<p>Your balance is: $<%= @player.balance %></p>
+<h2>Valid bets are in increments of $25, to a max of $200.</h2>
+
+<form action="/bet" method="post">
+  <input type="text" name="bet">
+  <input type="submit" value="Place Bet">
+</form>
