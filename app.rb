@@ -17,6 +17,16 @@ get '/' do
   erb :home
 end
 
+get '/bet' do
+  @player = load_player
+
+  erb :bet
+end
+
+post '/bet' do
+  
+end
+
 # main game route
 get '/blackjack' do
   # reinstantiate / create new objects
