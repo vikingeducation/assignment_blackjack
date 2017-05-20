@@ -1,12 +1,12 @@
 # ./helpers/blackjack_helpers.rb
 
 module BlackjackHelpers
-  # save cards in dealer hand to session
-  def save_dealer(dealer_hand)
-    session[:dealer_hand] = dealer_hand
+  # save Dealer state to session
+  def save_dealer(dealer)
+    session[:dealer_hand] = dealer.hand
   end
 
-  # load dealer hand from session
+  # load Dealer state from session
   def load_dealer
     Dealer.new(session[:dealer_hand])
   end
