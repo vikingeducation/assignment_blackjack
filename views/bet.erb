@@ -1,7 +1,9 @@
 <h1>Place your Bet!</h1>
-<p>Your balance is: $<%= @player.balance %></p>
-<h2>How much would you like to bet?</h2>
-
+<% if locals[:invalid_bet] %>
+  <p>You do not have enough money to place that bet!</p>
+<% end %>
+<p>Your balance is $<%= @player.balance %>.</p>
+<h3>How much would you like to bet?</h3>
 <form action="/bet" method="post">
   <fieldset>
     <legend>Bet</legend>
