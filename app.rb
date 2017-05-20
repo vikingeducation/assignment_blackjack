@@ -20,6 +20,7 @@ get '/' do
   erb :home
 end
 
+# betting screen route
 get '/bet' do
   @player = load_player
   @blackjack = load_game
@@ -30,6 +31,7 @@ get '/bet' do
   erb :bet
 end
 
+# betting screen route
 post '/bet' do
   @player = load_player
   @blackjack = load_game
