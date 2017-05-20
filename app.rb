@@ -90,11 +90,11 @@ get '/blackjack/stay' do
   @dealer.hand << @blackjack.deal_card until @blackjack.points(@dealer.hand) >= 17
 
   # round is over, determine winner
-  @winner = @blackjack.winner(@dealer.hand, @player.hand)
+  winner = @blackjack.winner(@dealer.hand, @player.hand)
 
   # clear objects' state from session for new round
   reset_game
 
   # render view
-  erb :blackjack, locals: { round_over: true }
+  erb :blackjack, locals: { round_over: true, winner: winner }
 end
