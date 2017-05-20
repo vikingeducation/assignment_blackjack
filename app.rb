@@ -19,6 +19,10 @@ end
 
 get '/bet' do
   @player = load_player
+  @blackjack = load_game
+
+  # clear session for next round
+  reset_for_next_round if @blackjack.round_over
 
   erb :bet
 end
@@ -86,25 +90,28 @@ get '/blackjack/stay' do
   @player = load_player
   @dealer = load_dealer
 
-  # Dealer hits until at least 17 points
-  @dealer.hand << @blackjack.deal_card until @blackjack.points(@dealer.hand) >= 17
+  unless @blackjack.round_over
+    # Dealer hits until at least 17 points
+    @dealer.hand << @blackjack.deal_card until @blackjack.points(@dealer.hand) >= 17
 
-  # round is over, determine winner
-  winner = @blackjack.winner(@dealer.hand, @player.hand)
+    # round is over, determine winner of round
+    @blackjack.round_winner = @blackjack.determine_winner(@dealer.hand, @player.hand)
 
-  # payout the Player if he won or tie
-  if winner == :tie
-    @player.payout(@player.bet)
-  elsif winner == :player
-    @player.payout(@player.bet * 2)
+    # payout the Player if he won, or if it's a tie
+    if @blackjack.round_winner == :tie
+      @player.payout(@player.bet)
+    elsif @blackjack.round_winner == :player
+      @player.payout(@player.bet * 2)
+    end
+
+    # indicate that round is over
+    @blackjack.round_over = true
+
+    # save required object state
+    save_player(@player)
+    save_game(@blackjack)
   end
 
-  # save Player balance
-  save_player(@player)
-
-  # clear session for next round
-  next_round
-
   # render view
-  erb :blackjack, locals: { winner: winner }
+  erb :blackjack
 end
