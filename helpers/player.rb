@@ -18,5 +18,10 @@ module BlackjackHelpers
       @bet = bet
       @balance -= bet
     end
+
+    # pay out Player
+    def payout(amount)
+      @balance += amount
+    end
   end
 end
