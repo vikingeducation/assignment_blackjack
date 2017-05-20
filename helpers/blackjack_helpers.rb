@@ -43,4 +43,12 @@ module BlackjackHelpers
     session[:round_over] = nil
     session[:round_winner] = nil
   end
+
+  # reset all session variables
+  def reset_all
+    reset_for_next_round
+
+    session[:player_balance] = nil
+    session[:player_bet] = nil
+  end
 end
