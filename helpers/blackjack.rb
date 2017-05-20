@@ -80,5 +80,10 @@ module BlackjackHelpers
     def valid_bet?(player, bet)
       bet <= player.balance
     end
+
+    # checks if a hand is Blackjack (21 points)
+    def blackjack?(hand)
+      self.points(hand) == 21 && hand.length == 2
+    end
   end
 end
