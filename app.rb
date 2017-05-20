@@ -24,7 +24,18 @@ get '/bet' do
 end
 
 post '/bet' do
+  @player = load_player
+  @blackjack = load_cards
+  bet = params[:bet].to_i
 
+  # validate that bet is valid, i.e. Player has enough money
+  if @blackjack.valid_bet?(@player, bet)
+    @player.place_bet(bet)
+    save_player(@player)
+    redirect to('/blackjack')
+  else
+    erb :bet, locals: { invalid_bet: true }
+  end
 end
 
 # main game route
