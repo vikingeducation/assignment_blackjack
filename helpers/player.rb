@@ -5,17 +5,17 @@ module BlackjackHelpers
     attr_accessor :hand
 
     attr_reader :balance,
-                :current_bet
+                :bet
 
     def initialize(options = {})
       @hand = options[:hand] || []
       @balance = options[:balance] || 1000
-      @current_bet = options[:current_bet] || 0
+      @bet = options[:bet] || 0
     end
 
     # places a bet
     def place_bet(bet)
-      @current_bet = bet
+      @bet = bet
       @balance -= bet
     end
   end
