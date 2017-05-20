@@ -14,6 +14,9 @@ enable :sessions
 
 # root route
 get '/' do
+  # reset all session variables
+  reset_all
+
   erb :home
 end
 
