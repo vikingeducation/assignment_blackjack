@@ -25,7 +25,7 @@ end
 
 post '/bet' do
   @player = load_player
-  @blackjack = load_cards
+  @blackjack = load_game
   bet = params[:bet].to_i
 
   # validate that bet is valid, i.e. Player has enough money
@@ -41,7 +41,7 @@ end
 # main game route
 get '/blackjack' do
   # reinstantiate / create new objects
-  @blackjack = load_cards
+  @blackjack = load_game
   @player = load_player
   @dealer = load_dealer
 
@@ -50,7 +50,7 @@ get '/blackjack' do
   2.times { @dealer.hand << @blackjack.deal_card } if @dealer.hand.empty?
 
   # save objects' state to session
-  save_cards(@blackjack.cards)
+  save_game(@blackjack)
   save_player(@player)
   save_dealer(@dealer)
 
@@ -61,7 +61,7 @@ end
 # route for player to hit
 post '/blackjack/hit' do
   # reinstantiate objects
-  @blackjack = load_cards
+  @blackjack = load_game
   @player = load_player
   @dealer = load_dealer
 
@@ -69,7 +69,7 @@ post '/blackjack/hit' do
   @player.hand << @blackjack.deal_card
 
   # save objects' state to session
-  save_cards(@blackjack.cards)
+  save_game(@blackjack)
   save_player(@player)
 
   # redirect if player has busted
@@ -82,7 +82,7 @@ end
 # route for player to stay
 get '/blackjack/stay' do
   # reinstantiate objects
-  @blackjack = load_cards
+  @blackjack = load_game
   @player = load_player
   @dealer = load_dealer
 

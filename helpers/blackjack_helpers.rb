@@ -23,13 +23,13 @@ module BlackjackHelpers
     Player.new(hand: session[:player_hand], balance: session[:player_balance], bet: session[:player_bet])
   end
 
-  # save remaining cards in deck to session
-  def save_cards(cards)
-    session[:cards] = cards
+  # save Blackjack game state to session
+  def save_game(game)
+    session[:cards] = game.cards
   end
 
-  # load saved cards from session
-  def load_cards
+  # load Blackjack game state from session
+  def load_game
     Blackjack.new(session[:cards])
   end
 
