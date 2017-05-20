@@ -33,8 +33,8 @@ module BlackjackHelpers
     Blackjack.new(session[:cards])
   end
 
-  # reset game for next round
-  def reset_game
+  # clear required session state for next round
+  def next_round
     session[:dealer_hand] = nil
     session[:player_hand] = nil
     session[:cards] = nil
