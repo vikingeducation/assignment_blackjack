@@ -68,12 +68,12 @@ post '/blackjack/hit' do
   # deal card to Player
   @player.hand << @blackjack.deal_card
 
-  # redirect if player has busted
-  redirect to('/blackjack/stay') if @blackjack.busted?(@player.hand)
-
   # save objects' state to session
   save_cards(@blackjack.cards)
   save_player(@player)
+
+  # redirect if player has busted
+  redirect to('/blackjack/stay') if @blackjack.busted?(@player.hand)
 
   # render view
   erb :blackjack
