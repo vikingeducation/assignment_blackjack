@@ -8,6 +8,9 @@
       </div>
       <div class="panel-body">
         <h4 class="text-center">Cards in hand</h4>
+
+        <hr>
+
         <% if @blackjack.round_over %>
           <% @dealer.hand.each do |card| %>
             <p class="text-center"><%= @blackjack.render(card) %></p>
@@ -19,7 +22,7 @@
           <% end %>
         <% end %>
 
-        <p class="text-center">--</p>
+        <hr>
 
         <% if @blackjack.round_over %>
           <p class="text-center"><em><%= @blackjack.points(@dealer.hand) %> points</em></p>
