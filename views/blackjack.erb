@@ -1,23 +1,35 @@
 <%= erb :'header' %>
 
-<h2>Dealer</h2>
-<h3>Hand:</h3>
-<% if @blackjack.round_over %>
-  <% @dealer.hand.each do |card| %>
-    <p><%= @blackjack.render(card) %></p>
-  <% end %>
-<% else %>
-  <p>Hidden</p>
-  <% @dealer.hand[1..-1].each do |card| %>
-    <p><%= @blackjack.render(card) %></p>
-  <% end %>
-<% end %>
-<h3>Points:</h3>
-<% if @blackjack.round_over %>
-  <p><%= @blackjack.points(@dealer.hand) %></p>
-<% else %>
-  <p><%= @blackjack.points(@dealer.hand[1..-1]) %></p>
-<% end %>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h2 class="panel-title text-center">Dealer</h2>
+      </div>
+      <div class="panel-body">
+        <h4 class="text-center">Cards in hand</h4>
+        <% if @blackjack.round_over %>
+          <% @dealer.hand.each do |card| %>
+            <p class="text-center"><%= @blackjack.render(card) %></p>
+          <% end %>
+        <% else %>
+          <p class="text-center">(First card hidden)</p>
+          <% @dealer.hand[1..-1].each do |card| %>
+            <p class="text-center"><%= @blackjack.render(card) %></p>
+          <% end %>
+        <% end %>
+
+        <p class="text-center">--</p>
+
+        <% if @blackjack.round_over %>
+          <p class="text-center"><em><%= @blackjack.points(@dealer.hand) %> points</em></p>
+        <% else %>
+          <p class="text-center"><em><%= @blackjack.points(@dealer.hand[1..-1]) %> points</em></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
 
 <h2>Player</h2>
 <h3>Bet: $<%= @player.bet %></h3>
