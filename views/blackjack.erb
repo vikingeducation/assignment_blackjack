@@ -34,15 +34,43 @@
   </div>
 </div>
 
-<h2>Player</h2>
-<h3>Bet: $<%= @player.bet %></h3>
-<h3>Balance: $<%= @player.balance %></h3>
-<h3>Hand:</h3>
-<% @player.hand.each do |card| %>
-<p><%= @blackjack.render(card) %></p>
-<% end %>
-<h3>Points:</h3>
-<p><%= @blackjack.points(@player.hand) %></p>
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-primary">
+
+      <div class="panel-heading">
+        <h2 class="panel-title text-center">Player</h2>
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="text-center">Cards in hand</h4>
+
+            <hr>
+
+            <% @player.hand.each do |card| %>
+            <p class="text-center"><%= @blackjack.render(card) %></p>
+            <% end %>
+
+            <hr>
+
+            <p class="text-center"><em><%= @blackjack.points(@player.hand) %> points</em></p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <p class="text-right">Bet: <strong>$<%= @player.bet %></strong></p>
+            <p class="text-right">Balance: <strong>$<%= @player.balance %></strong></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
 <% unless @blackjack.round_over %>
   <form action="/blackjack/hit" method="post">
