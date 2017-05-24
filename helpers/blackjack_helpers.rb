@@ -1,0 +1,54 @@
+# ./helpers/blackjack_helpers.rb
+
+module BlackjackHelpers
+  # save Dealer state to session
+  def save_dealer(dealer)
+    session[:dealer_hand] = dealer.hand
+  end
+
+  # load Dealer state from session
+  def load_dealer
+    Dealer.new(session[:dealer_hand])
+  end
+
+  # save Player state to session
+  def save_player(player)
+    session[:player_hand] = player.hand
+    session[:player_balance] = player.balance
+    session[:player_bet] = player.bet
+  end
+
+  # load Player state from session
+  def load_player
+    Player.new(hand: session[:player_hand], balance: session[:player_balance], bet: session[:player_bet])
+  end
+
+  # save Blackjack game state to session
+  def save_game(game)
+    session[:cards] = game.cards
+    session[:round_over] = game.round_over
+    session[:round_winner] = game.round_winner
+  end
+
+  # load Blackjack game state from session
+  def load_game
+    Blackjack.new(cards: session[:cards], round_over: session[:round_over], round_winner: session[:round_winner])
+  end
+
+  # clear required session state for next round
+  def reset_for_next_round
+    session[:dealer_hand] = nil
+    session[:player_hand] = nil
+    session[:cards] = nil
+    session[:round_over] = nil
+    session[:round_winner] = nil
+  end
+
+  # reset all session variables
+  def reset_all
+    reset_for_next_round
+
+    session[:player_balance] = nil
+    session[:player_bet] = nil
+  end
+end

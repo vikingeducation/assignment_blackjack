@@ -1,0 +1,140 @@
+<%= erb :'header' %>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h2 class="panel-title text-center">Dealer</h2>
+      </div>
+      <div class="panel-body">
+        <h4 class="text-center">Cards in hand</h4>
+
+        <hr>
+
+        <% if @blackjack.round_over %>
+          <% @dealer.hand.each do |card| %>
+            <p class="text-center"><%= @blackjack.render(card) %></p>
+          <% end %>
+        <% else %>
+          <p class="text-center">(First card hidden)</p>
+          <% @dealer.hand[1..-1].each do |card| %>
+            <p class="text-center"><%= @blackjack.render(card) %></p>
+          <% end %>
+        <% end %>
+
+        <hr>
+
+        <% if @blackjack.round_over %>
+          <p class="text-center"><em><%= @blackjack.points(@dealer.hand) %> points</em></p>
+        <% else %>
+          <p class="text-center"><em><%= @blackjack.points(@dealer.hand[1..-1]) %> points</em></p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-12">
+    <div class="panel panel-primary">
+
+      <div class="panel-heading">
+        <div class="row">
+          <div class="col-md-4">
+            <p class="text-left">Bet: $<%= @player.bet %></p>
+          </div>
+          <div class="col-md-4">
+            <p class="panel-title text-center">Player</p>
+          </div>
+          <div class="col-md-4">
+            <p class="text-right">Balance: $<%= @player.balance %></p>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <h4 class="text-center">Cards in hand</h4>
+            <hr>
+
+            <% @player.hand.each do |card| %>
+              <p class="text-center"><%= @blackjack.render(card) %></p>
+            <% end %>
+
+            <hr>
+            <p class="text-center"><em><%= @blackjack.points(@player.hand) %> points</em></p>
+          </div>
+        </div>
+
+        <% unless @blackjack.round_over %>
+          <div class="row">
+            <div class="col-md-12">
+              <form action="/blackjack/hit" method="post">
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-primary">Hit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <form action="/blackjack/stay" method="get">
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-primary">Stay</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <% if @blackjack.round_winner %>
+      <div class="panel panel-primary">
+
+        <div class="panel-heading">
+          <h2 class="panel-title text-center">Results</h2>
+        </div>
+
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-12">
+              <% case(@blackjack.round_winner) %>
+              <% when :player %>
+                <% if @blackjack.blackjack?(@player.hand) %>
+                  <p class="text-center">The Player wins!! <strong>BLACKJACK!!</strong></p>
+                <% else %>
+                  <p class="text-center">The Player wins!!</p>
+                <% end %>
+              <% when :dealer %>
+                <% if @blackjack.blackjack?(@dealer.hand) %>
+                  <p class="text-center">The Dealer wins!! <strong>BLACKJACK!!</strong></p>
+                <% else %>
+                  <p class="text-center">The Dealer wins!!</p>
+                <% end %>
+              <% when :tie %>
+                <p class="text-center">It's a tie!!</p>
+              <% end %>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-12">
+              <form action="/bet" method="get">
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-primary">Bet Again</button>
+                </div>
+              </form>
+              <form action="/" method="get">
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-primary">Reset Game</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
