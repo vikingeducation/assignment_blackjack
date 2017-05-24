@@ -46,18 +46,38 @@
         <div class="row">
           <div class="col-md-12">
             <h4 class="text-center">Cards in hand</h4>
-
             <hr>
 
             <% @player.hand.each do |card| %>
-            <p class="text-center"><%= @blackjack.render(card) %></p>
+              <p class="text-center"><%= @blackjack.render(card) %></p>
             <% end %>
 
             <hr>
-
             <p class="text-center"><em><%= @blackjack.points(@player.hand) %> points</em></p>
           </div>
         </div>
+
+        <% unless @blackjack.round_over %>
+          <div class="row">
+            <div class="col-md-12">
+              <form action="/blackjack/hit" method="post">
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-primary">Hit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <form action="/blackjack/stay" method="get">
+                <div class="form-group text-center">
+                  <button type="submit" class="btn btn-primary">Stay</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        <% else %>
+        <% end %>
 
         <div class="row">
           <div class="col-md-12">
@@ -66,20 +86,12 @@
           </div>
         </div>
       </div>
-
     </div>
   </div>
 </div>
 
-
 <% unless @blackjack.round_over %>
-  <form action="/blackjack/hit" method="post">
-    <input type="submit" value="HIT">
-  </form>
 
-  <form action="/blackjack/stay" method="get">
-    <input type="submit" value="STAY">
-  </form>
 <% else %>
   <h2>Round results</h2>
   <% case(@blackjack.round_winner) %>
