@@ -4,14 +4,14 @@
 </h1>
 
  <p><b>Dealer cards:</b></p>
- <%= @cards2 %>
+ <%= @dealer_cards %>
 
   <p><b>Dealer score:</b></p>
   <%= @dealer_score %>
 
 
  <p><b>Your cards:</b></p>
- <%= @cards %>
+ <%= @player_cards %>
 
   <p><b>Your current score:</b></p>
   <%= @player_score %>
@@ -20,7 +20,13 @@
 <h2>
   Choose your next move
 </h2>
-  <form action="/continue" method="post">
-    <input type="submit" value="HIT">
-    <input type="submit" value="STAY">
-  </form>
+
+<form action="blackjack/hit" method="post">
+  <button type="submit" value="HIT">HIT</button>
+</form>
+  
+<form action="blackjack/stay" method="get">
+  <br>
+  <button type="submit" value="STAY">STAY</button>
+</form>
+

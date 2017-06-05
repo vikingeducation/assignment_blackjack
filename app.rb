@@ -1,6 +1,6 @@
 # ./app.rb
 require "sinatra"
-require "sinatra/reloader" if development?
+# require "sinatra/reloader" if development?
 require 'erb'
 require 'pry-byebug'
 require './helpers/card_helper.rb'
@@ -10,7 +10,6 @@ require './helpers/card_helper.rb'
 helpers CardHelper
 
 enable :sessions
-
 
 get '/' do
   erb :home
@@ -24,21 +23,35 @@ get '/blackjack' do
     start_game
   end
 
-  @cards = load_cards
+  @player_cards = load_cards
   @player_score = load_score
 
-  @cards2 = load_cards2
-  @dealer_score = load_score2
+  @dealer_cards = load_dealer_cards
+  @dealer_score = load_dealer_score
   erb :blackjack
 end
 
+get '/blackjack/hit' do
+  score = load_score
+  puts "player score so far #{score}"
+  if !score.nil? && score >= 21
+    redirect to("blackjack/stay")
+  else
+    result = deal_if_play_viable
+    if result == "not viable"
+      redirect to("blackjack/stay")
+    else
+       redirect to("blackjack")
+     end
+  end
+  # @cards = load_cards
+  # @player_score = load_score
+end
 
-
-
-# post '/blackjack/hit' do
-#   deal
-#   @cards = load_cards
-#   @player_score = load_score
+post '/blackjack/hit' do
+  @cards = load_cards
+  @player_score = load_score
+end
 
 #   # If the player hitting would bust that player (bring the total over 21 points), redirect to get /blackjack/stay
 #   redirect to("blackjack/stay")
