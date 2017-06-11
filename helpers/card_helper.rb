@@ -1,24 +1,17 @@
 # ./helpers/card_helper.rb
 module CardHelper
 
-  # # Save the secret to the session hash
-  # # Again, the `self` is implicit for `self.text`
-  # def save_cards(secret_text)
-  #   session[:secret_text] = secret_text
-  # end
-
-    # @player_score = 0 
-    # @combinations = []
-    # # @current_player = @player
-    # @game_over = false
-    # @player = Player.new
-    # @dealer = Dealer.new
-
   def start_game
     # @player.deal
     # @dealer.deal
-    deal
-    load_dealer
+    player_sample = deal
+    save_cards(player_sample)
+    calculate_score(player_sample[0])
+
+    
+    dealer_sample = load_dealer
+    save_dealer_cards(dealer_sample)
+    calculate_dealer_score(dealer_sample[0])
   end
 
   def load_deck
@@ -26,15 +19,7 @@ module CardHelper
   end
 
   def generate_cards
-    # @player_score = 0 
-    # @dealer_score = 0
-    # @combinations = []
-    # # @current_player = @player
-    # @game_over = false
-    # @player_cards = []
-    # @dealer_cards = []
-
-    number =  [2,3,4,5,6,7,8,9,10,10,10,10]
+    number =  [2,3,4,5,6,7,8,9,10,10,10,10, 'A']
     # need to deal with aces separatley
     suit = %w{diamonds clubs hearts spades}
     # Simulate the real shuffling of cards
@@ -45,13 +30,14 @@ module CardHelper
   def deal
     session["deck"] ||= load_deck
      # s = @combinations.sample
-     s = session["deck"].sample
-     save_cards(s)
+     cards_selected = session["deck"].sample
+     # save_cards(s)
      # puts "#{s} cards selected"
      # @combinations.delete(s)
      session["deck"].delete(s)
      # session["deck"] = nil if session['deck'].empty?
-     calculate_score(s[0])
+     # calculate_score(s[0])
+     cards_selected
   end
 
   def save_cards(cards)
@@ -71,17 +57,31 @@ module CardHelper
   #   @player.score >= 21 || @dealer.score >= 21 || @combinations.length <= 1
   # end
  
-  def calculate_score(n)
+  def calculate_score(card)
     if session["player_score"].nil?
-      session["player_score"] = n
+      session["player_score"] = card
     else
-      current = session["player_score"]
-      current += n
-      session["player_score"] = current
+      current_score = session["player_score"]
+      
+      value = check_ace(card[0], current_score)
+      card = value if value > 0
+
+      current_score += card
+      session["player_score"] = current_score
     end
 
-    # @player_score += n
+    # @player_score += card
     # session[:player_score] = @player_score
+  end
+
+  def check_ace(card, score)
+    if(card == "A" && score + 11 > 21)
+      value = 1
+    elsif(card == "A")
+      value = 11
+    end
+    value
+
   end
 
 
@@ -89,12 +89,12 @@ module CardHelper
     session["deck"] ||= load_deck
      # s = @combinations.sample
      s = session["deck"].sample
-     save_dealer_cards(s)
+     # save_dealer_cards(s)
      # puts "#{s} cards selected"
      # @combinations.delete(s)
      session["deck"].delete(s)
      # session["deck"] = nil if session['deck'].empty?
-     calculate_dealer_score(s[0])
+     # calculate_dealer_score(s[0])
   end
 
   def save_dealer_cards(cards)
@@ -107,30 +107,55 @@ module CardHelper
     end
   end
  
-  def calculate_dealer_score(n)
+  def calculate_dealer_score(card)
     if session["dealer_score"].nil?
-      session["dealer_score"] = n
+      session["dealer_score"] = card
     else
-      current = session["dealer_score"]
-      current += n
-      session["dealer_score"] = current
+      current_score = session["dealer_score"]
+
+      value = check_ace(card[0], current_score)
+      card = value if value > 0
+
+      current_score += card
+      session["dealer_score"] = current_score
     end
   end
 
   def deal_if_play_viable
     if !session["player_score"].nil? && session["player_score"] < 21
-      session["deck"] ||= load_deck
-      s = session["deck"].sample
+      # session["deck"] ||= load_deck
+      # s = session["deck"].sample
+      selection = deal
 
-      if session["player_score"]+ s[0] > 21
-        return "not viable"
+      if session["player_score"]+ selection[0] > 21
+        return false
       else
-        save_cards(s)
+        save_cards(selection)
         session["deck"].delete(s)
-        calculate_score(s[0])
+        calculate_score(selection[0])
+        return true
       end
+    else
+      return false
     end
     # @player.score >= 21 || @dealer.score >= 21 || @combinations.length <= 1
+  end
+
+  def stay
+    while !session["dealer_score"].nil? && session["dealer_score"] < 17
+      # session["deck"] ||= load_deck
+      # s = session["deck"].sample
+      selection = deal
+
+      if session["dealer_score"]+ selection[0] > 17
+        break
+      else
+        save_dealer_cards(selection)
+        session["deck"].delete(s)
+        calculate_dealer_score(selection[0])
+        return true
+      end
+    end
   end
 
   # def process_input(player_choice)
@@ -140,8 +165,6 @@ module CardHelper
   #     @current_player.deal
   #   end
   # end
-
-  
 
 
   # def play
@@ -153,8 +176,6 @@ module CardHelper
   #   quit_msg
   # end
 
-
-  # IN DEALER method - the user input should always be HIT of has 17 or more
 
   # def quit_msg
   #   if(@current_player.score >= 21 || @current_player.score <)

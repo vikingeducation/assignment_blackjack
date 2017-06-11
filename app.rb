@@ -31,30 +31,27 @@ get '/blackjack' do
   erb :blackjack
 end
 
+
+#   # If the player hitting would bust that player (bring the total over 21 points), redirect to get /blackjack/stay
+#   redirect to("blackjack/stay")
+# end
 get '/blackjack/hit' do
   score = load_score
   puts "player score so far #{score}"
   if !score.nil? && score >= 21
     redirect to("blackjack/stay")
   else
-    result = deal_if_play_viable
-    if result == "not viable"
-      redirect to("blackjack/stay")
-    else
-       redirect to("blackjack")
-     end
+    deal_if_play_viable ? redirect to("blackjack") : redirect to("blackjack/stay")
   end
+
+  # erb :"secret/new"
   # @cards = load_cards
   # @player_score = load_score
 end
 
-post '/blackjack/hit' do
-  @cards = load_cards
-  @player_score = load_score
-end
-
-#   # If the player hitting would bust that player (bring the total over 21 points), redirect to get /blackjack/stay
-#   redirect to("blackjack/stay")
+# post '/blackjack/hit' do
+#   @cards = load_cards
+#   @player_score = load_score
 # end
 
 
