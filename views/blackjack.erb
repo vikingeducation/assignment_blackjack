@@ -1,34 +1,42 @@
 <!-- blackjack.erb -->
-<h1>
-  Let's deal a hand
-</h1>
 
- <p><b>Dealer cards:</b></p>
- <%= @dealer_cards %>
+<html>
+  <body>
+    <h1>
+    Let's play blackjack 
+    </h1>
 
-  <p><b>Dealer score:</b></p>
-  <%= @dealer_score %>
+    <p><b>Dealer cards:</b></p>
+    <%= @dealer_cards %>
 
+    <p><b>Dealer score:</b></p>
+    <%= @dealer_score %>
+    <p></p>
 
- <p><b>Your cards:</b></p>
- <%= @player_cards %>
+    <p><b>Your cards:</b></p>
+    <%= @player_cards %>
 
-  <p><b>Your current score:</b></p>
-  <%= @player_score %>
-
-
-<h2>
-  Choose your next move
-</h2>
+    <p><b>Your current score:</b></p>
+    <%= @player_score %>
 
 
-<!-- Change the hit and stay to blackjack as the action and maybe game-over as the stay -->
-<form action="blackjack/hit" method="post">
-  <button type="submit" value="hit">HIT</button>
-</form>
-  
-<form action="blackjack/stay" method="get">
-  <br>
-  <button type="submit" value="stay">STAY</button>
-</form>
+    <h2>
+    Choose your next move
+    </h2>
+
+
+    <% if !@winner.nil? %>
+    <%= erb :"game_over", locals: { winner: @winner } %>
+    <% else %>
+      <form action="blackjack/hit" method="post">
+      <button type="submit" value="hit">HIT</button>
+      </form>
+
+      <form action="blackjack/stay" method="get">
+      <br>
+      <button type="submit" value="stay">STAY</button>
+      </form>
+   <% end %>
+  </body>
+</html>
 
