@@ -32,9 +32,9 @@ module CardHelper
      # s = @combinations.sample
      cards_selected = session["deck"].sample
      # save_cards(s)
-     # puts "#{s} cards selected"
+     puts "#{cards_selected} cards selected"
      # @combinations.delete(s)
-     session["deck"].delete(s)
+     session["deck"].delete(cards_selected)
      # session["deck"] = nil if session['deck'].empty?
      # calculate_score(s[0])
      cards_selected
@@ -75,13 +75,14 @@ module CardHelper
   end
 
   def check_ace(card, score)
-    if(card == "A" && score + 11 > 21)
+    value = 0
+    if(card == "A" && (score + 11) > 21)
       value = 1
     elsif(card == "A")
       value = 11
     end
+    puts "#{value} - an ace was dealt"
     value
-
   end
 
 
@@ -90,7 +91,7 @@ module CardHelper
      # s = @combinations.sample
      s = session["deck"].sample
      # save_dealer_cards(s)
-     # puts "#{s} cards selected"
+     puts "#{s} cards selected for dealer"
      # @combinations.delete(s)
      session["deck"].delete(s)
      # session["deck"] = nil if session['deck'].empty?
@@ -127,11 +128,11 @@ module CardHelper
       # s = session["deck"].sample
       selection = deal
 
-      if session["player_score"]+ selection[0] > 21
+      if session["player_score"] + selection[0] > 21
         return false
       else
         save_cards(selection)
-        session["deck"].delete(s)
+        session["deck"].delete(selection)
         calculate_score(selection[0])
         return true
       end
