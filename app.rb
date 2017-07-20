@@ -109,13 +109,17 @@ get '/blackjack/stay' do
   restore_variables
   @player_score = get_player_score(@player)
   @dealer_score = get_player_score(@dealer)
-  while @dealer_score <= 17
-    @dealer << deal_cards(1).flatten
-    @dealer_score = get_player_score(@dealer)
+  if @player_score > 21
+    erb :blackjack_stay
+  else
+    while @dealer_score <= 17
+      @dealer << deal_cards(1).flatten
+      @dealer_score = get_player_score(@dealer)
+    end
   end
   erb :blackjack_stay
 end
 
 get '/blackjack/play_again' do
-  erb :home
+  redirect to('/blackjack')
 end
