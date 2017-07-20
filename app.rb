@@ -5,12 +5,13 @@ require 'pry-byebug'
 require 'sinatra/reloader' if development?
 require './helpers/blackjack_helpers.rb'
 
+
 enable :sessions
 
 helpers BlackJackHelpers
 
 before do
-  build_deck
+  @deck = Deck.new
 end
 
 get '/' do
@@ -19,15 +20,15 @@ end
 
 # needs to shuffle deck and deal hands to dealer and player
 get '/blackjack' do
-  @dealer = deal_cards(2)
-  @player = deal_cards(2)
+  @dealer = @deck.deal_cards(2)
+  @player = @deck.deal_cards(2)
   @player_score = get_player_score(@player)
   @dealer_score = get_player_score(@dealer)
   if @player_score == 21 || @dealer_score == 21
     erb :blackjack_win
   else
     save_variables
-    erb :blackjack 
+    erb :blackjack
   end
 end
 
@@ -36,7 +37,7 @@ post "/blackjack/hit" do
   # if hitting would bust player (over 21 total) redirect to get /blackjack/stay
   # need to use cookies/session to keep track of cards already dealt?
   restore_variables
-  @player << deal_cards(1).flatten
+  @player << @deck.deal_cards(1).flatten
   puts "#{@player.class}"
   @player_score = get_player_score(@player)
   @dealer_score = get_player_score(@dealer)
@@ -57,7 +58,7 @@ get '/blackjack/stay' do
     erb :blackjack_stay
   else
     while @dealer_score <= 17
-      @dealer << deal_cards(1).flatten
+      @dealer << @deck.deal_cards(1).flatten
       @dealer_score = get_player_score(@dealer)
     end
   end
