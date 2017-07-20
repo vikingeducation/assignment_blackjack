@@ -11,12 +11,14 @@ helpers do
   def build_deck
     face = [2,3,4,5,6,7,8,9,10,"J","Q","K","A"]
     suit = ["hearts", "spades", "clubs", "diamonds"]
-    @deck = face.product(suit).shuffle!
+    @deck = face.product(suit)
   end
 
   def deal_cards(num_of_cards)
     hand = @deck.sample(num_of_cards)
-    @deck.delete_if.any? { |card| card == hand }
+    hand.each do |card_in_hand|
+      @deck.delete_if { |card_in_deck| card_in_deck == card_in_hand }
+    end
     hand
   end
 
@@ -52,7 +54,7 @@ helpers do
       s += scores[i[0].to_s]
     end
 
-    if score > 21 && player.any? {|x| x[0] == 'A'}
+    if score > 21 && player.any? {|x| x[0] == "A"}
       score = score - 10
     end
 
@@ -106,10 +108,14 @@ get '/blackjack/stay' do
   # render main page with all cards revealed and describes the result
   restore_variables
   @player_score = get_player_score(@player)
-  loop do
+  @dealer_score = get_player_score(@dealer)
+  while @dealer_score <= 17
     @dealer << deal_cards(1).flatten
     @dealer_score = get_player_score(@dealer)
-    break if @dealer_score >= 17
   end
-  erb :blackjack
+  erb :blackjack_stay
+end
+
+get '/blackjack/play_again' do
+  erb :home
 end

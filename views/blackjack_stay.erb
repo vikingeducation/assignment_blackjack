@@ -1,0 +1,28 @@
+<h1>Dealer's Hand:</h1>
+<p><%= @dealer %></p>
+<h2> Dealer's Total Points: <%= @dealer_score %></h2>
+<% if @dealer_score > 21 %>
+BUST!!
+<% end %>
+<!-- <p><%= ['HIDDEN'] %><%= @dealer.slice(1, @dealer.length) %></p> -->
+
+<h1>Your Hand:</h1>
+<p><%= @player %></p>
+<h2>Your Total Points: <%= @player_score %></h2>
+<% if @player_score > 21 %>
+BUST!!
+<% end %>
+
+<h2>Winner: </h2>
+
+
+
+<form action = "/blackjack/hit" method = "post">
+  <input type = "button" value = "HIT" name = "hit">
+</form>
+<form action = "/blackjack/stay" method = "get">
+  <input type = "button" value = "STAY" name = "stay">
+</form>
+<form action = "/blackjack/play_again" method = "get">
+  <input type = "submit" value = "PLAY AGAIN?" name = "play_again">
+</form>
