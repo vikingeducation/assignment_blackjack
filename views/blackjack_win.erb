@@ -1,0 +1,22 @@
+<h1> BLACKJACK!!! </h1>
+<h2><% if @player_score == 21 %>
+  CONGRATULATIONS! YOU WON!
+  <% else %>
+  COMPUTER WINS, YOU LOSE!
+  <% end %></h2>
+<h2>Dealer's Hand:</h2>
+<p><%= @dealer %></p>
+<h3>Dealer's Total Points:</h3>
+<p><%= @dealer_score %></p>
+
+<h2>Your Hand:</h2>
+<p><%= @player %></p>
+<h3>Your Total Points:</h3>
+<p><%= @player_score %></p>
+
+<form action = "/blackjack/hit" method = "post">
+  <input type = "submit" value = "HIT" name = "hit">
+</form>
+<form action = "/blackjack/stay" method = "get">
+  <input type = "submit" value = "STAY" name = "stay">
+</form>
