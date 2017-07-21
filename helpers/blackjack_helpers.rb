@@ -7,6 +7,7 @@ module BlackJackHelpers
   def save_variables
     session[:dealer_hand] = @dealer.hand
     session[:player_hand] = @user.hand
+    session[:player_bankroll] = @user.bankroll
     session[:deck] = @deck
   end
 
@@ -15,7 +16,7 @@ module BlackJackHelpers
   end
 
   def restore_player
-    @user = Player.new(session[:player_hand])
+    @user = Player.new(session[:player_hand], session[:player_bankroll])
   end
 
   def restore_dealer

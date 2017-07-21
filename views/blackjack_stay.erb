@@ -11,6 +11,7 @@
 <h2>Your Hand:</h2>
   <p><%= @user.hand %></p>
 <h2>Your Total Points: <%= @user_score %></h2>
+<h3>Your Bankroll: $<%= @user.bankroll %></h3>
   <% if @user_score > 21 %>
     BUST!!
   <% end %>

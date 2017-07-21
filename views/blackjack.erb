@@ -3,8 +3,8 @@
 
 <h1>Your Hand:</h1>
   <p><%= @user.hand %></p>
-<h2>Your Total Points:</h2>
-  <p><%= @user_score %></p>
+<h2>Your Total Points: <%= @user_score %></h2>
+<h3>Your Bankroll: $<%= @user.bankroll %></h3>
 
 <form action = "/blackjack/hit" method = "post">
   <input type = "submit" value = "HIT" name = "hit">
