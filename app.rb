@@ -18,7 +18,7 @@ get '/' do
   erb :home
 end
 
-# needs to shuffle deck and deal hands to dealer and player
+# shuffles deck and deal hands to dealer and player
 get '/blackjack' do
   @dealer = Player.new(@deck.deal_cards(2))
   @user = Player.new(@deck.deal_cards(2))
