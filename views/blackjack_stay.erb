@@ -1,6 +1,6 @@
 <!-- dealer hand info -->
 <h2>Dealer's Hand:</h2>
-  <p><%= @dealer %></p>
+  <p><%= @dealer.hand %></p>
 <h2> Dealer's Total Points: <%= @dealer_score %></h2>
   <% if @dealer_score > 21 %>
     BUST!!
@@ -9,22 +9,22 @@
 
 <!-- player hand info -->
 <h2>Your Hand:</h2>
-  <p><%= @player %></p>
-<h2>Your Total Points: <%= @player_score %></h2>
-  <% if @player_score > 21 %>
+  <p><%= @user.hand %></p>
+<h2>Your Total Points: <%= @user_score %></h2>
+  <% if @user_score > 21 %>
     BUST!!
   <% end %>
 
 
 <!-- winning message/logic -->
-<h1><% if @player_score > 21 %>
+<h1><% if @user_score > 21 %>
     BUST! YOU LOSE
   <% elsif @dealer_score > 21 %>
     DEALER BUSTS, YOU WIN!
-  <% elsif @dealer_score > @player_score %>
+  <% elsif @dealer_score > @user_score %>
     DEALER WINS!
-  <% elsif @dealer_score == @player_score %>
-    PUSH - you don't win or lose 
+  <% elsif @dealer_score == @user_score %>
+    PUSH - you don't win or lose
   <% else %>
     YOU WIN!
   <% end %></h1>

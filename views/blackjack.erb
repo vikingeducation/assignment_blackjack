@@ -1,10 +1,10 @@
 <h1>Dealer's Hand:</h1>
-  <p><%= ['HIDDEN'] %><%= @dealer.slice(1, @dealer.length) %></p>
+  <p><%= ['HIDDEN'] %><%= @dealer.hand.slice(1, @dealer.hand.length) %></p>
 
 <h1>Your Hand:</h1>
-  <p><%= @player %></p>
+  <p><%= @user.hand %></p>
 <h2>Your Total Points:</h2>
-  <p><%= @player_score %></p>
+  <p><%= @user_score %></p>
 
 <form action = "/blackjack/hit" method = "post">
   <input type = "submit" value = "HIT" name = "hit">

@@ -1,16 +1,16 @@
 <h1> BLACKJACK!!! </h1>
-  <h2><% if @player_score == 21 %>
+  <h2><% if @user_score == 21 %>
     CONGRATULATIONS! YOU WON!
     <% else %>
-    COMPUTER WINS, YOU LOSE!
+    DEALER WINS, YOU LOSE!
     <% end %></h2>
   <h2>Dealer's Hand:</h2>
-    <p><%= @dealer %></p>
+    <p><%= @dealer.hand %></p>
   <h3>Dealer's Total Points: <%= @dealer_score %></h3>
 
   <h2>Your Hand:</h2>
-    <p><%= @player %></p>
-  <h3>Your Total Points: <%= @player_score %></h3>
+    <p><%= @user.hand %></p>
+  <h3>Your Total Points: <%= @user_score %></h3>
 
 <form action = "/blackjack/hit" method = "post">
   <input type = "button" value = "HIT" name = "hit">

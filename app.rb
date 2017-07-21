@@ -20,11 +20,11 @@ end
 
 # needs to shuffle deck and deal hands to dealer and player
 get '/blackjack' do
-  @dealer = @deck.deal_cards(2)
-  @player = @deck.deal_cards(2)
-  @player_score = get_player_score(@player)
-  @dealer_score = get_player_score(@dealer)
-  if @player_score == 21 || @dealer_score == 21
+  @dealer = Player.new(@deck.deal_cards(2))
+  @user = Player.new(@deck.deal_cards(2))
+  @user_score = @user.get_score
+  @dealer_score = @dealer.get_score
+  if @user_score == 21 || @dealer_score == 21
     erb :blackjack_win
   else
     save_variables
@@ -36,13 +36,12 @@ post "/blackjack/hit" do
   # adds a card to the players hand and re-renders the main page
   # if hitting would bust player (over 21 total) redirect to get /blackjack/stay
   # need to use cookies/session to keep track of cards already dealt?
-  restore_variables
-  @player << @deck.deal_cards(1).flatten
-  puts "#{@player.class}"
-  @player_score = get_player_score(@player)
-  @dealer_score = get_player_score(@dealer)
+  restore_deck && restore_player && restore_dealer
+  @user.hand << @deck.deal_cards(1).flatten
+  @user_score = @user.get_score
+  @dealer_score = @dealer.get_score
   save_variables
-  if @player_score >= 21
+  if @user_score >= 21
     redirect to('/blackjack/stay')
   end
   erb :blackjack
@@ -51,15 +50,15 @@ end
 get '/blackjack/stay' do
   # gets dealer to play their hand - either hit or stay depending on if product is 17 or higher
   # render main page with all cards revealed and describes the result
-  restore_variables
-  @player_score = get_player_score(@player)
-  @dealer_score = get_player_score(@dealer)
-  if @player_score > 21
+  restore_deck && restore_player && restore_dealer
+  @user_score = @user.get_score
+  @dealer_score = @dealer.get_score
+  if @user_score > 21
     erb :blackjack_stay
   else
     while @dealer_score <= 17
-      @dealer << @deck.deal_cards(1).flatten
-      @dealer_score = get_player_score(@dealer)
+      @dealer.hand << @deck.deal_cards(1).flatten
+      @dealer_score = @dealer.get_score
     end
   end
   erb :blackjack_stay
