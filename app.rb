@@ -20,14 +20,14 @@ end
 
 # starts bet before cards are dealt
 get '/blackjack/bet' do
-  @user = Player.new(@deck.deal_cards(2))
+  @user = HumanPlayer.new(@deck.deal_cards(2))
   @dealer = Player.new(@deck.deal_cards(2))
   save_variables
   erb :betting_form
 end
 
 post '/blackjack/bet' do
-  restore_user && restore_dealer && restore_deck
+  restore_variables
   @user.bet = params[:bet].to_i
   save_variables
   if @user.bet > @user.bankroll
@@ -39,10 +39,9 @@ end
 
 # shuffles deck and deal hands to dealer and player
 get '/blackjack/play' do
-  restore_user && restore_dealer && restore_deck
+  restore_variables
   @user.bankroll -= @user.bet
-  @user_score = @user.get_score
-  @dealer_score = @dealer.get_score
+  get_scores(@user, @dealer)
   save_variables
   if @user_score == 21 || @dealer_score == 21
     if @user_score == 21
@@ -54,14 +53,13 @@ get '/blackjack/play' do
   end
 end
 
+
+# adds a card to the players hand and re-renders the main page
+# if hitting would bust player (over 21 total) redirect to get /blackjack/stay
 post "/blackjack/hit" do
-  # adds a card to the players hand and re-renders the main page
-  # if hitting would bust player (over 21 total) redirect to get /blackjack/stay
-  # need to use cookies/session to keep track of cards already dealt?
-  restore_deck && restore_user && restore_dealer
+  restore_variables
   @user.hand << @deck.deal_cards(1).flatten
-  @user_score = @user.get_score
-  @dealer_score = @dealer.get_score
+  get_scores(@user, @dealer)
   save_variables
   if @user_score >= 21
     redirect to('/blackjack/stay')
@@ -69,27 +67,18 @@ post "/blackjack/hit" do
   erb :blackjack
 end
 
+
+# gets dealer to play their hand - either hit or stay depending on if product is 17 or higher
+# render main page with all cards revealed and describes the result
 get '/blackjack/stay' do
-  # gets dealer to play their hand - either hit or stay depending on if product is 17 or higher
-  # render main page with all cards revealed and describes the result
-  restore_deck && restore_user && restore_dealer
-  @user_score = @user.get_score
-  @dealer_score = @dealer.get_score
+  restore_variables
+  get_scores(@user, @dealer)
   if @user_score > 21
     save_variables
     erb :blackjack_stay
   else
-    while @dealer_score <= 17
-      @dealer.hand << @deck.deal_cards(1).flatten
-      @dealer_score = @dealer.get_score
-    end
-    if @dealer_score > 21 ||
-      (@dealer_score < 21 && @dealer_score < @user_score && @user_score < 21) ||
-      @user_score == 21
-      @user.bankroll += (@user.bet * 2)
-    elsif @dealer_score == @user_score
-      @user.bankroll += @user.bet
-    end
+    dealers_turn(@dealer)
+    @user.payout(@user_score, @dealer_score)
   end
   save_variables
   erb :blackjack_stay
@@ -100,7 +89,7 @@ get '/blackjack/new_game' do
 end
 
 get '/blackjack/play_again' do
-  @user = Player.new(@deck.deal_cards(2), session[:user_bankroll])
+  @user = HumanPlayer.new(@deck.deal_cards(2), session[:user_bankroll])
   @dealer = Player.new(@deck.deal_cards(2))
   save_variables
   erb :betting_form

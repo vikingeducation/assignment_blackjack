@@ -12,6 +12,27 @@ module BlackJackHelpers
     session[:deck] = @deck
   end
 
+  def restore_variables
+    restore_user
+    restore_dealer
+    restore_deck
+  end
+
+
+  def get_scores(user, dealer)
+    @user_score = user.get_score
+    @dealer_score = dealer.get_score
+  end
+
+
+  def dealers_turn(dealer)
+    while @dealer_score <= 17
+      @dealer.hand << @deck.deal_cards(1).flatten
+      @dealer_score = @dealer.get_score
+    end
+  end
+
+  private
 
   def restore_deck
     @deck = session[:deck]
@@ -19,7 +40,7 @@ module BlackJackHelpers
 
 
   def restore_user
-    @user = Player.new(session[:user_hand], session[:user_bankroll], session[:user_bet])
+    @user = HumanPlayer.new(session[:user_hand], session[:user_bankroll], session[:user_bet])
   end
 
 
