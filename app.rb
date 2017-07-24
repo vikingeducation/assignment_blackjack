@@ -45,7 +45,7 @@ get '/blackjack/play' do
   save_variables
   if @user_score == 21 || @dealer_score == 21
     if @user_score == 21
-      @user_bankroll += (@user.bet * 2.5)
+      @user.bankroll += (@user.bet * 2.5)
     end
     erb :blackjack_win
   else
