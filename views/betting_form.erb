@@ -1,0 +1,9 @@
+<h1>Betting Form</h1>
+
+<h2>Bankroll: <%= @user.bankroll %></h2>
+
+<form action="/blackjack/play" method="post">
+  Please place your bet: <br>
+  <input type="text" name="bet" placeholder="$">
+  <input type="submit" name="submit_bet" value="Play!">
+</form>

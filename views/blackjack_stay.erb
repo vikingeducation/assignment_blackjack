@@ -11,6 +11,7 @@
 <h2>Your Hand:</h2>
   <p><%= @user.hand %></p>
 <h2>Your Total Points: <%= @user_score %></h2>
+<h3>Current Bet: $<%= @user.bet %></h3>
 <h3>Your Bankroll: $<%= @user.bankroll %></h3>
   <% if @user_score > 21 %>
     BUST!!
@@ -20,14 +21,18 @@
 <!-- winning message/logic -->
 <h1><% if @user_score > 21 %>
     BUST! YOU LOSE
+    Sorry you just lost $<%= @user.bet %>
   <% elsif @dealer_score > 21 %>
     DEALER BUSTS, YOU WIN!
+    You just won $<%= (@user.bet * 2) %>
   <% elsif @dealer_score > @user_score %>
     DEALER WINS!
+    Sorry you just lost $<%= @user.bet %>
   <% elsif @dealer_score == @user_score %>
     PUSH - you don't win or lose
   <% else %>
     YOU WIN!
+    You just won $<%= (@user.bet * 2) %>
   <% end %></h1>
 <br>
 <br>
@@ -41,4 +46,7 @@
 </form>
 <form action = "/blackjack/play_again" method = "get">
   <input type = "submit" value = "PLAY AGAIN?" name = "play_again">
+</form>
+<form action = "/blackjack/new_game" method = "get">
+  <input type = "submit" value = "NEW GAME?" name = "new_game">
 </form>

@@ -4,6 +4,7 @@
 <h1>Your Hand:</h1>
   <p><%= @user.hand %></p>
 <h2>Your Total Points: <%= @user_score %></h2>
+<h3>Current Bet: $<%= @user.bet %></h3>
 <h3>Your Bankroll: $<%= @user.bankroll %></h3>
 
 <form action = "/blackjack/hit" method = "post">

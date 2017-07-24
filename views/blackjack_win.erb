@@ -10,8 +10,9 @@
 
   <h2>Your Hand:</h2>
     <p><%= @user.hand %></p>
-  <h3>Your Total Points: <%= @user_score %></h3>
-  <h2>Your Bankroll: $<%= @user.bankroll %></h2>
+  <h2>Your Total Points: <%= @user_score %></h2>
+  <h3>Current Bet: $<%= @user.bet %></h3>
+  <h3>Your Bankroll: $<%= @user.bankroll %></h3>
 
 <form action = "/blackjack/hit" method = "post">
   <input type = "button" value = "HIT" name = "hit">
@@ -21,4 +22,7 @@
 </form>
 <form action = "/blackjack/play_again" method = "get">
   <input type = "submit" value = "PLAY AGAIN?" name = "play_again">
+</form>
+<form action = "/blackjack/new_game" method = "get">
+  <input type = "submit" value = "NEW GAME?" name = "new_game">
 </form>
