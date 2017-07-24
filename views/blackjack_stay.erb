@@ -12,28 +12,29 @@
   <p><%= @user.hand %></p>
 <h2>Your Total Points: <%= @user_score %></h2>
 <h3>Current Bet: $<%= @user.bet %></h3>
-<h3>Your Bankroll: $<%= @user.bankroll %></h3>
-  <% if @user_score > 21 %>
-    BUST!!
-  <% end %>
 
 
 <!-- winning message/logic -->
 <h1><% if @user_score > 21 %>
     BUST! YOU LOSE
+    <br>
     Sorry you just lost $<%= @user.bet %>
   <% elsif @dealer_score > 21 %>
     DEALER BUSTS, YOU WIN!
-    You just won $<%= (@user.bet * 2) %>
+    <br>
+    Yay! you just won $<%= (@user.bet * 2) %>
   <% elsif @dealer_score > @user_score %>
     DEALER WINS!
+    <br>
     Sorry you just lost $<%= @user.bet %>
   <% elsif @dealer_score == @user_score %>
-    PUSH - you don't win or lose
+    PUSH - you don't win or lose - at least you get to keep your bet!
   <% else %>
     YOU WIN!
-    You just won $<%= (@user.bet * 2) %>
+    <br>
+    Yay! you just won $<%= (@user.bet * 2) %>
   <% end %></h1>
+<h2>Your Bankroll: $<%= @user.bankroll %></h2>
 <br>
 <br>
 

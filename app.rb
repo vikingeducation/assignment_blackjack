@@ -26,15 +26,28 @@ get '/blackjack/bet' do
   erb :betting_form
 end
 
-# shuffles deck and deal hands to dealer and player
-post '/blackjack/play' do
+post '/blackjack/bet' do
   restore_user && restore_dealer && restore_deck
   @user.bet = params[:bet].to_i
+  save_variables
+  if @user.bet > @user.bankroll
+    erb :betting_form
+  else
+    redirect to('/blackjack/play')
+  end
+end
+
+# shuffles deck and deal hands to dealer and player
+get '/blackjack/play' do
+  restore_user && restore_dealer && restore_deck
   @user.bankroll -= @user.bet
   @user_score = @user.get_score
   @dealer_score = @dealer.get_score
   save_variables
   if @user_score == 21 || @dealer_score == 21
+    if @user_score == 21
+      @user_bankroll += (@user.bet * 2.5)
+    end
     erb :blackjack_win
   else
     erb :blackjack
@@ -63,13 +76,22 @@ get '/blackjack/stay' do
   @user_score = @user.get_score
   @dealer_score = @dealer.get_score
   if @user_score > 21
+    save_variables
     erb :blackjack_stay
   else
     while @dealer_score <= 17
       @dealer.hand << @deck.deal_cards(1).flatten
       @dealer_score = @dealer.get_score
     end
+    if @dealer_score > 21 ||
+      (@dealer_score < 21 && @dealer_score < @user_score && @user_score < 21) ||
+      @user_score == 21
+      @user.bankroll += (@user.bet * 2)
+    elsif @dealer_score == @user_score
+      @user.bankroll += @user.bet
+    end
   end
+  save_variables
   erb :blackjack_stay
 end
 
