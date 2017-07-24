@@ -2,9 +2,6 @@
 <h2>Dealer's Hand:</h2>
   <p><%= @dealer.hand %></p>
 <h2> Dealer's Total Points: <%= @dealer_score %></h2>
-  <% if @dealer_score > 21 %>
-    BUST!!
-  <% end %>
 
 
 <!-- player hand info -->
@@ -39,19 +36,13 @@
 <br>
 
 <!-- buttons -->
-<form action = "/blackjack/hit" method = "post">
-  <input type = "button" value = "HIT" name = "hit">
-</form>
-<form action = "/blackjack/stay" method = "get">
-  <input type = "button" value = "STAY" name = "stay">
-</form>
 <% if @user.bankroll == 0 %>
-  <p> You can't play again with no money, but you can start a...</p>
+  <p> You can't play again, but you can start a...</p>
 <% else %>
   <form action = "/blackjack/play_again" method = "get">
     <input type = "submit" value = "PLAY AGAIN?" name = "play_again">
   </form>
-<% end %> 
+<% end %>
 <form action = "/blackjack/new_game" method = "get">
   <input type = "submit" value = "NEW GAME?" name = "new_game">
 </form>

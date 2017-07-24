@@ -20,9 +20,13 @@
 <form action = "/blackjack/stay" method = "get">
   <input type = "button" value = "STAY" name = "stay">
 </form>
-<form action = "/blackjack/play_again" method = "get">
-  <input type = "submit" value = "PLAY AGAIN?" name = "play_again">
-</form>
+<% if @user.bankroll == 0 %>
+  <p> You can't play again, but you can start a...</p>
+<% else %>
+  <form action = "/blackjack/play_again" method = "get">
+    <input type = "submit" value = "PLAY AGAIN?" name = "play_again">
+  </form>
+<% end %>
 <form action = "/blackjack/new_game" method = "get">
   <input type = "submit" value = "NEW GAME?" name = "new_game">
 </form>
