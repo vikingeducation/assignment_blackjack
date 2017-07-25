@@ -1,15 +1,33 @@
-<h1>Dealer's Hand:</h1>
-  <p><%= ['HIDDEN'] %><%= @dealer.hand.slice(1, @dealer.hand.length) %></p>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <h1>Bankroll: $<%= @user.bankroll %> |  Bet: $<%= @user.bet %></h1>
+    </div>
+  </div>
+</nav>
 
-<h1>Your Hand:</h1>
-  <p><%= @user.hand %></p>
-<h2>Your Total Points: <%= @user_score %></h2>
-<h3>Current Bet: $<%= @user.bet %></h3>
-<h3>Your Bankroll: $<%= @user.bankroll %></h3>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Dealer:</h1>
+      <h3>Hand: <%= @dealer.partial_hand %></h3>
+      <h3>Points Showing: <%= @dealer.partial_hand_score(@dealer.partial_hand) %></h3>
+    </div>
+
+    <div class="col-sm-6">
+      <h1>Player:</h1>
+      <h3>Hand: <%= @user.hand %></h3>
+      <h3>Total Points: <%= @user_score %></h3>
+
+    </div>
+  </div>
+</div>
+<br>
+<br>
 
 <form action = "/blackjack/hit" method = "post">
-  <input type = "submit" value = "HIT" name = "hit">
+  <input class = "btn btn-block btn-primary" type = "submit" value = "HIT ME!" name = "hit">
 </form>
 <form action = "/blackjack/stay" method = "get">
-  <input type = "submit" value = "STAY" name = "stay">
+  <input class = "btn btn-block btn-info" type = "submit" value = "STAY" name = "stay">
 </form>

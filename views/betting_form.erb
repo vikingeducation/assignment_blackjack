@@ -1,17 +1,44 @@
-<h1><% if @user.bet > @user.bankroll %>
-  *** ERROR ***
-  <br>
-  You cannot bet more than you have in your bankroll!!!
-  <br>
-  Let's try this again... shall we?
-<% end %></h1>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+    <form class="navbar-form" action="/blackjack/bet" method="post">
+     <h1>Bankroll: $<%= @user.bankroll %> |  Bet: $</h1>
+     <div class="form-group">
+       <input type="text" class="form-control" name="bet" placeholder="$ Place your Bet">
+     </div>
+     <input type="submit" name="submit_bet" class="btn btn-primary" value="HIT ME!">
+   </form>
+ </div>
+</nav>
 
-<h1>Betting Form</h1>
+<div class="container-fluid">
+  <% if @user.bet.to_i > @user.bankroll %>
+    <div class="alert alert-danger">
+      <strong>*** ERROR ***</strong>
+      <br>
+      You cannot bet more than you have in your bankroll!!!
+    </div>
+  <% elsif @bet_string =~ /\D/ || @bet_string =~ /[a-z]/i %>
+    <div class="alert alert-danger">
+      <strong>*** ERROR ***</strong>
+      <br>
+      Bets may contain only numbers
+    </div>
+  <% end %>
+</div>
 
-<h2>Bankroll: $<%= @user.bankroll %></h2>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Dealer:</h1>
+      <h3><strong>Hand:</h3>
+      <h3><strong>Total Points:</h3>
+    </div>
 
-<form action="/blackjack/bet" method="post">
-  Please place your bet: <br>
-  <input type="text" name="bet" placeholder="$">
-  <input type="submit" name="submit_bet" value="Play!">
-</form>
+    <div class="col-sm-6">
+      <h1>Player:</h1>
+      <h3><strong>Hand:</h3>
+      <h3><strong>Total Points:</h3>
+    </div>
+  </div>
+</div>

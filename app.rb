@@ -21,7 +21,7 @@ end
 # starts bet before cards are dealt
 get '/blackjack/bet' do
   @user = HumanPlayer.new(@deck.deal_cards(2))
-  @dealer = Player.new(@deck.deal_cards(2))
+  @dealer = Dealer.new(@deck.deal_cards(2))
   save_variables
   erb :betting_form
 end
@@ -29,8 +29,9 @@ end
 post '/blackjack/bet' do
   restore_variables
   @user.bet = params[:bet].to_i
+  @bet_string = params[:bet]
   save_variables
-  if @user.bet > @user.bankroll
+  if @user.bet > @user.bankroll || @bet_string =~ /\D/i || @bet_string =~ /[a-z]/i
     erb :betting_form
   else
     redirect to('/blackjack/play')
@@ -90,7 +91,7 @@ end
 
 get '/blackjack/play_again' do
   @user = HumanPlayer.new(@deck.deal_cards(2), session[:user_bankroll])
-  @dealer = Player.new(@deck.deal_cards(2))
+  @dealer = Dealer.new(@deck.deal_cards(2))
   save_variables
   erb :betting_form
 end

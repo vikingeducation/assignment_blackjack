@@ -32,7 +32,9 @@ module BlackJackHelpers
     end
   end
 
+
   private
+
 
   def restore_deck
     @deck = session[:deck]
@@ -45,7 +47,7 @@ module BlackJackHelpers
 
 
   def restore_dealer
-    @dealer = Player.new(session[:dealer_hand])
+    @dealer = Dealer.new(session[:dealer_hand])
   end
 
 

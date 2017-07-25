@@ -1,48 +1,60 @@
-<!-- dealer hand info -->
-<h2>Dealer's Hand:</h2>
-  <p><%= @dealer.hand %></p>
-<h2> Dealer's Total Points: <%= @dealer_score %></h2>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <h1>Bankroll: $<%= @user.bankroll %> |  Bet: $<%= @user.bet %></h1>
+    </div>
+  </div>
+</nav>
 
+<div class="container-fluid">
+  <div class="row">
+<!-- dealer hand info -->
+    <div class="col-sm-6">
+      <h1>Dealer:</h1>
+      <h3><strong>Hand:</strong> <%= @dealer.hand %></h3>
+      <h3><strong>Total Points:</strong> <%= @dealer_score %></h3>
+    </div>
 
 <!-- player hand info -->
-<h2>Your Hand:</h2>
-  <p><%= @user.hand %></p>
-<h2>Your Total Points: <%= @user_score %></h2>
-<h3>Current Bet: $<%= @user.bet %></h3>
-
+    <div class="col-sm-6">
+      <h1>Player:</h1>
+      <h3><strong>Hand:</strong> <%= @user.hand %></h3>
+      <h3><strong>Total Points:</strong> <%= @user_score %></h3>
+    </div>
+  </div>
+</div>
 
 <!-- winning message/logic -->
-<h1><% if @user_score > 21 %>
-    BUST!
-    <br>
-    Sorry you just lost $<%= @user.bet %>
+<% if @user_score > 21 %>
+  <div class="alert alert-danger">
+    <h3><strong>BUST!</strong> Sorry you just lost $<%= @user.bet %></h3>
+  </div>
   <% elsif @dealer_score > 21 %>
-    DEALER BUSTS
-    <br>
-    Yay! you just won $<%= (@user.bet * 2) %>
+  <div class="alert alert-success">
+    <h3><strong>DEALER BUSTS</strong> Yay! you just won $<%= (@user.bet * 2) %></h3>
+  </div>
   <% elsif @dealer_score > @user_score %>
-    DEALER WINS!
-    <br>
-    Sorry you just lost $<%= @user.bet %>
+  <div class="alert alert-danger">
+    <h3><strong>DEALER WINS!</strong> Sorry you just lost $<%= @user.bet %></h3>
+  </div>
   <% elsif @dealer_score == @user_score %>
-    PUSH - at least you get to keep your bet!
+  <div class="alert alert-warning">
+    <h3><strong>PUSH</strong> - at least you get to keep your bet!</h3>
+  </div>
   <% else %>
-    YOU WIN!
-    <br>
-    Yay! you just won $<%= (@user.bet * 2) %>
+  <div class="alert alert-success">
+    <h3><strong>YOU WIN!</strong> Yay! you just won $<%= (@user.bet * 2) %></h3>
+  </div>
   <% end %></h1>
-<h2>Your Bankroll: $<%= @user.bankroll %></h2>
-<br>
-<br>
 
 <!-- buttons -->
-<% if @user.bankroll == 0 %>
-  <p> You can't play again, but you can start a...</p>
-<% else %>
-  <form action = "/blackjack/play_again" method = "get">
-    <input type = "submit" value = "PLAY AGAIN?" name = "play_again">
+  <% if @user.bankroll == 0 %>
+    <p><strong>OUT OF FUNDS</strong> You can't play again, but you can start a...</p>
+  <% else %>
+    <form action = "/blackjack/play_again" method = "get">
+      <input class="btn btn-block btn-success" type = "submit" value = "PLAY AGAIN?" name = "play_again">
+    </form>
+  <% end %>
+  <form action = "/blackjack/new_game" method = "get">
+    <input class="btn btn-block btn-danger" type = "submit" value = "NEW GAME?" name = "new_game">
   </form>
-<% end %>
-<form action = "/blackjack/new_game" method = "get">
-  <input type = "submit" value = "NEW GAME?" name = "new_game">
-</form>

@@ -1,32 +1,45 @@
-<h1> BLACKJACK!!! </h1>
-  <h2><% if @user_score == 21 %>
-    CONGRATULATIONS! YOU WON!
-    <% else %>
-    DEALER WINS, YOU LOSE!
-    <% end %></h2>
-  <h2>Dealer's Hand:</h2>
-    <p><%= @dealer.hand %></p>
-  <h3>Dealer's Total Points: <%= @dealer_score %></h3>
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <h1>Bankroll: $<%= @user.bankroll %> |  Bet: $<%= @user.bet %></h1>
+    </div>
+  </div>
+</nav>
 
-  <h2>Your Hand:</h2>
-    <p><%= @user.hand %></p>
-  <h2>Your Total Points: <%= @user_score %></h2>
-  <h3>Current Bet: $<%= @user.bet %></h3>
-  <h3>Your Bankroll: $<%= @user.bankroll %></h3>
+<div class="alert alert-info">
+  <% if @user_score == 21 %>
+    <h2>BLACKJACK!!! CONGRATULATIONS! YOU WON $<%= @user.bet * 2.5 %></h2>
+  <% else %>
+    <h2>BLACKJACK!!! DEALER WINS!</h2>
+  <% end %>
+</div>
 
-<form action = "/blackjack/hit" method = "post">
-  <input type = "button" value = "HIT" name = "hit">
-</form>
-<form action = "/blackjack/stay" method = "get">
-  <input type = "button" value = "STAY" name = "stay">
-</form>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-6">
+      <h1>Dealer:</h1>
+      <h3><strong>Hand:</strong> <%= @dealer.hand %></h3>
+      <h3><strong>Total Points:</strong> <%= @dealer_score %></h3>
+    </div>
+
+    <div class="col-sm-6">
+      <h1>Player:</h1>
+      <h3><strong>Hand:</strong> <%= @user.hand %></h3>
+      <h3><strong>Total Points:</strong> <%= @user_score %></h3>
+    </div>
+  </div>
+</div>
+<br>
+<br>
+
+<!-- buttons -->
 <% if @user.bankroll == 0 %>
-  <p> You can't play again, but you can start a...</p>
+  <p> <strong>OUT OF FUNDS</strong>You can't play again, but you can start a...</p>
 <% else %>
   <form action = "/blackjack/play_again" method = "get">
-    <input type = "submit" value = "PLAY AGAIN?" name = "play_again">
+    <input class="btn btn-block btn-success" type = "submit" value = "PLAY AGAIN?" name = "play_again">
   </form>
 <% end %>
 <form action = "/blackjack/new_game" method = "get">
-  <input type = "submit" value = "NEW GAME?" name = "new_game">
+  <input class="btn btn-block btn-danger" type = "submit" value = "NEW GAME?" name = "new_game">
 </form>
