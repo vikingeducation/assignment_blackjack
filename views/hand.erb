@@ -1,0 +1,8 @@
+<!-- /views/hand.erb -->
+<!-- renders the hand -->
+<% if game_over %>
+  For later use
+<% end %>
+<% hand.each do |card| %>
+    <%=suit_handler(card) %>
+<% end %>
