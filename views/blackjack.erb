@@ -1,0 +1,28 @@
+<!-- views/blackjack.erb -->
+<html>
+  <head>
+    <title>
+      Blackjack Sinatra
+    </title>
+  </head>
+
+  <body>
+    <h1> Place your bets!</h1>
+    <a href="blackjack/hit">click here</a>
+    <h2>Dealer's Hand:<h2>
+      <%=c_hand %>
+
+    <h2>Your hand:<h2>
+      <%=p_hand %>
+      <p>the deck: <%=deck%>
+
+        <form action="/blackjack/hit" method="post">
+          <input type="submit" value="Hit">
+        </form>
+        <form action="/blackjack/stay" method="post">
+          <input type="submit" value="Stay">
+        </form>
+    <p>
+  </body>
+
+</html>
