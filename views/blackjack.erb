@@ -13,28 +13,32 @@
       Place your bets!
       <% end %>
     </h1>
+
     <h2>Dealer's Hand:<h2>
-    <%= erb :hand, locals: {hand: session[:c_hand] } %>
-    <p>  <%=c_score %>
+    <% if session[:outcome] %>
+      <%= erb :hand, locals: {hand: c_hand} %>
+    <% else %>
+      <%= erb :dealer_hand, locals: {hand: c_hand} %>
+      <% end %>
+
     <h2>Your hand:<h2>
       <%= erb :hand, locals: {hand: p_hand } %>
-    <p>  <%=p_score %>
-
-      <p>the deck: <%=deck%>
-
         <!-- Only show options if game in progress -->
-        <% unless game_over %>
+
+      <% if session[:outcome] %>
+        <!-- <%= erb :options %> -->
+        <form action="/blackjack/new" method="post">
+          <input type="submit" value="New Game">
+        </form>
+      <% else %>
         <form action="/blackjack/hit" method="post">
           <input type="submit" value="Hit">
         </form>
         <form action="/blackjack/stay" method="post">
           <input type="submit" value="Stay">
         </form>
-        <% end %>
+      <% end %>
 
-        <form action="/blackjack/new" method="post">
-          <input type="submit" value="New Game">
-        </form>
   </body>
 
 </html>

@@ -2,6 +2,12 @@
 require 'colorize'
 
 module BlackjackHelper
+
+  def new_game
+    if session.clear
+    end
+  end
+
 # create deck
  def create_deck(session_deck = nil)
    # creates and shuffles deck
@@ -51,6 +57,15 @@ module BlackjackHelper
     sum
   end
 
+  def blackjack?
+    if score(session["p_hand"]) == 21
+      player_wins
+      true
+    else
+      false
+    end
+  end
+
   # suit_handler
   def suit_handler(card)
     # creates a string from the card array
@@ -83,22 +98,11 @@ module BlackjackHelper
    sum
   end
 
- # has_ace?
-  # def has_ace?(hand)
-  #   # determines if the hand contains an ace
-  #   hand.each do |num|
-  #     if num.include? 'A'
-  #       return true
-  #       break
-  #     end
-  #   end
-  #   false
-  # end
-
    def stay
-     until game_over
+     until score(session["c_hand"]) > 17
         session["c_hand"] << draw_card
       end
+      game_over
    end
 
    def game_over
@@ -107,7 +111,7 @@ module BlackjackHelper
      if c_score == 21 || c_score.between?(p_score, 21)
        comp_wins
        true
-     elsif c_score > 21
+     elsif c_score > 21 || p_score.between?(c_score, 21)
        player_wins
        true
      else
@@ -115,8 +119,18 @@ module BlackjackHelper
      end
    end
 
-   def bust?(hand)
-     score(hand) > 21
+   def bust?
+     if score(session["p_hand"]) > 21
+       comp_wins
+       true
+     else
+       false
+     end
+   end
+
+   def hide_card(hand)
+     hand[0] = ["", ""]
+     hand
    end
 
    def player_wins
@@ -129,61 +143,4 @@ module BlackjackHelper
      # pot goes to dealer
    end
 
-   def new_game
-     session.clear
-   end
-
 end
-
-
-
-######
-wtf_hand = [[9, "diams"], [7, "diams"]]
-sample_hand = [[7, "spades"], [10, "diams"], ["J", "hearts"]]
-hand_w_ace = [[4, "spades"], [4, "diams"], [3, "spades"], ["A", "diams"]]
-winning_hand = [["A", "spades"], [10, "diams"]]
-improb_hand = [["A", "spades"],["A", "spades"],["A", "spades"],["A", "spades"]]
- # tallies score of a hand
-
- def score(hand)
-   #iterates through each item in the hand array
-   sum = 0
-  #  has_ace = has_ace?(hand)
-  aces = 0
-   hand.each do |num|
-     val = num[0]
-     if val.is_a?(Integer)
-       sum += val
-     elsif val == 'A'
-       aces += 1
-       sum += 11
-     else
-       sum += 10
-     end
-   end
-   # subtracts value of aces if greater than 21
-   if sum > 21
-     while aces > 0
-       sum -= 10
-       aces -= 1
-     end
-   end
-  sum
- end
-
-
-# # has_ace?
-#  def has_ace?(hand)
-#    # determines if the hand contains an ace
-#    hand.each do |num|
-#      if num.include? 'A'
-#        return true
-#        break
-#      end
-#    end
-#    false
-#  end
- puts score(wtf_hand)
- puts score(winning_hand)
- puts score(hand_w_ace)
- puts score(improb_hand)
