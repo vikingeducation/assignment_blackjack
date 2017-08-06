@@ -1,0 +1,44 @@
+<!-- views/blackjack.erb -->
+<html>
+  <head>
+    <title>
+      Blackjack Sinatra
+    </title>
+  </head>
+
+  <body>
+    <h1><% if session[:outcome] %>
+      <%= session[:outcome] %>
+      <% else %>
+      Place your bets!
+      <% end %>
+    </h1>
+
+    <h2>Dealer's Hand:<h2>
+    <% if session[:outcome] %>
+      <%= erb :hand, locals: {hand: c_hand} %>
+    <% else %>
+      <%= erb :dealer_hand, locals: {hand: c_hand} %>
+      <% end %>
+
+    <h2>Your hand:<h2>
+      <%= erb :hand, locals: {hand: p_hand } %>
+        <!-- Only show options if game in progress -->
+
+      <% if session[:outcome] %>
+        <!-- <%= erb :options %> -->
+        <form action="/blackjack/new" method="post">
+          <input type="submit" value="New Game">
+        </form>
+      <% else %>
+        <form action="/blackjack/hit" method="post">
+          <input type="submit" value="Hit">
+        </form>
+        <form action="/blackjack/stay" method="post">
+          <input type="submit" value="Stay">
+        </form>
+      <% end %>
+
+  </body>
+
+</html>
