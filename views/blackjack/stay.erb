@@ -1,0 +1,34 @@
+
+<br>
+<br>
+<br>
+<br>
+<h2>Dealer's Cards</h2>
+<br>
+<%dealer_hand.length.times do |i| %>
+  <%=dealer_hand[i]%>
+<%end%>
+<br>
+<br>
+<h2>Your Cards</h2>
+<br>
+<%player_hand.length.times do |i| %>
+  <%=player_hand[i]%>
+<%end%>
+<br>
+<form action="/hit" method="post">
+  <input type="submit" value="HIT" disabled>
+</form>
+<br>
+<form action="/stay" method="post">
+  <input type="submit" value="STAY">
+</form>
+<br>
+<br>
+<h2>BETS</h2>
+<%=player_bet%>
+<br>
+<br>
+<h2>BANK ROLL</h2>
+<%=player_bankroll%>
+<br>
