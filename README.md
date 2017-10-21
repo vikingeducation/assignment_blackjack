@@ -2,7 +2,7 @@
 
  The goal of this simple Blackjack game is to focus on the function of the application rather than styling. The game is limited ot it's simplest logic - hitting, staying, making bets. (no split, double betting etc.)
 
- ![Black Jack with Sinatra]((black_jack.png)
+ ![Black Jack with Sinatra]((/black_jack.png)
 
 
 
