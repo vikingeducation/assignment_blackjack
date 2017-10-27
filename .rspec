@@ -1,0 +1,4 @@
+--require pry
+
+--color
+--format documentation
