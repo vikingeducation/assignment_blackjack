@@ -1,7 +1,26 @@
 <h1>Blackjack Page</h1>
 
-<ul>
-  <% @deck.each do |card| %>
-    <li><%= display_card(card) %></li>
+<h3>Dealer's Cards</h3>
+<p>
+  <% dealer_hand.each do |card| %>
+    <%= display_card(card) %></br>
   <% end %>
-</ul>
+  <strong>Total: <%= dealer_hand_value %></strong>
+</p>
+
+<h3>Your Cards</h3>
+<p>Bankroll: $<%= bankroll %> | Bet: $<%= bet %></p>
+<p>
+  <% player_hand.each do |card| %>
+    <%= display_card(card) %></br>
+  <% end %>
+  <strong>Total: <%= player_hand_value %></strong>
+</p>
+
+<form action="/blackjack/hit" method="post">
+    <input type="submit" value="Hit" />
+</form>
+
+<form action="/blackjack/stay" method="get">
+    <input type="submit" value="Stay" />
+</form>
