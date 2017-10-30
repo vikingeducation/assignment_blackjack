@@ -23,4 +23,12 @@ module BlackjackHelper
     end #hand
   end
 
+  def determine_winner(dealer, player)
+    dealer > player ? "Dealer" : "You"
+  end
+
+  def display_winner(winner)
+    "The winner is: #{winner}"
+  end
+
 end

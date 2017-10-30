@@ -3,7 +3,7 @@
 <h3>Dealer's Cards</h3>
 <p>
   <% dealer_hand.each do |card| %>
-    <%= display_card(card) %></br>
+  <%= display_card(card) %></br>
   <% end %>
   <strong>Total: <%= dealer_hand_value %></strong>
 </p>
@@ -12,15 +12,22 @@
 <p>Bankroll: $<%= bankroll %> | Bet: $<%= bet %></p>
 <p>
   <% player_hand.each do |card| %>
-    <%= display_card(card) %></br>
+  <%= display_card(card) %></br>
   <% end %>
   <strong>Total: <%= player_hand_value %></strong>
 </p>
 
-<form action="/blackjack/hit" method="post">
-    <input type="submit" value="Hit" />
-</form>
+<% unless game_over %>
+  <form action="/blackjack/hit" method="post">
+    <input type="submit" value="Hit"/>
+  </form>
 
-<form action="/blackjack/stay" method="get">
-    <input type="submit" value="Stay" />
-</form>
+  <form action="/blackjack/stay" method="get">
+    <input type="submit" value="Stay"/>
+  </form>
+<% end %>
+
+<% if game_over %>
+  <hr>
+  <h1><%= display_winner(winner) %></h1>
+<% end %>
