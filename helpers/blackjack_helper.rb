@@ -10,4 +10,17 @@ module BlackjackHelper
     numbers.product(suits).shuffle
   end
 
+  def calculate_hand(hand)
+    hand.reduce(0) do |memo, card|
+      value = if card[0].class == Integer
+        card[0]
+      elsif %w(J Q K).include?(card[0])
+        10
+      else
+        1
+      end
+      memo + value
+    end #hand
+  end
+
 end
