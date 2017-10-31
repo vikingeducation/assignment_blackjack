@@ -13,4 +13,4 @@ https://www.vikingcodeschool.com/dashboard#/sinatra-web-apps/sinatra-blackjack
 
 ## Heroku Deployment
 
-WIP [Heroku deploy](https://viking-sinatra-blackjack.herokuapp.com/)
+WIP [Heroku deploy](https://eerie-asylum-51888.herokuapp.com/)
