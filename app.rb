@@ -76,26 +76,28 @@ post '/blackjack/hit' do
 end
 
 get '/blackjack/stay' do
-  player_hand = session['player_hand']
-  player_hand_value = calculate_hand(player_hand)
-  @dealer_hand = session['dealer_hand']
-  @dealer_hand_value = calculate_hand(@dealer_hand)
-
+  # retrieve objects
   @deck = session['deck']
+  @dealer = session['dealer']
+  player = session['player']
+  bet = session['bet']
+  game_over = session['game_over']
 
-  while @dealer_hand_value < 17
-    @dealer_hand = session['dealer_hand'] << @deck.pop
-    @dealer_hand_value = calculate_hand(@dealer_hand)
+  # modify objects
+  while @dealer.hand_value < 17
+    @dealer.hand << @deck.pop
+    @dealer.set_hand_value
   end
-  session['dealer_hand'] = @dealer_hand
-  session['deck'] = @deck
 
-  winner = determine_winner(@dealer_hand_value, player_hand_value)
+  winner = determine_winner(@dealer.hand_value, player.hand_value)
   game_over = true
-  session['game_over'] = game_over
 
-  bankroll = session['bankroll']
+  # save objects to session
+  session['deck'] = @deck
+  session['dealer'] = @dealer
+  session['game_over'] = game_over
   bet = session['bet']
 
-  erb :blackjack, locals: { dealer_hand: @dealer_hand, player_hand: player_hand, dealer_hand_value: @dealer_hand_value, player_hand_value: player_hand_value, bankroll: bankroll, bet: bet, winner: winner, game_over: game_over }
+  # output objects to view
+  erb :blackjack, locals: { dealer: @dealer, player: player, bet: bet, winner: winner, game_over: game_over }
 end
