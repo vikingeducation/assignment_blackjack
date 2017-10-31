@@ -34,9 +34,14 @@ get '/blackjack' do
   bet = 10
 
   # save objects to session
-  session['dealer'] = dealer
-  session['player'] = player
   session['deck'] = deck
+
+  session['dealer_hand'] = dealer.hand
+  session['dealer_hand_value'] = dealer.hand_value
+
+  session['player_hand'] = player.hand
+  session['player_hand_value'] = player.hand_value
+
   session['bet'] = bet
 
   # output objects to view
@@ -46,8 +51,8 @@ end
 post '/blackjack/hit' do
   # retrieve objects
   deck = session['deck']
-  dealer = session['dealer']
-  player = session['player']
+  dealer = Dealer.new(hand: session['dealer_hand'], hand_value: session['dealer_hand_value'])
+  player = Player.new(hand: session['player_hand'], hand_value: session['player_hand_value'])
   bet = session['bet']
   game_over = session['game_over']
 
@@ -65,7 +70,11 @@ post '/blackjack/hit' do
 
     # save objects to session
     session['deck'] = deck
-    session['player'] = player
+
+    session['player_hand'] = player.hand
+    session['player_hand_value'] = player.hand_value
+
+    session['bet'] = bet
     session['game_over'] = game_over
 
     # output objects to view
@@ -78,8 +87,8 @@ end
 get '/blackjack/stay' do
   # retrieve objects
   @deck = session['deck']
-  @dealer = session['dealer']
-  player = session['player']
+  @dealer = Dealer.new(hand: session['dealer_hand'], hand_value: session['dealer_hand_value'])
+  player = Player.new(hand: session['player_hand'], hand_value: session['player_hand_value'])
   bet = session['bet']
   game_over = session['game_over']
 
@@ -94,9 +103,12 @@ get '/blackjack/stay' do
 
   # save objects to session
   session['deck'] = @deck
-  session['dealer'] = @dealer
+
+  session['dealer_hand'] = @dealer.hand
+  session['dealer_hand_value'] = @dealer.hand_value
+
   session['game_over'] = game_over
-  bet = session['bet']
+  session['bet'] = bet
 
   # output objects to view
   erb :blackjack, locals: { dealer: @dealer, player: player, bet: bet, winner: winner, game_over: game_over }

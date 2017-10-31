@@ -4,11 +4,11 @@ class Player
 
   attr_accessor :hand, :hand_value, :bankroll
 
-  def initialize
+  def initialize(hand: [], hand_value: 0, bankroll: 100)
     @name = "You"
-    @hand = []
-    @hand_value = 0
-    @bankroll = 100
+    @hand = hand
+    @hand_value = hand_value
+    @bankroll = bankroll
   end
 
   def set_hand_value
@@ -45,10 +45,10 @@ end
 
 class Dealer < Player
 
-  def initialize
+  def initialize(hand: [], hand_value: 0)
     @name = "Dealer"
-    @hand = []
-    @hand_value = 0
+    @hand = hand
+    @hand_value = hand_value
   end
 
 end
