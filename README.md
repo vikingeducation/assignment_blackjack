@@ -13,4 +13,6 @@ https://www.vikingcodeschool.com/dashboard#/sinatra-web-apps/sinatra-blackjack
 
 ## Heroku Deployment
 
-WIP [Heroku deploy](https://eerie-asylum-51888.herokuapp.com/)
+[Live Heroku site](https://eerie-asylum-51888.herokuapp.com/)
+
+This site is set up in the heroku dashboard to redeploy every time I push to master.
