@@ -1,0 +1,28 @@
+<h1>Blackjack Page</h1>
+
+<h3>Dealer's Cards</h3>
+<p>
+  <% dealer.hand.each do |card| %>
+  <%= display_card(card) %></br>
+  <% end %>
+  <strong>Total: <%= dealer.hand_value %></strong>
+</p>
+
+<h3>Your Cards</h3>
+<p>Bankroll: $<%= player.bankroll %> | Bet: $<%= bet %></p>
+<p>
+  <% player.hand.each do |card| %>
+  <%= display_card(card) %></br>
+  <% end %>
+  <strong>Total: <%= player.hand_value %></strong>
+</p>
+
+<hr>
+
+<% unless game_over %>
+  <%= erb :"blackjack/_game_play_actions", locals: { player: player } %>
+<% end %>
+
+<% if game_over %>
+  <%= erb :"blackjack/_game_over", locals: { winner: winner } %>
+<% end %>

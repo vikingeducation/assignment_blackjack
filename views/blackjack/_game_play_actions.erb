@@ -1,0 +1,14 @@
+<h2>Make a play</h2>
+
+<form action="/blackjack/hit" method="post">
+  <select name="bet">
+    <% possible_bets(player).each do |num| %>
+    <option value="<%= num %>">$<%= num %></option>
+    <% end %>
+  </select>
+  <input type="submit" value="Hit"/>
+</form>
+
+<form action="/blackjack/stay" method="get">
+  <input type="submit" value="Stay"/>
+</form>
