@@ -2,7 +2,6 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader' if development?
 require 'erb'
-require 'pry'
 
 # Helpers
 require './helpers/blackjack_helper'
