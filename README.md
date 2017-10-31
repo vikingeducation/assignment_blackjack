@@ -6,4 +6,7 @@ Hit me baby one more time?
 Anne Richardson
 
 Assignment complete through #4
+
 https://www.vikingcodeschool.com/dashboard#/sinatra-web-apps/sinatra-blackjack
+
+WIP [Heroku deploy](https://viking-sinatra-blackjack.herokuapp.com/)
