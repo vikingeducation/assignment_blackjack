@@ -31,7 +31,6 @@ get '/blackjack' do
   player.hand = deck.pop(2)
   dealer.set_hand_value
   player.set_hand_value
-  bet = 10
 
   # save objects to session
   session['deck'] = deck
@@ -41,28 +40,29 @@ get '/blackjack' do
 
   session['player_hand'] = player.hand
   session['player_hand_value'] = player.hand_value
-
-  session['bet'] = bet
+  session['player_bankroll'] = player.bankroll
 
   # output objects to view
-  erb :blackjack, locals: { dealer: dealer, player: player, bet: bet, game_over: game_over }
+  erb :blackjack, locals: { dealer: dealer, player: player, bet: 0, game_over: game_over }
 end
 
 post '/blackjack/hit' do
   # retrieve objects
   deck = session['deck']
   dealer = Dealer.new(hand: session['dealer_hand'], hand_value: session['dealer_hand_value'])
-  player = Player.new(hand: session['player_hand'], hand_value: session['player_hand_value'])
-  bet = session['bet']
+  player = Player.new(hand: session['player_hand'], hand_value: session['player_hand_value'], bankroll: session['player_bankroll'])
+  bet = params['bet'].to_i
   game_over = session['game_over']
 
   # modify objects
   if player.hand_value < 21
     player.hand << deck.pop
     player.set_hand_value
+    player.add_winnings(bet)
 
-    if game_ending_hand?(player.hand_value)
+    if player.game_ending_hand?
       game_over = true
+      player.adjust_bankroll(bet)
       winner = determine_winner(dealer.hand_value, player.hand_value)
     else
       winner = 'No winner'
@@ -73,6 +73,7 @@ post '/blackjack/hit' do
 
     session['player_hand'] = player.hand
     session['player_hand_value'] = player.hand_value
+    session['player_bankroll'] = player.bankroll
 
     session['bet'] = bet
     session['game_over'] = game_over
@@ -88,7 +89,7 @@ get '/blackjack/stay' do
   # retrieve objects
   @deck = session['deck']
   @dealer = Dealer.new(hand: session['dealer_hand'], hand_value: session['dealer_hand_value'])
-  player = Player.new(hand: session['player_hand'], hand_value: session['player_hand_value'])
+  player = Player.new(hand: session['player_hand'], hand_value: session['player_hand_value'], bankroll: session['player_bankroll'])
   bet = session['bet']
   game_over = session['game_over']
 

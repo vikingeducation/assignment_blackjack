@@ -1,10 +1,12 @@
 require_relative 'deck'
+require './helpers/blackjack_helper.rb'
 
 class Player
+  include BlackjackHelper
 
   attr_accessor :hand, :hand_value, :bankroll
 
-  def initialize(hand: [], hand_value: 0, bankroll: 100)
+  def initialize(hand: [], hand_value: 0, bankroll: 10)
     @name = "You"
     @hand = hand
     @hand_value = hand_value
@@ -28,7 +30,17 @@ class Player
     @bankroll += bet
   end
 
+  def game_ending_hand?
+    busted?(@hand_value) || blackjack?(@hand_value)
+  end
+
+  def adjust_bankroll(bet)
+    subtract_loss(bet) if busted?(@hand_value)
+    add_winnings(bet) if blackjack?(@hand_value)
+  end
+
   private
+
   def calculate_hand
     @hand.reduce(0) do |memo, card|
       value = if card[0].class == Integer

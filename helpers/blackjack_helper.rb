@@ -6,16 +6,16 @@ module BlackjackHelper
     "#{card[0]} of #{card[1]}"
   end
 
-  def game_ending_hand?(hand)
-    busted?(hand) || blackjack?(hand)
+  def possible_bets(player)
+    (1..player.bankroll).to_a
   end
 
-  def busted?(hand)
-    hand > BLACKJACK
+  def busted?(hand_value)
+    hand_value > BlackjackHelper::BLACKJACK
   end
 
-  def blackjack?(hand)
-    hand == BLACKJACK
+  def blackjack?(hand_value)
+    hand_value == BlackjackHelper::BLACKJACK
   end
 
   def determine_winner(dealer, player)

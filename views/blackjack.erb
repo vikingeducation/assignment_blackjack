@@ -19,6 +19,11 @@
 
 <% unless game_over %>
   <form action="/blackjack/hit" method="post">
+    <select name="bet">
+      <% possible_bets(player).each do |num| %>
+      <option value="<%= num %>"><%= num %></option>
+      <% end %>
+    </select>
     <input type="submit" value="Hit"/>
   </form>
 
@@ -28,9 +33,9 @@
 <% end %>
 
 <% if game_over %>
-  <hr>
-  <h1><%= display_winner(winner) %></h1>
-  <form action="/" method="get">
-    <input type="submit" value="Play Again" />
-  </form>
+<hr>
+<h1><%= display_winner(winner) %></h1>
+<form action="/" method="get">
+  <input type="submit" value="Play Again" />
+</form>
 <% end %>
