@@ -1,6 +1,6 @@
 class Deck
 
-  FACE_CARDS = %w(J Q K)
+  FACE_CARDS = %w(Jack Queen King)
 
   def build_deck
     suits = %w(Hearts Diamonds Clubs Spades)
