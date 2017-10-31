@@ -7,34 +7,39 @@ require 'pry'
 require './helpers/blackjack_helper'
 helpers BlackjackHelper
 
+# Classes
+require './models/deck.rb'
+require './models/player.rb'
+
 # Routes
 enable :sessions
 
 get '/' do
-  session['bankroll'] = 100
   session['game_over'] = false
   erb :index
 end
 
 get '/blackjack' do
 
-  deck = build_deck
-  session['dealer_hand'] = deck.pop(2)
-  session['player_hand'] = deck.pop(2)
+  deck = Deck.new.build_deck
+  dealer = Dealer.new(hand: [], hand_value: 0)
+  player = Player.new(hand: [], hand_value: 0, bankroll: 100)
+  dealer.hand = deck.pop(2)
+  player.hand = deck.pop(2)
+
+  dealer.set_hand_value
+  player.set_hand_value
+
+  session['dealer'] = dealer
+  session['player'] = player
   session['deck'] = deck
 
-  dealer_hand = session['dealer_hand']
-  player_hand = session['player_hand']
-
-  dealer_hand_value = calculate_hand(dealer_hand)
-  player_hand_value = calculate_hand(player_hand)
-
-  bankroll = session['bankroll']
   bet = 10
   session['bet'] = bet
   game_over = session['game_over']
 
-  erb :blackjack, locals: { dealer_hand: dealer_hand, player_hand: player_hand, dealer_hand_value: dealer_hand_value, player_hand_value: player_hand_value, bankroll: bankroll, bet: bet, game_over: game_over }
+  erb :blackjack, locals: { dealer: dealer, player: player, bet: bet, game_over: game_over }
+  # erb :blackjack, locals: { dealer_hand: dealer_hand, player_hand: player_hand, dealer_hand_value: dealer_hand_value, player_hand_value: player_hand_value, bankroll: bankroll, bet: bet, game_over: game_over }
 end
 
 post '/blackjack/hit' do

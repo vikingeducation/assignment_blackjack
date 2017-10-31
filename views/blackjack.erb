@@ -2,19 +2,19 @@
 
 <h3>Dealer's Cards</h3>
 <p>
-  <% dealer_hand.each do |card| %>
+  <% dealer.hand.each do |card| %>
   <%= display_card(card) %></br>
   <% end %>
-  <strong>Total: <%= dealer_hand_value %></strong>
+  <strong>Total: <%= dealer.hand_value %></strong>
 </p>
 
 <h3>Your Cards</h3>
-<p>Bankroll: $<%= bankroll %> | Bet: $<%= bet %></p>
+<p>Bankroll: $<%= player.bankroll %> | Bet: $<%= bet %></p>
 <p>
-  <% player_hand.each do |card| %>
+  <% player.hand.each do |card| %>
   <%= display_card(card) %></br>
   <% end %>
-  <strong>Total: <%= player_hand_value %></strong>
+  <strong>Total: <%= player.hand_value %></strong>
 </p>
 
 <% unless game_over %>
