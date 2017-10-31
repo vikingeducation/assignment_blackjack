@@ -21,25 +21,27 @@ end
 
 get '/blackjack' do
 
+  # set up objects
   deck = Deck.new.build_deck
-  dealer = Dealer.new(hand: [], hand_value: 0)
-  player = Player.new(hand: [], hand_value: 0, bankroll: 100)
+  dealer = Dealer.new
+  player = Player.new
+  game_over = session['game_over']
+
+  # modify objects
   dealer.hand = deck.pop(2)
   player.hand = deck.pop(2)
-
   dealer.set_hand_value
   player.set_hand_value
+  bet = 10
 
+  # save objects to session
   session['dealer'] = dealer
   session['player'] = player
   session['deck'] = deck
-
-  bet = 10
   session['bet'] = bet
-  game_over = session['game_over']
 
+  # output objects to view
   erb :blackjack, locals: { dealer: dealer, player: player, bet: bet, game_over: game_over }
-  # erb :blackjack, locals: { dealer_hand: dealer_hand, player_hand: player_hand, dealer_hand_value: dealer_hand_value, player_hand_value: player_hand_value, bankroll: bankroll, bet: bet, game_over: game_over }
 end
 
 post '/blackjack/hit' do

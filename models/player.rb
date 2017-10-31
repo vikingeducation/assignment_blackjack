@@ -2,11 +2,11 @@ class Player
 
   attr_accessor :hand, :hand_value, :bankroll
 
-  def initialize(hand:, hand_value:, bankroll:)
+  def initialize
     @name = "You"
-    @hand = hand
-    @hand_value = hand_value
-    @bankroll = bankroll
+    @hand = []
+    @hand_value = 0
+    @bankroll = 100
   end
 
   def calculate_hand
@@ -26,14 +26,27 @@ class Player
     @hand_value = calculate_hand
   end
 
+  def hit(card)
+    @hand << card
+    calculate_hand
+  end
+
+  def subtract_loss(bet)
+    @bankroll -= bet
+  end
+
+  def add_winnings(bet)
+    @bankroll += bet
+  end
+
 end
 
 class Dealer < Player
 
-  def initialize(hand:, hand_value:)
+  def initialize
     @name = "Dealer"
-    @hand = hand
-    @hand_value = hand_value
+    @hand = []
+    @hand_value = 0
   end
 
 end
