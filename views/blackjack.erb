@@ -17,6 +17,8 @@
   <strong>Total: <%= player.hand_value %></strong>
 </p>
 
+<hr>
+
 <% unless game_over %>
   <%= erb :"blackjack/_game_play_actions", locals: { player: player } %>
 <% end %>
