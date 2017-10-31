@@ -20,7 +20,6 @@ get '/' do
 end
 
 get '/blackjack' do
-
   # set up objects
   deck = Deck.new.build_deck
   dealer = Dealer.new
@@ -45,31 +44,32 @@ get '/blackjack' do
 end
 
 post '/blackjack/hit' do
-  player_hand = session['player_hand']
-  player_hand_value = calculate_hand(player_hand)
+  # retrieve objects
+  deck = session['deck']
+  dealer = session['dealer']
+  player = session['player']
+  bet = session['bet']
+  game_over = session['game_over']
 
-  if player_hand_value < 21
-    deck = session['deck']
-    player_hand = session['player_hand'] << deck.pop
-    session['player_hand'] = player_hand
-    session['deck'] = deck
+  # modify objects
+  if player.hand_value < 21
+    player.hand << deck.pop
+    player.set_hand_value
 
-    dealer_hand = session['dealer_hand']
-    dealer_hand_value = calculate_hand(dealer_hand)
-    player_hand_value = calculate_hand(player_hand)
-
-    bankroll = session['bankroll']
-    bet = session['bet']
-
-    game_over = session['game_over']
-    if game_ending_hand?(player_hand_value)
+    if game_ending_hand?(player.hand_value)
       game_over = true
-      winner = determine_winner(dealer_hand_value, player_hand_value)
+      winner = determine_winner(dealer.hand_value, player.hand_value)
     else
       winner = 'No winner'
     end
 
-    erb :blackjack, locals: { dealer_hand: dealer_hand, player_hand: player_hand, dealer_hand_value: dealer_hand_value, player_hand_value: player_hand_value, bankroll: bankroll, bet: bet, winner: winner, game_over: game_over }
+    # save objects to session
+    session['deck'] = deck
+    session['player'] = player
+    session['game_over'] = game_over
+
+    # output objects to view
+    erb :blackjack, locals: { dealer: dealer, player: player, bet: bet, winner: winner, game_over: game_over }
   else
     redirect('/blackjack/stay')
   end
