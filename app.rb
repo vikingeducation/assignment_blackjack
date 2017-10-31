@@ -1,5 +1,5 @@
 require 'sinatra'
-require "sinatra/reloader" if development?
+require 'sinatra/reloader' if development?
 require 'erb'
 require 'pry'
 
@@ -17,15 +17,16 @@ get '/' do
 end
 
 get '/blackjack' do
+
   deck = build_deck
+  session['dealer_hand'] = deck.pop(2)
+  session['player_hand'] = deck.pop(2)
   session['deck'] = deck
 
-  session['dealer_hand'] = deck.pop(2)
   dealer_hand = session['dealer_hand']
-  dealer_hand_value = calculate_hand(dealer_hand)
-
-  session['player_hand'] = deck.pop(2)
   player_hand = session['player_hand']
+
+  dealer_hand_value = calculate_hand(dealer_hand)
   player_hand_value = calculate_hand(player_hand)
 
   bankroll = session['bankroll']
@@ -48,12 +49,20 @@ post '/blackjack/hit' do
 
     dealer_hand = session['dealer_hand']
     dealer_hand_value = calculate_hand(dealer_hand)
+    player_hand_value = calculate_hand(player_hand)
 
     bankroll = session['bankroll']
     bet = session['bet']
-    game_over = session['game_over']
 
-    erb :blackjack, locals: { dealer_hand: dealer_hand, player_hand: player_hand, dealer_hand_value: dealer_hand_value, player_hand_value: player_hand_value, bankroll: bankroll, bet: bet, game_over: game_over }
+    game_over = session['game_over']
+    if game_ending_hand?(player_hand_value)
+      game_over = true
+      winner = determine_winner(dealer_hand_value, player_hand_value)
+    else
+      winner = 'No winner'
+    end
+
+    erb :blackjack, locals: { dealer_hand: dealer_hand, player_hand: player_hand, dealer_hand_value: dealer_hand_value, player_hand_value: player_hand_value, bankroll: bankroll, bet: bet, winner: winner, game_over: game_over }
   else
     redirect('/blackjack/stay')
   end

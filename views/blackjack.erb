@@ -30,4 +30,7 @@
 <% if game_over %>
   <hr>
   <h1><%= display_winner(winner) %></h1>
+  <form action="/" method="get">
+    <input type="submit" value="Play Again" />
+  </form>
 <% end %>
